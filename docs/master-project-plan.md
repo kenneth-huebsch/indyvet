@@ -1,25 +1,113 @@
-# Vetic CMS Rebuild - Master Project Plan
+# Master Project Plan
+## Vetic Website Recreation with Payload CMS
 
-## Goal
+## Project Objective
 
-Rebuild the Vetic Home 1 marketing website as a reusable, CMS-driven platform using Next.js 16, Payload CMS 3, PostgreSQL, Tailwind CSS 4, and shadcn/ui, with AWS as the planned deployment target.
+Recreate the **Vetic Home 1** website as faithfully as possible using a modern React-based technology stack while replacing Webflow's content management capabilities with Payload CMS.
 
-The implementation should be fully content-managed. Editors should be able to modify copy, images, navigation, testimonials, services, and page layouts without touching code.
+The completed website should be visually indistinguishable from the reference implementation while allowing non-technical editors to manage text, images, navigation, testimonials, services, blog content, and other structured content through the Payload CMS admin interface.
 
-## Guiding Principles
+This is **not** intended to be a generic website builder or page builder. The site's structure, layout, styling, and user experience are entirely developer-controlled. Payload CMS exists solely to manage content.
 
-- Build a reusable marketing platform, not a one-off website.
-- Every page section is a Payload Block backed by a React component.
-- Keep presentation and data fetching separate.
-- Prefer Server Components.
-- Optimize for accessibility, performance, and editor experience.
-- Complete and review each phase before beginning the next.
+The final deliverable should feel like a handcrafted Next.js application rather than a CMS-generated website.
 
-## Phase 0 - Technical Foundation
+---
 
-Create the project skeleton.
+# Reference Website
 
-Deliverables:
+Target Website:
+
+https://vetic.webflow.io/home/home-1
+
+The objective is to reproduce the website's:
+
+- Visual design
+- Layout
+- Spacing
+- Typography
+- Animations
+- Responsiveness
+- User experience
+
+Minor implementation differences are acceptable where required by the technology stack, but the user experience should remain functionally and visually equivalent.
+
+---
+
+# Technology Stack
+
+Frontend
+
+- Next.js 16 (App Router)
+- React
+- Tailwind CSS 4
+- shadcn/ui
+- tw-animate-css (subtle animations; Framer Motion deferred unless later phases require it)
+
+Backend
+
+- Payload CMS 3
+- PostgreSQL
+
+Infrastructure
+
+- Docker Compose (local development)
+- Vercel (deployment)
+
+Language
+
+- TypeScript (strict mode)
+
+---
+
+# Project Philosophy
+
+The frontend owns the design.
+
+Payload owns the content.
+
+Editors can modify content but cannot modify the website's layout, page structure, styling, or component hierarchy.
+
+Every visual aspect of the website is implemented in code.
+
+When future design changes are required, they should be made by updating React components rather than configuring the CMS.
+
+---
+
+# Content Management Goals
+
+Payload CMS should allow editors to manage:
+
+- Homepage copy
+- Images
+- Navigation
+- Footer content
+- Company information
+- Services
+- Team members
+- Testimonials
+- Blog posts
+- SEO metadata
+- Contact information
+
+Editors should **not** be able to:
+
+- Create new page layouts
+- Rearrange sections
+- Add or remove components
+- Modify styling
+- Change spacing
+- Configure animations
+- Change page composition
+
+---
+
+# Project Phases
+
+## Phase 0 - Technical Foundation ✅
+
+Establish the development environment and project infrastructure.
+
+Deliverables
 
 - Next.js 16
 - Payload CMS 3
@@ -28,130 +116,222 @@ Deliverables:
 - Tailwind CSS 4
 - shadcn/ui
 - TypeScript strict mode
-- ESLint / Prettier
+- ESLint
+- Prettier
 - Media collection
-- Admin authentication
-- CI (GitHub Actions)
-- Production Dockerfile
+- Authentication
+- CI configuration
+- Vercel deployment configuration
 
-Acceptance Criteria:
+Acceptance Criteria
 
-- Local stack boots successfully.
-- Payload admin works.
-- Media uploads work.
-- Production build succeeds.
+- Local development environment is fully operational.
+- Payload Admin loads successfully.
+- Media uploads function correctly.
+- Production build completes successfully.
+
+---
 
 ## Phase 1 - Design System
 
-Create reusable design tokens and UI primitives.
+Establish the visual foundation for the website.
 
-Deliverables:
+Execution checklist: [`docs/phase-1/phase-1-implementation-plan.md`](phase-1/phase-1-implementation-plan.md)
 
-- Typography
-- Color tokens
-- Layout primitives
+Deliverables
+
+- Typography system
+- Color palette
+- Spacing scale
 - Buttons
 - Cards
-- Containers
-- Motion utilities
+- Form visuals (inputs, labels, selects, checkboxes — no submit logic)
+- Layout primitives
+- Motion utilities (`tw-animate-css`)
+- Shared UI components
 
-Acceptance Criteria:
+Acceptance Criteria
 
-- No hard-coded colors.
-- Components are reusable and documented.
+- No duplicated styling.
+- No hardcoded design inconsistencies.
+- Components are reusable throughout the project.
+- `/` is a component showcase only (no marketing page).
 
-## Phase 2 - CMS Data Model
+---
 
-Create Payload collections, globals, and blocks.
+## Phase 2 - Payload CMS Data Model
 
-Collections:
+Implement the CMS structure that supports the website.
 
-- Pages
+Collections
+
 - Media
 - Services
-- Team
+- Team Members
 - Testimonials
 - Blog Posts
 
-Globals:
+Globals
 
 - Header
 - Footer
 - Site Settings
 
-Acceptance Criteria:
+Singleton Documents
 
-- Editors can compose pages entirely from blocks.
+- Home Page
 
-## Phase 3 - Rendering Engine
+Acceptance Criteria
 
-Implement dynamic routing and block rendering.
+- All editable website content is represented within Payload.
+- Editors can update content without modifying code.
 
-Deliverables:
+---
 
-- Dynamic page loader
-- Block registry
-- Type-safe renderer
+## Phase 3 - Frontend Foundation
 
-Acceptance Criteria:
+Build the shared application infrastructure.
 
-- Any Payload page renders automatically.
+Deliverables
 
-## Phase 4 - Global Layout
-
-Implement shared layout features.
-
-Deliverables:
-
+- Global layout
 - Header
 - Footer
+- Navigation
 - Metadata
-- SEO
-- Error pages
-- Shared navigation
+- SEO framework
+- Image handling
+- Rich text rendering
+- Shared utilities
 
-## Phase 5 - Hero Block
+Acceptance Criteria
 
-Recreate the Vetic hero section as a CMS block.
+- Every page shares a consistent application shell.
+- Frontend successfully consumes Payload content.
 
-Acceptance Criteria:
+---
 
-- Matches reference design closely.
-- Fully editable.
+## Phase 4 - Homepage Recreation
 
-## Phase 6 - Homepage Blocks
+Recreate the Vetic homepage as accurately as possible.
 
-Build remaining reusable blocks:
+Implement every homepage section using React components connected to Payload-managed content.
 
-- Feature Grid
+Acceptance Criteria
+
+- Homepage closely matches the reference website.
+- Responsive behavior matches the reference.
+- Animations feel equivalent.
+- All editable content comes from Payload.
+
+---
+
+## Phase 5 - Remaining Pages
+
+Recreate the remaining pages from the Vetic website.
+
+Examples include:
+
 - About
-- Stats
 - Services
-- Testimonials
-- CTA
-- FAQ
-- Blog Preview
-- Logo Cloud
-- Newsletter
+- Team
+- Blog
+- Contact
+- Legal pages
 
-## Phase 7 - Homepage Assembly
+Acceptance Criteria
 
-Compose the homepage from CMS blocks and polish responsiveness and spacing.
+- All pages visually match the reference implementation.
+- Content is managed through Payload where appropriate.
 
-## Phase 8 - Editor Experience
+---
 
-Improve Payload authoring with validation, defaults, conditional fields, live preview, drafts, and documentation.
+## Phase 6 - Editor Experience
 
-## Phase 9 - SEO & Performance
+Improve the authoring workflow.
 
-Implement structured data, sitemap, robots, canonical URLs, caching, image optimization, and Lighthouse tuning.
+Deliverables
 
-## Phase 10 - Production Hardening
+- Logical field grouping
+- Validation
+- Helpful descriptions
+- Default values
+- Live preview
+- Draft and publish workflow
+- Media organization
 
-Add monitoring, analytics, security headers, backups, deployment documentation, and upgrade guidance.
+Acceptance Criteria
 
-AWS deployment service selection and production infrastructure are deferred to this phase.
+- A non-technical editor can confidently update website content without developer assistance.
 
-## Phase 11 - Reusable Marketing Platform
+---
 
-Generalize the block library for future client sites.
+## Phase 7 - SEO and Performance
+
+Optimize the finished website.
+
+Deliverables
+
+- Open Graph metadata
+- Twitter Cards
+- JSON-LD
+- Sitemap
+- Robots.txt
+- Canonical URLs
+- Image optimization
+- Route caching
+
+Target Lighthouse Scores
+
+- Performance: 95+
+- Accessibility: 100
+- Best Practices: 100
+- SEO: 100
+
+---
+
+## Phase 8 - Production Hardening
+
+Prepare the application for long-term production use.
+
+Deliverables
+
+- Analytics integration
+- Error monitoring
+- Security headers
+- Backup strategy
+- Deployment documentation
+- Upgrade documentation
+
+Acceptance Criteria
+
+- Website is production-ready and maintainable.
+
+---
+
+# Coding Standards
+
+- Use Server Components by default.
+- Keep business logic separate from presentation.
+- Use strict TypeScript.
+- Avoid the `any` type.
+- Use generated Payload types whenever possible.
+- Keep components focused and maintainable.
+- Use Next.js Image for all images.
+- Prefer composition over duplication.
+- Maintain WCAG AA accessibility standards.
+- Optimize for Core Web Vitals.
+
+---
+
+# Definition of Done
+
+The project is complete when:
+
+- The Vetic website has been faithfully recreated.
+- The website is powered by Next.js and Payload CMS.
+- All intended content is editable through Payload.
+- Editors cannot alter layout or design.
+- The website performs well on desktop and mobile.
+- The application is fully deployable to production.
+- The implementation is clean, maintainable, and ready for future enhancements.
