@@ -12,8 +12,8 @@
 
 Use the project skills when their scope matches the work:
 
-- `.kilo/skills/indyvet-development/SKILL.md` for Payload, Next.js, schema, TypeScript, and frontend changes.
-- `.kilo/skills/indyvet-operations/SKILL.md` for starting, validating, troubleshooting, and stopping the local application stack.
+- `.agents/skills/indyvet-development/SKILL.md` for Payload, Next.js, schema, TypeScript, and frontend changes.
+- `.agents/skills/indyvet-operations/SKILL.md` for starting, validating, troubleshooting, and stopping the local application stack.
 - `.agents/skills/payload/SKILL.md` is the Payload reference index. Consult its `reference/` documents for collection, field, access-control, hook, adapter, and query details.
 
 ## Source And Schema Rules
