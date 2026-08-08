@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { Heart } from 'lucide-react'
 
 import { Badge } from './badge'
-import { Button } from './button'
+import { Button, buttonVariants } from './button'
 import { Card } from './card'
 import { Icon } from './icon'
 
@@ -43,6 +43,25 @@ describe('shared UI primitives', () => {
     expect(markup).toContain('id="save-action"')
     expect(markup).toContain('aria-label="Save"')
     expect(markup).toContain('custom-button')
+  })
+
+  it('renders Button as an anchor CTA without forcing type="button"', () => {
+    const markup = renderToStaticMarkup(
+      <Button as="a" href="/contact" variant="primary">
+        Contact us
+      </Button>,
+    )
+
+    expect(markup).toContain('<a')
+    expect(markup).toContain('href="/contact"')
+    expect(markup).toContain('bg-primary')
+    expect(markup).toContain('data-slot="button"')
+    expect(markup).not.toContain('type="button"')
+  })
+
+  it('exports buttonVariants for composition with custom link components', () => {
+    expect(buttonVariants({ variant: 'outline' })).toContain('border-border')
+    expect(buttonVariants({ variant: 'primary' })).toContain('bg-primary')
   })
 
   it('renders a token-backed Card surface and forwards attributes', () => {

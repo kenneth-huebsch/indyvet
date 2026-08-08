@@ -15,7 +15,7 @@ export const Select = forwardRef<
       : ariaInvalid
 
   return (
-    <div className="relative w-full peer">
+    <div className={cn('relative w-full peer', className)}>
       <select
         ref={ref}
         data-slot="select"
@@ -23,7 +23,6 @@ export const Select = forwardRef<
         className={cn(
           'h-12 w-full appearance-none rounded-md border border-input bg-card px-4 py-2 pr-10 text-foreground shadow-sm transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50',
           error && 'border-destructive',
-          className,
         )}
         {...props}
       />

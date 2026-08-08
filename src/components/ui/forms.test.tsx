@@ -121,4 +121,44 @@ describe('form visual primitives', () => {
     expect(markup).toContain('peer-has-[:disabled]:cursor-not-allowed')
     expect(markup).toContain('peer-has-[:disabled]:opacity-50')
   })
+
+  it('dims Label when it precedes a disabled native control', () => {
+    const markup = renderToStaticMarkup(
+      <>
+        <Label htmlFor="pet-name">Pet name</Label>
+        <Input id="pet-name" disabled />
+      </>,
+    )
+
+    expect(markup).toContain('has-[+:disabled]:cursor-not-allowed')
+    expect(markup).toContain('has-[+:disabled]:opacity-50')
+  })
+
+  it('dims Label when it precedes a disabled Select wrapper', () => {
+    const markup = renderToStaticMarkup(
+      <>
+        <Label htmlFor="pet-type">Pet type</Label>
+        <Select id="pet-type" disabled>
+          <option value="dog">Dog</option>
+        </Select>
+      </>,
+    )
+
+    expect(markup).toContain('has-[+:has(:disabled)]:cursor-not-allowed')
+    expect(markup).toContain('has-[+:has(:disabled)]:opacity-50')
+  })
+
+  it('applies Select className to the wrapper so chevron tracks width', () => {
+    const markup = renderToStaticMarkup(
+      <Select className="w-1/2 custom-select" aria-label="Pet type">
+        <option value="dog">Dog</option>
+      </Select>,
+    )
+
+    expect(markup).toMatch(/<div class="[^"]*\bw-1\/2\b[^"]*custom-select[^"]*"/)
+    expect(markup).toContain('relative')
+    expect(markup).toContain('peer')
+    expect(markup).toContain('<select')
+    expect(markup).toContain('w-full')
+  })
 })

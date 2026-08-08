@@ -75,6 +75,9 @@ export default function HomePage() {
                 <Button variant="outline">Outline</Button>
                 <Button variant="ghost">Ghost</Button>
                 <Button variant="link">Link</Button>
+                <Button as="a" href="#forms" variant="outline">
+                  As link
+                </Button>
                 <Button disabled>Disabled</Button>
               </div>
             </div>

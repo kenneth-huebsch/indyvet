@@ -1,11 +1,11 @@
 import { cva } from 'class-variance-authority'
-import type { ButtonHTMLAttributes, ReactElement } from 'react'
+import type { ComponentPropsWithoutRef, ElementType, ReactElement } from 'react'
 
 import { cn } from '@/lib/utils'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link'
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   'inline-flex min-h-button items-center justify-center rounded-button px-button-x py-button-y text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
@@ -25,21 +25,37 @@ const buttonVariants = cva(
   },
 )
 
-export function Button(
-  props: ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: ButtonVariant
-  },
-): ReactElement {
-  const { variant = 'primary', type = 'button', className, children, ...rest } = props
+type ButtonOwnProps<T extends ElementType> = {
+  as?: T
+  variant?: ButtonVariant
+  className?: string
+}
+
+export type ButtonProps<T extends ElementType = 'button'> = ButtonOwnProps<T> &
+  Omit<ComponentPropsWithoutRef<T>, keyof ButtonOwnProps<T>>
+
+export function Button<T extends ElementType = 'button'>(props: ButtonProps<T>): ReactElement {
+  const { as, variant = 'primary', className, children, ...rest } = props
+  const Component = (as ?? 'button') as ElementType
+
+  if (Component === 'button') {
+    const { type = 'button', ...buttonRest } = rest as ComponentPropsWithoutRef<'button'>
+
+    return (
+      <button
+        type={type}
+        data-slot="button"
+        className={cn(buttonVariants({ variant }), className)}
+        {...buttonRest}
+      >
+        {children}
+      </button>
+    )
+  }
 
   return (
-    <button
-      type={type}
-      data-slot="button"
-      className={cn(buttonVariants({ variant }), className)}
-      {...rest}
-    >
+    <Component data-slot="button" className={cn(buttonVariants({ variant }), className)} {...rest}>
       {children}
-    </button>
+    </Component>
   )
 }
