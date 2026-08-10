@@ -70,6 +70,30 @@ npx tsc --noEmit
 - `components.json` is shadcn/ui configuration only. Do not add components merely because shadcn is initialized.
 - Keep new components focused and accessible; avoid marketing or placeholder content unless explicitly requested.
 
+## Frontend Foundation (Phase 3)
+
+Shared chrome and Payload → frontend mapping already exist. Reuse them before inventing parallel helpers.
+
+| Area | Location |
+| --- | --- |
+| Site shell | `src/components/site/` — `SiteHeader`, `SiteFooter`, `MobileNav` |
+| Layout wiring | `src/app/(frontend)/layout.tsx` via `getSiteChrome()` |
+| Payload client / chrome fetch | `src/lib/payload.ts` (`getPayloadClient`, `getSiteChrome` with React `cache`) |
+| Media helpers / image | `src/lib/media.ts`, `src/components/media/MediaImage.tsx` |
+| SEO metadata merge | `src/lib/seo.ts` (`buildMetadata`) |
+| Link normalization | `src/lib/links.ts` |
+| Lexical rich text | `src/components/rich-text/RichText.tsx` (`@payloadcms/richtext-lexical/react`) |
+
+Locked chrome conventions:
+
+- Design reference for shell geometry: [Vetic Home 1](https://vetic.webflow.io/home/home-1) — pill header, contained dark footer, mobile collapse ≤991px. No cart, shop, or public auth chrome.
+- Header nav is **flat** (`header.navItems`). Do not add mega-menu schema unless a phase explicitly requires it.
+- Header `cta` is preferred; fall back to `site-settings.booking` when Header CTA is empty.
+- NAP, social, pharmacy, and booking live on `site-settings`. Footer owns logo, link groups, and copyright only.
+- Source of truth checklist: `docs/phase-3/phase-3-implementation-plan.md`.
+
+Frontend mapping tests use Payload-shaped fixtures + `renderToStaticMarkup` (no DB). Keep that pattern for shell and section components unless a phase requires Local API integration.
+
 ## Required Checks
 
 Run the narrowest relevant check first. Before completion, run all applicable checks:
@@ -89,4 +113,14 @@ Phase 2+ Payload schema work must include:
 - Unit tests for shared access helpers (and field helpers where non-trivial).
 - Vitest integration tests against Postgres via the Payload Local API (create/read, draft visibility, unauthenticated write denial, Home Featured Posts, Site Settings booking/pharmacy).
 
+Phase 3+ frontend mapping work must include fixture-based tests that assert shell (or page) components render from Payload-shaped data, not only static showcase markup.
+
 Do not treat a one-off `scripts/` smoke file as a substitute for the Vitest suite.
+
+When running Local API scripts under `scripts/`, preload `.env` (Vitest does this automatically; bare `tsx` does not):
+
+```bash
+npx cross-env NODE_OPTIONS=--no-deprecation tsx -r dotenv/config scripts/<script>.ts
+```
+
+Do not commit accidental regenerations of `src/payload-types.ts` or `src/app/(payload)/admin/importMap.js` unless the change was caused by intentional schema/config work in the same change set.
