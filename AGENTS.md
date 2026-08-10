@@ -21,7 +21,9 @@ Use the project skills when their scope matches the work:
 - Keep TypeScript strict. Do not introduce `any` or weaken compiler settings to silence errors.
 - Prefer Server Components. Add client components only when browser state or browser APIs require them.
 - Use `@/` imports for code under `src/` and `@payload-config` for the Payload config.
-- Keep `src/components/`, `src/lib/`, `src/payload/blocks/`, and `src/payload/globals/` empty until a feature requires them. Preserve their `.gitkeep` files when otherwise empty.
+- Keep `src/payload/blocks/` empty until a feature requires it. Preserve its `.gitkeep` when otherwise empty.
+- Content collections live in `src/payload/collections/`. Page and site globals live in `src/payload/globals/`. Shared field helpers live in `src/payload/fields/`; shared access helpers in `src/payload/access.ts`.
+- Do not add Products, cart, checkout, or public sign-in collections. Pharmacy / Order Online is an outbound link in Site Settings. Home “Products” is modeled as Featured Posts.
 - Media files use local disk storage at repository-root `media/` via `staticDir: 'media'`. The directory is intentionally gitignored.
 - After changing Payload collections, fields, globals, or blocks:
   1. Create a migration with `npx payload migrate:create <name>`.
@@ -44,7 +46,7 @@ Use the project skills when their scope matches the work:
 - Inspect PostgreSQL: `docker compose ps` and `docker compose logs db`.
 - Apply migrations: `npx payload migrate`.
 - Start the application: `npm run dev`.
-- Validate code: `npm run lint`, `npx tsc --noEmit`, `npx prettier --check .`, and `npm run build`.
+- Validate code: `npm test`, `npm run lint`, `npx tsc --noEmit`, `npx prettier --check .`, and `npm run build`.
 - Build the production image with explicit non-production build values. Do not use real secrets in terminal history or Docker build arguments.
 - For an end-to-end change, verify `/admin`, authenticated admin behavior, and local Media upload behavior in addition to static checks.
 

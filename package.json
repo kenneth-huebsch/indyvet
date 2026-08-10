@@ -9,6 +9,8 @@
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "test": "cross-env NODE_OPTIONS=--no-deprecation vitest run",
+    "test:watch": "cross-env NODE_OPTIONS=--no-deprecation vitest",
     "format": "prettier --write .",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },

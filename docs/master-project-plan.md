@@ -1,4 +1,5 @@
 # Master Project Plan
+
 ## Vetic Website Recreation with Payload CMS
 
 ## Project Objective
@@ -163,6 +164,8 @@ Acceptance Criteria
 
 Implement the CMS structure that supports the website.
 
+Execution checklist: [`docs/phase-2/phase-2-implementation-plan.md`](phase-2/phase-2-implementation-plan.md)
+
 Collections
 
 - Media
@@ -170,21 +173,32 @@ Collections
 - Team Members
 - Testimonials
 - Blog Posts
+- FAQs
+- Emergency Referrals
 
 Globals
 
 - Header
 - Footer
-- Site Settings
+- Site Settings (NAP, social, booking CTA, pharmacy outbound link, default SEO)
 
 Singleton Documents
 
-- Home Page
+- Home Page (Home 1 sections; Products replaced by Featured Posts)
+- About Page
+- Contact Page
+- Emergency Page
+
+Excluded
+
+- Products, cart, checkout, public sign-in / sign-up, orders
 
 Acceptance Criteria
 
 - All editable website content is represented within Payload.
 - Editors can update content without modifying code.
+- Home Page has no Products / commerce fields.
+- Automated tests cover access helpers, Local API create/read for each content collection, draft visibility, unauthenticated write denial, Home Featured Posts (no Products), and Site Settings booking/pharmacy fields. See [`docs/phase-2/phase-2-implementation-plan.md`](phase-2/phase-2-implementation-plan.md).
 
 ---
 
@@ -203,11 +217,13 @@ Deliverables
 - Image handling
 - Rich text rendering
 - Shared utilities
+- Tests for Payload → frontend data mapping / rendering of shared shell content (header, footer, site settings)
 
 Acceptance Criteria
 
 - Every page shares a consistent application shell.
 - Frontend successfully consumes Payload content.
+- Automated tests cover shell components consuming Payload globals (not only static showcase markup).
 
 ---
 
@@ -223,6 +239,7 @@ Acceptance Criteria
 - Responsive behavior matches the reference.
 - Animations feel equivalent.
 - All editable content comes from Payload.
+- Automated tests cover homepage section rendering from Home Page global + related collections.
 
 ---
 

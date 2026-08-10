@@ -69,6 +69,12 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    services: Service;
+    'team-members': TeamMember;
+    testimonials: Testimonial;
+    posts: Post;
+    faqs: Faq;
+    'emergency-referrals': EmergencyReferral;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +84,12 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
+    'emergency-referrals': EmergencyReferralsSelect<false> | EmergencyReferralsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +99,24 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    header: Header;
+    footer: Footer;
+    'home-page': HomePage;
+    'about-page': AboutPage;
+    'contact-page': ContactPage;
+    'emergency-page': EmergencyPage;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+    'emergency-page': EmergencyPageSelect<false> | EmergencyPageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -163,6 +191,178 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Short blurb for cards and listings.
+   */
+  shortDescription: string;
+  /**
+   * Full service detail content.
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  image?: (number | null) | Media;
+  /**
+   * Eligible for homepage featured services.
+   */
+  featured?: boolean | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: number;
+  name: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * e.g. Veterinarian, Founder
+   */
+  role: string;
+  photo?: (number | null) | Media;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  quote: string;
+  authorName: string;
+  /**
+   * Optional city or neighborhood.
+   */
+  location?: string | null;
+  avatar?: (number | null) | Media;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  publishedAt?: string | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  question: string;
+  answer: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-referrals".
+ */
+export interface EmergencyReferral {
+  id: number;
+  name: string;
+  phone: string;
+  address?: string | null;
+  notes?: string | null;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -192,6 +392,30 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: number | TeamMember;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: number | Faq;
+      } | null)
+    | ({
+        relationTo: 'emergency-referrals';
+        value: number | EmergencyReferral;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -277,6 +501,92 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  shortDescription?: T;
+  body?: T;
+  image?: T;
+  featured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  generateSlug?: T;
+  slug?: T;
+  role?: T;
+  photo?: T;
+  bio?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  quote?: T;
+  authorName?: T;
+  location?: T;
+  avatar?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  publishedAt?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-referrals_select".
+ */
+export interface EmergencyReferralsSelect<T extends boolean = true> {
+  name?: T;
+  phone?: T;
+  address?: T;
+  notes?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +624,809 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  brand: {
+    siteName: string;
+    tagline?: string | null;
+  };
+  contact?: {
+    /**
+     * Primary voice number, e.g. (215) 923-2300
+     */
+    phone?: string | null;
+    textPhone?: string | null;
+    email?: string | null;
+    address?: string | null;
+    hours?:
+      | {
+          /**
+           * e.g. Mon–Thu
+           */
+          label: string;
+          /**
+           * e.g. 9am–7pm
+           */
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  social?: {
+    facebook?: string | null;
+    instagram?: string | null;
+  };
+  booking?: {
+    label?: string | null;
+    /**
+     * External booking URL or page that hosts the embed.
+     */
+    url?: string | null;
+    /**
+     * Optional Vetter (or similar) script URL for Phase 3 wiring.
+     */
+    embedScriptUrl?: string | null;
+  };
+  pharmacy?: {
+    label?: string | null;
+    /**
+     * Outbound pharmacy URL (e.g. VetsFirstChoice).
+     */
+    url?: string | null;
+  };
+  defaultSeo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  logo?: (number | null) | Media;
+  navItems?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  cta?: {
+    label?: string | null;
+    /**
+     * Internal path (e.g. /contact) or full external URL.
+     */
+    url?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Link columns and copyright. Clinic NAP and social URLs live in Site Settings.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  logo?: (number | null) | Media;
+  linkGroups?:
+    | {
+        title: string;
+        links?:
+          | {
+              label: string;
+              url: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. © 2026 Indy Veterinary Care, Inc. All rights reserved.
+   */
+  copyright?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Home 1 section content. Products are replaced by Featured Posts. Layout is fixed in code.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  /**
+   * Hero section
+   */
+  hero: {
+    eyebrow?: string | null;
+    headline: string;
+    description?: string | null;
+    primaryCta?: {
+      label?: string | null;
+      /**
+       * Internal path (e.g. /contact) or full external URL.
+       */
+      url?: string | null;
+    };
+    secondaryCta?: {
+      label?: string | null;
+      /**
+       * Internal path (e.g. /contact) or full external URL.
+       */
+      url?: string | null;
+    };
+    images?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+    marqueeTags?:
+      | {
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Featured services section
+   */
+  services?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    featuredServices?: (number | Service)[] | null;
+  };
+  /**
+   * Three-step process section
+   */
+  process?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    promo?: {
+      title?: string | null;
+      description?: string | null;
+      cta?: {
+        label?: string | null;
+        /**
+         * Internal path (e.g. /contact) or full external URL.
+         */
+        url?: string | null;
+      };
+    };
+    steps?:
+      | {
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Replaces the template Products section. No commerce fields.
+   */
+  featuredPosts?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    viewAll?: {
+      label?: string | null;
+      /**
+       * Internal path (e.g. /contact) or full external URL.
+       */
+      url?: string | null;
+    };
+    posts?: (number | Post)[] | null;
+  };
+  about?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    cta?: {
+      label?: string | null;
+      /**
+       * Internal path (e.g. /contact) or full external URL.
+       */
+      url?: string | null;
+    };
+    tags?:
+      | {
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  team?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    cta?: {
+      label?: string | null;
+      /**
+       * Internal path (e.g. /contact) or full external URL.
+       */
+      url?: string | null;
+    };
+    members?: (number | TeamMember)[] | null;
+  };
+  testimonials?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    items?: (number | Testimonial)[] | null;
+  };
+  bottomCta?: {
+    headline?: string | null;
+    cta?: {
+      label?: string | null;
+      /**
+       * Internal path (e.g. /contact) or full external URL.
+       */
+      url?: string | null;
+    };
+    images?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  hero: {
+    eyebrow?: string | null;
+    title: string;
+    subtitle?: string | null;
+  };
+  mission?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  namesake?: {
+    title?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  team?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    members?: (number | TeamMember)[] | null;
+  };
+  testimonials?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    items?: (number | Testimonial)[] | null;
+  };
+  cta?: {
+    label?: string | null;
+    /**
+     * Internal path (e.g. /contact) or full external URL.
+     */
+    url?: string | null;
+  };
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Contact copy and form labels only. Submission / email delivery is wired in a later phase.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page".
+ */
+export interface ContactPage {
+  id: number;
+  hero: {
+    eyebrow?: string | null;
+    title: string;
+    description?: string | null;
+  };
+  intro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  form?: {
+    nameLabel?: string | null;
+    emailLabel?: string | null;
+    phoneLabel?: string | null;
+    messageLabel?: string | null;
+    submitLabel?: string | null;
+    successMessage?: string | null;
+  };
+  /**
+   * Google Maps embed URL or similar.
+   */
+  mapEmbedUrl?: string | null;
+  faqs?: (number | Faq)[] | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-page".
+ */
+export interface EmergencyPage {
+  id: number;
+  hero: {
+    eyebrow?: string | null;
+    title: string;
+    description?: string | null;
+  };
+  intro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  referrals?: (number | EmergencyReferral)[] | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  brand?:
+    | T
+    | {
+        siteName?: T;
+        tagline?: T;
+      };
+  contact?:
+    | T
+    | {
+        phone?: T;
+        textPhone?: T;
+        email?: T;
+        address?: T;
+        hours?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+      };
+  social?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+      };
+  booking?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        embedScriptUrl?: T;
+      };
+  pharmacy?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  defaultSeo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  navItems?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  logo?: T;
+  linkGroups?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  copyright?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        headline?: T;
+        description?: T;
+        primaryCta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        secondaryCta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+        marqueeTags?:
+          | T
+          | {
+              label?: T;
+              id?: T;
+            };
+      };
+  services?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        featuredServices?: T;
+      };
+  process?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        promo?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                  };
+            };
+        steps?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  featuredPosts?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        viewAll?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        posts?: T;
+      };
+  about?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        body?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        tags?:
+          | T
+          | {
+              label?: T;
+              id?: T;
+            };
+      };
+  team?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        members?: T;
+      };
+  testimonials?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        items?: T;
+      };
+  bottomCta?:
+    | T
+    | {
+        headline?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        subtitle?: T;
+      };
+  mission?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        body?: T;
+      };
+  namesake?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+      };
+  team?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        members?: T;
+      };
+  testimonials?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        items?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+      };
+  intro?: T;
+  form?:
+    | T
+    | {
+        nameLabel?: T;
+        emailLabel?: T;
+        phoneLabel?: T;
+        messageLabel?: T;
+        submitLabel?: T;
+        successMessage?: T;
+      };
+  mapEmbedUrl?: T;
+  faqs?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-page_select".
+ */
+export interface EmergencyPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+      };
+  intro?: T;
+  referrals?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
