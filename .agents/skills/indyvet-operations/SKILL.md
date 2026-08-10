@@ -37,6 +37,8 @@ Apply pending database migrations before starting application work that needs th
 npx payload migrate
 ```
 
+If Payload warns that the database was previously updated via dev “push” and that running migrations may cause data loss, stop and confirm with the user before answering `yes`. Prefer migrations for committed schema changes; do not casually accept destructive prompts.
+
 Start the application:
 
 ```bash
@@ -44,6 +46,8 @@ npm run dev
 ```
 
 Check the public route at `http://localhost:3000/` and the Payload admin at `http://localhost:3000/admin`.
+
+Admin accounts are created interactively at `/admin` (first-user flow) or managed through Payload. Never commit, document, or print admin passwords. Reset a forgotten local password only with explicit user approval, via the Payload Local API (hashed update), not by writing plaintext into Postgres.
 
 Stop only the database service when appropriate:
 
@@ -73,6 +77,10 @@ For an admin or schema-affecting change, verify the following against the runnin
 3. The changed collection or global is visible and behaves as expected.
 4. A Media upload writes into repository-root `media/`.
 5. A logged-in user can log out and log back in when auth changes are involved.
+
+For Phase 2-style schema work, also confirm Content collections, Pages globals, and Settings globals appear in the admin nav, and that `home-page` exposes Featured Posts (not Products). Prefer `npm test` (Vitest unit + Local API integration) over one-off scripts.
+
+Optional Local API helpers may live under `scripts/` (excluded from `tsconfig`); they do not replace Vitest.
 
 Use browser automation for UI behavior where available. Do not treat a static build as proof that database-backed admin behavior works.
 

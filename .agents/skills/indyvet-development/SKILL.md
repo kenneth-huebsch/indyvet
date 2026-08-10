@@ -17,9 +17,33 @@ description: Use when developing or changing the IndyVet Next.js and Payload app
 - `src/app/(payload)/` contains generated Payload admin and API routes. Never hand-edit it.
 - `src/app/(frontend)/` contains the public application routes and layouts.
 - `src/payload/collections/` contains collection definitions.
-- `src/payload/blocks/` and `src/payload/globals/` are reserved for approved future work.
+- `src/payload/globals/` contains site and page singletons (Header, Footer, Site Settings, Home, About, Contact, Emergency).
+- `src/payload/fields/` contains reusable field helpers (`link`, `seo`). Prefer these over duplicating group shapes.
+- `src/payload/access.ts` contains shared access helpers (`anyone`, `authenticated`, `authenticatedOrPublished`).
+- `src/payload/blocks/` is reserved until a feature explicitly needs blocks. Preserve `.gitkeep` when empty.
 - `src/styles/globals.css` is the Tailwind 4 and shadcn/ui CSS entrypoint.
 - `src/payload-types.ts` is generated and committed. Do not hand-edit it.
+- `scripts/` may hold one-off Local API utilities. It is excluded from `tsconfig.json` so it does not break `next build`.
+
+## Content Model (Phase 2)
+
+Collections own reusable entities. Globals own section chrome and relationships. Editors fill fields; they do not rearrange layout.
+
+| Kind | Slugs |
+| --- | --- |
+| Collections | `media`, `users`, `services`, `team-members`, `testimonials`, `posts`, `faqs`, `emergency-referrals` |
+| Globals | `site-settings`, `header`, `footer`, `home-page`, `about-page`, `contact-page`, `emergency-page` |
+
+Locked product decisions:
+
+- No Products, cart, checkout, or public storefront auth collections.
+- Home template “Products” section is **Featured Posts** (`home-page.featuredPosts` → `posts`).
+- Pharmacy / Order Online is `site-settings.pharmacy` (outbound URL). Booking is `site-settings.booking` (Vetter CTA / embed URL).
+- Drafts are enabled on `services`, `team-members`, and `posts`. Public read uses `authenticatedOrPublished` where drafts apply.
+- Contact form labels live on `contact-page`; submission / email delivery is a later phase.
+- Source of truth checklist: `docs/phase-2/phase-2-implementation-plan.md`.
+
+Do not invent parallel collections for the same content. Prefer relationships from page globals into existing collections.
 
 ## Payload Change Workflow
 
@@ -36,6 +60,7 @@ npx tsc --noEmit
 - Do not modify a migration that may already be applied outside the active local database.
 - Use Payload types from `@/payload-types` where application code needs document types.
 - Preserve the `postgresAdapter`, lexical editor, `sharp`, and environment-driven secrets in `src/payload.config.ts` unless the task explicitly changes them.
+- After schema changes, confirm the affected collection or global appears and saves correctly in `/admin`.
 
 ## Frontend Rules
 
@@ -50,6 +75,7 @@ npx tsc --noEmit
 Run the narrowest relevant check first. Before completion, run all applicable checks:
 
 ```bash
+npm test
 npm run lint
 npx tsc --noEmit
 npx prettier --check .
@@ -57,3 +83,10 @@ npm run build
 ```
 
 If the schema changed, also run `npm run generate:types` and apply the migration to a local database before validating the affected Payload workflow.
+
+Phase 2+ Payload schema work must include:
+
+- Unit tests for shared access helpers (and field helpers where non-trivial).
+- Vitest integration tests against Postgres via the Payload Local API (create/read, draft visibility, unauthenticated write denial, Home Featured Posts, Site Settings booking/pharmacy).
+
+Do not treat a one-off `scripts/` smoke file as a substitute for the Vitest suite.
