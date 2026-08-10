@@ -6,8 +6,9 @@
 - The application root is this repository. Do not introduce a nested application, monorepo, or second package manager.
 - Payload admin and API routes in `src/app/(payload)/` are generated. Do not hand-edit them.
 - The frontend route group is `src/app/(frontend)/`. Shared frontend code belongs in `src/components/` and `src/lib/`.
+- Site chrome (header/footer/nav) lives in `src/components/site/` and is fed by Payload globals via `src/lib/payload.ts` (`getSiteChrome`). Media, SEO, link, and rich-text helpers live under `src/lib/` and `src/components/media/` / `src/components/rich-text/`.
 - Payload configuration is in `src/payload.config.ts`. Collections, blocks, and globals belong under `src/payload/`.
-
+- Do not commit accidental regenerations of `src/payload-types.ts` or `src/app/(payload)/admin/importMap.js` unless intentional schema/config work caused them.
 ## Project Skills
 
 Use the project skills when their scope matches the work:

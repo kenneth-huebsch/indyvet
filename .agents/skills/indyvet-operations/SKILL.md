@@ -47,6 +47,14 @@ npm run dev
 
 Check the public route at `http://localhost:3000/` and the Payload admin at `http://localhost:3000/admin`.
 
+After Phase 3, `/` should render the Phase 1 showcase inside the Payload-backed site shell (header + footer). Empty globals still render safely; seeded IndyVet chrome is preferred for visual checks.
+
+Optional: reseed Header, Footer, and Site Settings from Indy Veterinary Care content:
+
+```bash
+npx cross-env NODE_OPTIONS=--no-deprecation tsx -r dotenv/config scripts/seed-site-chrome.ts
+```
+
 Admin accounts are created interactively at `/admin` (first-user flow) or managed through Payload. Never commit, document, or print admin passwords. Reset a forgotten local password only with explicit user approval, via the Payload Local API (hashed update), not by writing plaintext into Postgres.
 
 Stop only the database service when appropriate:
@@ -80,7 +88,7 @@ For an admin or schema-affecting change, verify the following against the runnin
 
 For Phase 2-style schema work, also confirm Content collections, Pages globals, and Settings globals appear in the admin nav, and that `home-page` exposes Featured Posts (not Products). Prefer `npm test` (Vitest unit + Local API integration) over one-off scripts.
 
-Optional Local API helpers may live under `scripts/` (excluded from `tsconfig`); they do not replace Vitest.
+Optional Local API helpers may live under `scripts/` (excluded from `tsconfig`); they do not replace Vitest. Always preload `.env` when running them with `tsx -r dotenv/config`, or Payload will fail with a missing secret.
 
 Use browser automation for UI behavior where available. Do not treat a static build as proof that database-backed admin behavior works.
 

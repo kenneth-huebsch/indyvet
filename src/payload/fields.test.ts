@@ -1,3 +1,4 @@
+import type { Field, NamedGroupField } from 'payload'
 import { describe, expect, it } from 'vitest'
 
 import { EmergencyReferrals } from './collections/EmergencyReferrals'
@@ -18,18 +19,22 @@ import { Header } from './globals/Header'
 import { HomePage } from './globals/HomePage'
 import { SiteSettings } from './globals/SiteSettings'
 
+function fieldName(field: Field): string | undefined {
+  return 'name' in field ? field.name : undefined
+}
+
 describe('shared field helpers', () => {
   it('linkField exposes label and url', () => {
-    const field = linkField({ name: 'cta', label: 'CTA' })
+    const field = linkField({ name: 'cta', label: 'CTA' }) as NamedGroupField
 
     expect(field.type).toBe('group')
     expect(field.name).toBe('cta')
-    expect(field.fields.map((entry) => entry.name)).toEqual(['label', 'url'])
+    expect(field.fields.map(fieldName)).toEqual(['label', 'url'])
   })
 
   it('seoField targets media for OG image', () => {
     const field = seoField()
-    const ogImage = field.fields.find((entry) => entry.name === 'ogImage')
+    const ogImage = field.fields.find((entry) => fieldName(entry) === 'ogImage')
 
     expect(ogImage).toMatchObject({
       type: 'upload',

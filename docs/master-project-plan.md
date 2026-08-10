@@ -133,7 +133,7 @@ Acceptance Criteria
 
 ---
 
-## Phase 1 - Design System
+## Phase 1 - Design System ✅
 
 Establish the visual foundation for the website.
 
@@ -160,7 +160,7 @@ Acceptance Criteria
 
 ---
 
-## Phase 2 - Payload CMS Data Model
+## Phase 2 - Payload CMS Data Model ✅
 
 Implement the CMS structure that supports the website.
 
@@ -202,9 +202,11 @@ Acceptance Criteria
 
 ---
 
-## Phase 3 - Frontend Foundation
+## Phase 3 - Frontend Foundation ✅
 
 Build the shared application infrastructure.
+
+Execution checklist: [`docs/phase-3/phase-3-implementation-plan.md`](phase-3/phase-3-implementation-plan.md)
 
 Deliverables
 
