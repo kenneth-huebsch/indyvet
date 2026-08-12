@@ -66,12 +66,14 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
           REGISTRY: ${{ steps.ecr.outputs.registry }}
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
         run: |
           set -euo pipefail
           IMAGE_URI="${REGISTRY}/${ECR_REPOSITORY}"
           docker build \
-            --build-arg DATABASE_URI='postgres://build:build@127.0.0.1:5432/build' \
-            --build-arg PAYLOAD_SECRET='build-time-non-production-secret' \
+            --build-arg DATABASE_URI="${DATABASE_URI}" \
+            --build-arg PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
             --build-arg NEXT_PUBLIC_SERVER_URL="${NEXT_PUBLIC_SERVER_URL}" \
             -t "${IMAGE_URI}:${IMAGE_TAG}" \
             -t "${IMAGE_URI}:latest" \

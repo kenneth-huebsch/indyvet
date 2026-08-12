@@ -8,6 +8,8 @@ import { getSiteChrome } from '@/lib/payload'
 import { buildMetadata } from '@/lib/seo'
 import '@/styles/globals.css'
 
+export const dynamic = 'force-dynamic'
+
 const urbanist = Urbanist({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
