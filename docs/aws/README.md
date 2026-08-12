@@ -51,3 +51,8 @@ Use a previous deployment version from `get-container-service-deployments`, then
 ## Agent IAM policy JSON
 
 See sibling files in this directory (`indyvet-lightsail-agent-policy.json`, `indyvet-ecr-optional-policy.json`, and the compact IAM bootstrap policy used for `indyvet-coding-agent`).
+
+## Note
+
+Production Postgres requires sslmode=require on DATABASE_URI.
+
