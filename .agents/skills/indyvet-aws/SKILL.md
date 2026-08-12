@@ -25,7 +25,7 @@ For local Postgres/Compose/dev server work, use `indyvet-operations` instead. So
 | Database | `indyvet-db` (Postgres 17) |
 | ECR | `indyvet` (`382125965554.dkr.ecr.us-east-1.amazonaws.com/indyvet`) |
 | Media bucket | `indyvet-media-382125965554` |
-| CI role | `indyvet-github-deploy` |
+| CI role | Prefer IAM user `indyvet-github-deploy` access keys today; OIDC role `indyvet-github-deploy` exists but needs real GitHub thumbprints before use |
 | Local AWS profile | `indyvet` |
 
 ## Deploy Path
@@ -38,7 +38,7 @@ For local Postgres/Compose/dev server work, use `indyvet-operations` instead. So
 
 ### GitHub config (names only)
 
-Secrets: `AWS_ROLE_TO_ASSUME`, `PAYLOAD_SECRET`, `DATABASE_URI`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`  
+Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `PAYLOAD_SECRET`, `DATABASE_URI`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`  
 Variables: `AWS_REGION`, `ECR_REPOSITORY`, `LIGHTSAIL_SERVICE_NAME`, `NEXT_PUBLIC_SERVER_URL`, `S3_BUCKET`, `S3_REGION`
 
 Never print secret values. Rotate by updating the GitHub secret and redeploying (new push or manual deployment with the same image + new env).

@@ -16,7 +16,8 @@ CLI profile for agents: `indyvet`
 | ECR repository | `indyvet` → `382125965554.dkr.ecr.us-east-1.amazonaws.com/indyvet` |
 | S3 media bucket | `indyvet-media-382125965554` |
 | S3 app IAM user | `indyvet-s3-media` |
-| GitHub OIDC role | `arn:aws:iam::382125965554:role/indyvet-github-deploy` |
+| CI deploy IAM user | `indyvet-github-deploy` (access keys in GitHub secrets) |
+| CI OIDC role (optional later) | `indyvet-github-deploy` role + GitHub OIDC provider (thumbprint must be fixed before use) |
 | DNS zone | Lightsail domain `indyvetcare.com` |
 
 ## Do not touch
@@ -29,7 +30,8 @@ CLI profile for agents: `indyvet`
 
 Workflow: `.github/workflows/deploy.yml` (push to `main`).
 
-**Secrets (names only):** `AWS_ROLE_TO_ASSUME`, `PAYLOAD_SECRET`, `DATABASE_URI`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`
+**Secrets (names only):** `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `PAYLOAD_SECRET`, `DATABASE_URI`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`  
+(Optional unused until OIDC thumbprints are fixed: `AWS_ROLE_TO_ASSUME`)
 
 **Variables:** `AWS_REGION`, `ECR_REPOSITORY`, `LIGHTSAIL_SERVICE_NAME`, `NEXT_PUBLIC_SERVER_URL`, `S3_BUCKET`, `S3_REGION`
 
