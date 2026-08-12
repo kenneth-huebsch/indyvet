@@ -1,5 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -23,6 +24,8 @@ import { SiteSettings } from './payload/globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const s3Bucket = process.env.S3_BUCKET
 
 export default buildConfig({
   admin: {
@@ -53,4 +56,23 @@ export default buildConfig({
     },
   }),
   sharp,
+  plugins: [
+    ...(s3Bucket
+      ? [
+          s3Storage({
+            collections: {
+              media: true,
+            },
+            bucket: s3Bucket,
+            config: {
+              credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+              },
+              region: process.env.S3_REGION || 'us-east-1',
+            },
+          }),
+        ]
+      : []),
+  ],
 })

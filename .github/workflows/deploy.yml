@@ -1,0 +1,159 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Payload types
+        run: npx payload generate:types
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+      LIGHTSAIL_SERVICE_NAME: ${{ vars.LIGHTSAIL_SERVICE_NAME }}
+      NEXT_PUBLIC_SERVER_URL: ${{ vars.NEXT_PUBLIC_SERVER_URL }}
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
+      S3_REGION: ${{ vars.S3_REGION }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          set -euo pipefail
+          IMAGE_URI="${REGISTRY}/${ECR_REPOSITORY}"
+          docker build \
+            --build-arg DATABASE_URI='postgres://build:build@127.0.0.1:5432/build' \
+            --build-arg PAYLOAD_SECRET='build-time-non-production-secret' \
+            --build-arg NEXT_PUBLIC_SERVER_URL="${NEXT_PUBLIC_SERVER_URL}" \
+            -t "${IMAGE_URI}:${IMAGE_TAG}" \
+            -t "${IMAGE_URI}:latest" \
+            .
+          docker push "${IMAGE_URI}:${IMAGE_TAG}"
+          docker push "${IMAGE_URI}:latest"
+          echo "IMAGE_URI=${IMAGE_URI}:${IMAGE_TAG}" >> "$GITHUB_ENV"
+
+      - name: Deploy to Lightsail
+        env:
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+        run: |
+          set -euo pipefail
+          DEPLOY_FILE="$(mktemp)"
+          export DEPLOY_FILE
+          python3 - <<'PY'
+          import json, os
+          containers = {
+            "app": {
+              "image": os.environ["IMAGE_URI"],
+              "ports": {"3000": "HTTP"},
+              "environment": {
+                "DATABASE_URI": os.environ["DATABASE_URI"],
+                "PAYLOAD_SECRET": os.environ["PAYLOAD_SECRET"],
+                "NEXT_PUBLIC_SERVER_URL": os.environ["NEXT_PUBLIC_SERVER_URL"],
+                "S3_BUCKET": os.environ["S3_BUCKET"],
+                "S3_REGION": os.environ["S3_REGION"],
+                "S3_ACCESS_KEY_ID": os.environ["S3_ACCESS_KEY_ID"],
+                "S3_SECRET_ACCESS_KEY": os.environ["S3_SECRET_ACCESS_KEY"],
+              },
+            }
+          }
+          public_endpoint = {
+            "containerName": "app",
+            "containerPort": 3000,
+            "healthCheck": {
+              "path": "/",
+              "intervalSeconds": 30,
+              "timeoutSeconds": 10,
+              "healthyThreshold": 2,
+              "unhealthyThreshold": 5,
+              "successCodes": "200-399",
+            },
+          }
+          payload = {
+            "serviceName": os.environ["LIGHTSAIL_SERVICE_NAME"],
+            "containers": containers,
+            "publicEndpoint": public_endpoint,
+          }
+          with open(os.environ["DEPLOY_FILE"], "w", encoding="utf-8") as f:
+              json.dump(payload, f)
+          PY
+          aws lightsail create-container-service-deployment \
+            --cli-input-json "file://${DEPLOY_FILE}"
+
+      - name: Wait for deployment
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 60); do
+            STATE="$(aws lightsail get-container-services \
+              --service-name "${LIGHTSAIL_SERVICE_NAME}" \
+              --query 'containerServices[0].state' \
+              --output text)"
+            echo "service state=${STATE}"
+            if [ "${STATE}" = "RUNNING" ]; then
+              CURRENT="$(aws lightsail get-container-services \
+                --service-name "${LIGHTSAIL_SERVICE_NAME}" \
+                --query 'containerServices[0].currentDeployment.state' \
+                --output text)"
+              echo "deployment state=${CURRENT}"
+              if [ "${CURRENT}" = "ACTIVE" ]; then
+                exit 0
+              fi
+            fi
+            if [ "${STATE}" = "DEPLOYING" ] || [ "${STATE}" = "UPDATING" ] || [ "${STATE}" = "RUNNING" ]; then
+              sleep 20
+              continue
+            fi
+            sleep 20
+          done
+          echo "Timed out waiting for Lightsail deployment"
+          exit 1

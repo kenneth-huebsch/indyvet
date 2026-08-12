@@ -15,6 +15,7 @@ Use the project skills when their scope matches the work:
 
 - `.agents/skills/indyvet-development/SKILL.md` for Payload, Next.js, schema, TypeScript, and frontend changes.
 - `.agents/skills/indyvet-operations/SKILL.md` for starting, validating, troubleshooting, and stopping the local application stack.
+- `.agents/skills/indyvet-aws/SKILL.md` for Lightsail/ECR/S3 production deploy, `new.indyvetcare.com`, and prod ops.
 - `.agents/skills/payload/SKILL.md` is the Payload reference index. Consult its `reference/` documents for collection, field, access-control, hook, adapter, and query details.
 
 ## Source And Schema Rules
@@ -25,7 +26,7 @@ Use the project skills when their scope matches the work:
 - Keep `src/payload/blocks/` empty until a feature requires it. Preserve its `.gitkeep` when otherwise empty.
 - Content collections live in `src/payload/collections/`. Page and site globals live in `src/payload/globals/`. Shared field helpers live in `src/payload/fields/`; shared access helpers in `src/payload/access.ts`.
 - Do not add Products, cart, checkout, or public sign-in collections. Pharmacy / Order Online is an outbound link in Site Settings. Home “Products” is modeled as Featured Posts.
-- Media files use local disk storage at repository-root `media/` via `staticDir: 'media'`. The directory is intentionally gitignored.
+- Media files use local disk storage at repository-root `media/` via `staticDir: 'media'` when `S3_BUCKET` is unset (local default). Production sets `S3_BUCKET` and uses `@payloadcms/storage-s3`. The local `media/` directory is intentionally gitignored.
 - After changing Payload collections, fields, globals, or blocks:
   1. Create a migration with `npx payload migrate:create <name>`.
   2. Apply it locally with `npx payload migrate`.

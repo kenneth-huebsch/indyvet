@@ -1,6 +1,6 @@
 ---
 name: indyvet-operations
-description: Use when starting, stopping, validating, troubleshooting, or running the IndyVet application, PostgreSQL Compose service, Payload admin, migrations, or production Docker image.
+description: Use when starting, stopping, validating, troubleshooting, or running the IndyVet application, PostgreSQL Compose service, Payload admin, migrations, or production Docker image. For AWS Lightsail/ECR/S3 production ops, use indyvet-aws.
 ---
 
 # IndyVet Operations
@@ -105,3 +105,14 @@ docker build \
 ```
 
 The current Dockerfile accepts build-time variables because that is the approved Phase 0 contract. Use non-production values for local image validation and supply actual runtime variables with `docker run -e ...` or the deployment platform's secret manager.
+
+## Local Vs Production
+
+| | Local | Production |
+| --- | --- | --- |
+| URL | `http://localhost:3000` | `https://new.indyvetcare.com` |
+| Database | Compose Postgres `db` | Lightsail `indyvet-db` |
+| Media | Disk `media/` (`S3_BUCKET` unset) | S3 bucket via `S3_*` env |
+| Deploy | `npm run dev` | Push to `main` → GitHub Actions → Lightsail |
+
+For production deploy, logs, DNS, rollback, and AWS inventory, use `.agents/skills/indyvet-aws/SKILL.md` and `docs/aws/README.md`.
