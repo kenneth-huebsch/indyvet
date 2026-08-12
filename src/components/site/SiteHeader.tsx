@@ -44,7 +44,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
         >
           <Link
             href="/"
-            className="inline-flex shrink-0 items-center gap-2 text-base font-semibold tracking-tight text-foreground"
+            className="inline-flex shrink-0 items-center gap-2 text-base font-semibold tracking-tight text-foreground no-underline hover:no-underline"
             aria-label={siteName}
           >
             <MediaImage
@@ -65,7 +65,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
                     href={item.href}
                     target={item.target}
                     rel={item.rel}
-                    className="text-base font-semibold text-foreground transition-colors hover:text-muted-foreground"
+                    className="text-base font-semibold text-foreground no-underline transition-colors hover:text-muted-foreground hover:no-underline"
                   >
                     {item.label}
                   </Link>
@@ -82,7 +82,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
                 target={cta.target}
                 rel={cta.rel}
                 variant="primary"
-                className="hidden min-[992px]:inline-flex"
+                className="hidden min-[992px]:inline-flex no-underline hover:no-underline"
               >
                 {cta.label}
               </Button>

@@ -23,7 +23,12 @@ function ContactRow(props: {
   const { icon, children, href } = props
   const content = (
     <>
-      <Icon icon={icon} size="sm" className="mt-0.5 shrink-0 text-primary-foreground/70" />
+      <span
+        aria-hidden
+        className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-pink text-primary"
+      >
+        <Icon icon={icon} size="sm" />
+      </span>
       <span>{children}</span>
     </>
   )
@@ -32,7 +37,7 @@ function ContactRow(props: {
     return (
       <a
         href={href}
-        className="flex items-start gap-3 text-sm font-medium text-primary-foreground/90 hover:text-primary-foreground"
+        className="flex items-start gap-3 text-sm font-medium text-primary-foreground/90 no-underline hover:text-primary-foreground hover:no-underline"
       >
         {content}
       </a>
@@ -52,19 +57,28 @@ export function SiteFooter(props: SiteFooterProps): ReactElement {
   const contact = siteSettings.contact
   const pharmacy = resolveLink(siteSettings.pharmacy)
   const linkGroups = footer.linkGroups ?? []
-  const hasNap = Boolean(
-    contact?.address || contact?.phone || contact?.email || contact?.hours?.length,
-  )
+  const hours = contact?.hours?.filter((row) => row.label.trim() && row.value.trim()) ?? []
+  const hasContact = Boolean(contact?.address || contact?.phone || contact?.email || pharmacy)
   const showTextLogo = !isMedia(footer.logo) || !getMediaUrl(footer.logo)
 
   return (
     <footer data-slot="site-footer" className={cn('px-5 pb-5 pt-section-md', className)}>
-      <div className="mx-auto max-w-content overflow-hidden rounded-xl bg-primary text-primary-foreground">
-        <div className="flex flex-col gap-10 p-8 lg:flex-row lg:justify-between lg:gap-16 lg:p-12">
+      <div className="relative mx-auto max-w-content overflow-hidden rounded-xl bg-primary text-primary-foreground">
+        {/* Decorative paw cluster — Vetic Home 1 bottom-right treatment */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- decorative brand mark */}
+        <img
+          src="/home/footer-paw.svg"
+          alt=""
+          aria-hidden
+          data-slot="site-footer-paw"
+          className="pointer-events-none absolute -bottom-8 -right-6 w-[min(42%,18rem)] select-none opacity-90 sm:-bottom-10 sm:-right-4 sm:w-64"
+        />
+
+        <div className="relative z-10 flex flex-col gap-10 p-8 lg:flex-row lg:justify-between lg:gap-16 lg:p-12">
           <div className="shrink-0">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight text-primary-foreground"
+              className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight text-primary-foreground no-underline hover:no-underline"
               aria-label={siteName}
             >
               <MediaImage
@@ -95,7 +109,7 @@ export function SiteFooter(props: SiteFooterProps): ReactElement {
                           href={resolved.href}
                           target={resolved.target}
                           rel={resolved.rel}
-                          className="text-sm font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground"
+                          className="text-sm font-medium text-primary-foreground/80 no-underline transition-colors hover:text-primary-foreground hover:no-underline"
                         >
                           {resolved.label}
                         </Link>
@@ -106,8 +120,27 @@ export function SiteFooter(props: SiteFooterProps): ReactElement {
               </div>
             ))}
 
-            {hasNap || pharmacy ? (
-              <div>
+            {hours.length > 0 ? (
+              <div data-slot="site-footer-hours">
+                <p className="mb-4 text-sm font-semibold text-primary-foreground">
+                  Hours of Operation
+                </p>
+                <ul className="space-y-3">
+                  {hours.map((row) => (
+                    <li
+                      key={row.id ?? `${row.label}-${row.value}`}
+                      className="text-sm font-medium text-primary-foreground/80"
+                    >
+                      <span className="text-primary-foreground">{row.label.trim()}:</span>{' '}
+                      {row.value.trim()}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            {hasContact ? (
+              <div data-slot="site-footer-contact">
                 <p className="mb-4 text-sm font-semibold text-primary-foreground">Contact</p>
                 <div className="space-y-3">
                   {contact?.address ? (
@@ -125,20 +158,12 @@ export function SiteFooter(props: SiteFooterProps): ReactElement {
                       {contact.email}
                     </ContactRow>
                   ) : null}
-                  {contact?.hours?.map((row) => (
-                    <p
-                      key={row.id ?? `${row.label}-${row.value}`}
-                      className="text-sm font-medium text-primary-foreground/80"
-                    >
-                      <span className="text-primary-foreground">{row.label}:</span> {row.value}
-                    </p>
-                  ))}
                   {pharmacy ? (
                     <Link
                       href={pharmacy.href}
                       target={pharmacy.target}
                       rel={pharmacy.rel}
-                      className="inline-block text-sm font-semibold text-primary-foreground underline underline-offset-4"
+                      className="inline-block pl-12 text-sm font-semibold text-primary-foreground no-underline hover:no-underline"
                     >
                       {pharmacy.label}
                     </Link>
@@ -148,12 +173,6 @@ export function SiteFooter(props: SiteFooterProps): ReactElement {
             ) : null}
           </div>
         </div>
-
-        {footer.copyright ? (
-          <div className="border-t border-primary-foreground/10 px-8 py-5 lg:px-12">
-            <p className="text-sm font-medium text-primary-foreground/70">{footer.copyright}</p>
-          </div>
-        ) : null}
       </div>
     </footer>
   )

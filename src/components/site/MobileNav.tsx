@@ -49,7 +49,7 @@ export function MobileNav(props: MobileNavProps): ReactElement {
                   href={item.href}
                   target={item.target}
                   rel={item.rel}
-                  className="block rounded-2xl px-4 py-3 text-base font-semibold text-foreground hover:bg-muted"
+                  className="block rounded-2xl px-4 py-3 text-base font-semibold text-foreground no-underline hover:bg-muted hover:no-underline"
                   onClick={() => setOpen(false)}
                 >
                   {item.label}
@@ -66,7 +66,7 @@ export function MobileNav(props: MobileNavProps): ReactElement {
             target={cta.target}
             rel={cta.rel}
             variant="primary"
-            className="mt-3 w-full"
+            className="mt-3 w-full no-underline hover:no-underline"
             onClick={() => setOpen(false)}
           >
             {cta.label}

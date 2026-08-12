@@ -29,10 +29,10 @@ description: Use when developing or changing the IndyVet Next.js and Payload app
 
 Collections own reusable entities. Globals own section chrome and relationships. Editors fill fields; they do not rearrange layout.
 
-| Kind | Slugs |
-| --- | --- |
+| Kind        | Slugs                                                                                                |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
 | Collections | `media`, `users`, `services`, `team-members`, `testimonials`, `posts`, `faqs`, `emergency-referrals` |
-| Globals | `site-settings`, `header`, `footer`, `home-page`, `about-page`, `contact-page`, `emergency-page` |
+| Globals     | `site-settings`, `header`, `footer`, `home-page`, `about-page`, `contact-page`, `emergency-page`     |
 
 Locked product decisions:
 
@@ -74,15 +74,15 @@ npx tsc --noEmit
 
 Shared chrome and Payload → frontend mapping already exist. Reuse them before inventing parallel helpers.
 
-| Area | Location |
-| --- | --- |
-| Site shell | `src/components/site/` — `SiteHeader`, `SiteFooter`, `MobileNav` |
-| Layout wiring | `src/app/(frontend)/layout.tsx` via `getSiteChrome()` |
-| Payload client / chrome fetch | `src/lib/payload.ts` (`getPayloadClient`, `getSiteChrome` with React `cache`) |
-| Media helpers / image | `src/lib/media.ts`, `src/components/media/MediaImage.tsx` |
-| SEO metadata merge | `src/lib/seo.ts` (`buildMetadata`) |
-| Link normalization | `src/lib/links.ts` |
-| Lexical rich text | `src/components/rich-text/RichText.tsx` (`@payloadcms/richtext-lexical/react`) |
+| Area                          | Location                                                                       |
+| ----------------------------- | ------------------------------------------------------------------------------ |
+| Site shell                    | `src/components/site/` — `SiteHeader`, `SiteFooter`, `MobileNav`               |
+| Layout wiring                 | `src/app/(frontend)/layout.tsx` via `getSiteChrome()`                          |
+| Payload client / chrome fetch | `src/lib/payload.ts` (`getPayloadClient`, `getSiteChrome` with React `cache`)  |
+| Media helpers / image         | `src/lib/media.ts`, `src/components/media/MediaImage.tsx`                      |
+| SEO metadata merge            | `src/lib/seo.ts` (`buildMetadata`)                                             |
+| Link normalization            | `src/lib/links.ts`                                                             |
+| Lexical rich text             | `src/components/rich-text/RichText.tsx` (`@payloadcms/richtext-lexical/react`) |
 
 Locked chrome conventions:
 
@@ -91,6 +91,26 @@ Locked chrome conventions:
 - Header `cta` is preferred; fall back to `site-settings.booking` when Header CTA is empty.
 - NAP, social, pharmacy, and booking live on `site-settings`. Footer owns logo, link groups, and copyright only.
 - Source of truth checklist: `docs/phase-3/phase-3-implementation-plan.md`.
+
+## Homepage (Phase 4)
+
+`/` is the CMS-driven Home 1 recreation (showcase removed).
+
+| Area       | Location                                                                                                         |
+| ---------- | ---------------------------------------------------------------------------------------------------------------- |
+| Page       | `src/app/(frontend)/page.tsx` via `getHomePage()`                                                                |
+| Sections   | `src/components/home/` — Hero, Marquee, Services, Process, Featured Posts, About, Team, Testimonials, Bottom CTA |
+| Home fetch | `src/lib/payload.ts` (`getHomePage`, depth 2)                                                                    |
+| Relations  | `src/lib/relations.ts` (`populatedDocs`)                                                                         |
+| Local seed | `scripts/seed-home-page.ts`                                                                                      |
+
+Locked homepage conventions:
+
+- Design reference: [Vetic Home 1](https://vetic.webflow.io/home/home-1)
+- Featured Posts replaces Products (no commerce UI)
+- CSS marquees / scroll reveal only — no Framer Motion
+- Empty CMS URLs render non-linking surfaces (no Phase 5 stub routes)
+- Source of truth checklist: `docs/phase-4/phase-4-implementation-plan.md`
 
 Frontend mapping tests use Payload-shaped fixtures + `renderToStaticMarkup` (no DB). Keep that pattern for shell and section components unless a phase requires Local API integration.
 

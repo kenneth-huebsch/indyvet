@@ -229,9 +229,11 @@ Acceptance Criteria
 
 ---
 
-## Phase 4 - Homepage Recreation
+## Phase 4 - Homepage Recreation ✅
 
 Recreate the Vetic homepage as accurately as possible.
+
+Execution checklist: [`docs/phase-4/phase-4-implementation-plan.md`](phase-4/phase-4-implementation-plan.md)
 
 Implement every homepage section using React components connected to Payload-managed content.
 

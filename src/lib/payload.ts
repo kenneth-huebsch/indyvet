@@ -2,7 +2,7 @@ import config from '@payload-config'
 import { getPayload, type Payload } from 'payload'
 import { cache } from 'react'
 
-import type { Footer, Header, SiteSetting } from '@/payload-types'
+import type { Footer, Header, HomePage, SiteSetting } from '@/payload-types'
 
 export type SiteChrome = {
   header: Header
@@ -31,4 +31,10 @@ export const getSiteChrome = cache(async (): Promise<SiteChrome> => {
   ])
 
   return { header, footer, siteSettings }
+})
+
+export const getHomePage = cache(async (): Promise<HomePage> => {
+  const payload = await getPayloadClient()
+
+  return payload.findGlobal({ slug: 'home-page', depth: 2 })
 })

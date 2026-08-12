@@ -76,6 +76,63 @@
   --shadow-sm: var(--elevation-sm);
   --shadow-md: var(--elevation-md);
   --shadow-lg: var(--elevation-lg);
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 30s linear infinite;
+  --animate-hero-settle: hero-settle 0.8s ease-out both;
+  --animate-hero-ball: hero-ball 0.9s ease-out both;
+  --animate-hero-paw: hero-ball 0.9s ease-out both, hero-paw-float 3.6s ease-in-out 0.9s infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes hero-settle {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-ball {
+  from {
+    opacity: 0;
+    transform: translate(var(--hero-ball-from-x, 0), var(--hero-ball-from-y, 0))
+      rotate(var(--hero-ball-rotate, 0deg));
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) rotate(var(--hero-ball-rotate, 0deg));
+  }
+}
+
+@keyframes hero-paw-float {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(var(--hero-ball-rotate, 0deg));
+  }
+  50% {
+    transform: translate(0, -0.45rem) rotate(var(--hero-ball-rotate, 0deg));
+  }
 }
 
 :root {
