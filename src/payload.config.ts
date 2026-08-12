@@ -26,6 +26,11 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const s3Bucket = process.env.S3_BUCKET
+const databaseUri = process.env.DATABASE_URI!
+const databaseRequiresSsl =
+  process.env.DATABASE_SSL === 'true' ||
+  /[?&]sslmode=require\b/i.test(databaseUri) ||
+  /\.rds\.amazonaws\.com\b/i.test(databaseUri)
 
 export default buildConfig({
   admin: {
@@ -52,7 +57,8 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI!,
+      connectionString: databaseUri,
+      ...(databaseRequiresSsl ? { ssl: { rejectUnauthorized: false } } : {}),
     },
   }),
   sharp,

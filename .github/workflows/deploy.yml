@@ -100,6 +100,7 @@ jobs:
               "ports": {"3000": "HTTP"},
               "environment": {
                 "DATABASE_URI": os.environ["DATABASE_URI"],
+                "DATABASE_SSL": "true",
                 "PAYLOAD_SECRET": os.environ["PAYLOAD_SECRET"],
                 "NEXT_PUBLIC_SERVER_URL": os.environ["NEXT_PUBLIC_SERVER_URL"],
                 "S3_BUCKET": os.environ["S3_BUCKET"],
