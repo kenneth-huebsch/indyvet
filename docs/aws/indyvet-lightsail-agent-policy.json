@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "LightsailManageIndyVet",
+      "Effect": "Allow",
+      "Action": "lightsail:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfirmCallerIdentity",
+      "Effect": "Allow",
+      "Action": "sts:GetCallerIdentity",
+      "Resource": "*"
+    }
+  ]
+}

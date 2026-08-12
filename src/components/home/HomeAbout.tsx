@@ -47,7 +47,6 @@ export function HomeAbout(props: HomeAboutProps): ReactElement | null {
         <div className="mt-12 space-y-3" data-slot="home-about-marquees">
           <HomeMarquee tags={tags} aria-label="About tags" />
           <HomeMarquee tags={tags} reverse aria-label="About tags reverse" />
-          <HomeMarquee tags={[...tags].reverse()} aria-label="About tags row three" />
         </div>
       ) : null}
     </Section>

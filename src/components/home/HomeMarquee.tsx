@@ -4,6 +4,9 @@ import { cn } from '@/lib/utils'
 
 const DOT_COLORS = ['bg-brand-blue', 'bg-brand-pink', 'bg-brand-yellow', 'bg-primary'] as const
 
+/** Enough pills that one cycle stays wider than typical desktop viewports. */
+const MIN_CYCLE_ITEMS = 16
+
 export type MarqueeTag = {
   label: string
   id?: string | null
@@ -28,6 +31,30 @@ function TagPill(props: { label: string; colorIndex: number }): ReactElement {
   )
 }
 
+/** Build one cycle wide enough for a seamless -50% translate loop. */
+function buildCycle(labels: string[]): string[] {
+  const repeats = Math.max(2, Math.ceil(MIN_CYCLE_ITEMS / labels.length))
+  return Array.from({ length: repeats }, () => labels).flat()
+}
+
+function MarqueeTrack(props: {
+  labels: string[]
+  ariaHidden?: boolean
+}): ReactElement {
+  const { labels, ariaHidden = false } = props
+
+  return (
+    <div
+      className="flex shrink-0 gap-3 pr-3"
+      aria-hidden={ariaHidden || undefined}
+    >
+      {labels.map((label, index) => (
+        <TagPill key={`${label}-${index}`} label={label} colorIndex={index} />
+      ))}
+    </div>
+  )
+}
+
 export function HomeMarquee(props: HomeMarqueeProps): ReactElement | null {
   const { tags, reverse = false, className, 'aria-label': ariaLabel = 'Service tags' } = props
   const labels = tags.map((tag) => tag.label.trim()).filter(Boolean)
@@ -36,7 +63,7 @@ export function HomeMarquee(props: HomeMarqueeProps): ReactElement | null {
     return null
   }
 
-  const loop = [...labels, ...labels]
+  const cycle = buildCycle(labels)
 
   return (
     <div
@@ -46,14 +73,13 @@ export function HomeMarquee(props: HomeMarqueeProps): ReactElement | null {
     >
       <div
         className={cn(
-          'flex w-max gap-3',
+          'flex w-max',
           reverse ? 'animate-marquee-reverse' : 'animate-marquee',
           'motion-reduce:animate-none',
         )}
       >
-        {loop.map((label, index) => (
-          <TagPill key={`${label}-${index}`} label={label} colorIndex={index} />
-        ))}
+        <MarqueeTrack labels={cycle} />
+        <MarqueeTrack labels={cycle} ariaHidden />
       </div>
     </div>
   )

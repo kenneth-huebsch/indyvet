@@ -40,7 +40,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
       <div className="mx-auto max-w-content">
         <div
           data-slot="site-header-pill"
-          className="relative flex items-center justify-between gap-4 rounded-nav bg-card py-3 pl-6 pr-3 shadow-sm"
+          className="relative flex items-center justify-between gap-4 rounded-nav bg-card py-3 pl-6 pr-3"
         >
           <Link
             href="/"
@@ -51,8 +51,9 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
               media={header.logo}
               fallbackAlt={siteName}
               className="h-8 w-auto object-contain"
-              width={140}
-              height={32}
+              sizes="200px"
+              quality={100}
+              priority
             />
             {showTextLogo ? <span>{siteName}</span> : null}
           </Link>

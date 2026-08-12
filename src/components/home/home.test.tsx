@@ -27,8 +27,29 @@ describe('home sections', () => {
     expect(markup).toContain('href="/contact"')
     expect(markup).toContain('See all services')
     expect(markup).toContain('data-slot="home-hero-visual"')
+    expect(markup).toContain('grid-cols-[600fr_1076fr_600fr]')
+    expect(markup).toContain('aspect-[3/4]')
+    expect(markup.match(/data-slot="home-hero-image"/g)?.length).toBe(3)
     expect(markup.match(/data-slot="home-hero-paw"/g)?.length).toBe(4)
     expect(markup).toContain('animate-hero-paw')
+  })
+
+  it('HomeHero pads missing collage images with placeholders', () => {
+    const markup = renderToStaticMarkup(
+      <HomeHero
+        hero={{
+          ...homePageFixture.hero,
+          images: [{ id: 'h1', image: homePageFixture.hero.images![0]!.image }],
+        }}
+      />,
+    )
+
+    expect(markup.match(/data-slot="home-hero-image"/g)?.length).toBe(1)
+    expect(markup.match(/data-slot="home-hero-placeholder"/g)?.length).toBe(2)
+    expect(markup).toContain('hero-placeholder-2.png')
+    expect(markup).toContain('hero-placeholder-3.png')
+    expect(markup).toContain('1076px')
+    expect(markup).toContain('600px')
   })
 
   it('HomeMarquee renders duplicated tags for seamless loop', () => {
@@ -38,8 +59,10 @@ describe('home sections', () => {
 
     expect(markup).toContain('data-slot="home-marquee"')
     expect(markup).toContain('Dental care')
-    expect(markup.match(/Dental care/g)?.length).toBeGreaterThanOrEqual(2)
+    // One filled cycle (≥16 pills) is duplicated for the -50% loop.
+    expect(markup.match(/Dental care/g)?.length).toBeGreaterThanOrEqual(4)
     expect(markup).toContain('animate-marquee')
+    expect(markup).toContain('aria-hidden')
   })
 
   it('HomeServices renders featured service cards with colored paw badges', () => {
@@ -51,8 +74,8 @@ describe('home sections', () => {
     expect(markup).toContain('Surgical care')
     expect(markup).toContain('data-slot="home-service-card"')
     expect(markup.match(/data-slot="home-service-paw"/g)?.length).toBe(3)
-    expect(markup).toContain('#beefff')
-    expect(markup).toContain('#ffa500')
+    expect(markup).toContain('#7ca4d5')
+    expect(markup).toContain('#ff9f57')
     expect(markup).toContain('#ffe500')
   })
 
@@ -90,6 +113,8 @@ describe('home sections', () => {
     expect(markup).toContain('passion')
     expect(markup).toContain('Personalized attention for every pet.')
     expect(markup).toContain('data-slot="home-about-marquees"')
+    expect(markup.match(/data-slot="home-marquee"/g)?.length).toBe(2)
+    expect(markup).toContain('animate-marquee-reverse')
   })
 
   it('HomeTeam renders members with roles', () => {

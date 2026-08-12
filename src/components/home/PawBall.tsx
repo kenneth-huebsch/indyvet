@@ -2,7 +2,7 @@ import type { CSSProperties, ReactElement } from 'react'
 
 import { cn } from '@/lib/utils'
 
-export const PAW_BADGE_FILLS = ['#beefff', '#ffa500', '#ffe500', '#80fd8c'] as const
+export const PAW_BADGE_FILLS = ['#7ca4d5', '#ff9f57', '#ffe500', '#80fd8c'] as const
 
 type PawBadgeProps = {
   fill: string

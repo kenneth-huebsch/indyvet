@@ -85,8 +85,8 @@ export function SiteFooter(props: SiteFooterProps): ReactElement {
                 media={footer.logo}
                 fallbackAlt={siteName}
                 className="h-10 w-auto object-contain brightness-0 invert"
-                width={160}
-                height={40}
+                sizes="240px"
+                quality={100}
               />
               {showTextLogo ? <span>{siteName}</span> : null}
             </Link>
