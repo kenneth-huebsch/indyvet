@@ -56,7 +56,7 @@ aws lightsail get-relational-database --relational-database-name indyvet-db --pr
 - **Scale/power:** `update-container-service` (`small` × 1 is the baseline). Prefer bumping power before scale if OOM.
 - **Media:** local disk when `S3_BUCKET` unset; S3 when set. Confirm uploads with `aws s3 ls s3://indyvet-media-382125965554/ --profile indyvet`.
 - **Migrate failures:** check container logs for Payload migrate errors; fix-forward with a new migration in git, then redeploy. Do not destroy the Lightsail DB without explicit approval.
-- **Postgres SSL:** production `DATABASE_URI` must include `?sslmode=require` (Lightsail/RDS rejects non-SSL clients).
+- **Postgres SSL:** set `DATABASE_SSL=true` and do **not** put `sslmode=require` in `DATABASE_URI`. Modern `node-pg` treats URI `sslmode=require` like `verify-full`, which fails on Lightsail/RDS CA chains. The app enables `pool.ssl.rejectUnauthorized=false` when `DATABASE_SSL=true` or the host looks like RDS.
 
 ## Safety Rails
 

@@ -152,9 +152,14 @@ jobs:
                 exit 0
               fi
             fi
-            if [ "${STATE}" = "DEPLOYING" ] || [ "${STATE}" = "UPDATING" ] || [ "${STATE}" = "RUNNING" ]; then
-              sleep 20
-              continue
+            LATEST="$(aws lightsail get-container-service-deployments \
+              --service-name "${LIGHTSAIL_SERVICE_NAME}" \
+              --query 'deployments[0].state' \
+              --output text)"
+            echo "latest deployment state=${LATEST}"
+            if [ "${LATEST}" = "FAILED" ]; then
+              echo "Lightsail deployment failed"
+              exit 1
             fi
             sleep 20
           done

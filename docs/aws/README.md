@@ -54,5 +54,5 @@ See sibling files in this directory (`indyvet-lightsail-agent-policy.json`, `ind
 
 ## Note
 
-Production Postgres requires sslmode=require on DATABASE_URI.
+Production Postgres requires TLS. Set runtime env `DATABASE_SSL=true` and keep `DATABASE_URI` **without** `sslmode=require` (modern node-pg treats URI `sslmode=require` like verify-full and fails on Lightsail/RDS CA chains). The app enables `pool.ssl.rejectUnauthorized=false` when `DATABASE_SSL=true`.
 
