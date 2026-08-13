@@ -75,6 +75,8 @@ jobs:
             --build-arg DATABASE_URI="${DATABASE_URI}" \
             --build-arg PAYLOAD_SECRET="${PAYLOAD_SECRET}" \
             --build-arg NEXT_PUBLIC_SERVER_URL="${NEXT_PUBLIC_SERVER_URL}" \
+            --build-arg S3_BUCKET="${S3_BUCKET}" \
+            --build-arg S3_REGION="${S3_REGION}" \
             -t "${IMAGE_URI}:${IMAGE_TAG}" \
             -t "${IMAGE_URI}:latest" \
             .
