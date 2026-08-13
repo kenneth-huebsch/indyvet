@@ -73,7 +73,7 @@ aws lightsail get-relational-database --relational-database-name indyvet-db --pr
 
 - **Rollback:** create a new deployment from a prior version or a known ECR tag (`:sha` or `:latest`).
 - **Scale/power:** `update-container-service` (`small` × 1 is the baseline). Prefer bumping power before scale if OOM.
-- **Media:** local disk when `S3_BUCKET` unset; S3 when set. Confirm uploads with `aws s3 ls s3://indyvet-media-382125965554/ --profile indyvet`.
+- **Media:** local disk when `S3_BUCKET` unset; S3 when set. Confirm uploads with `aws s3 ls s3://indyvet-media-382125965554/ --profile indyvet`. Local `/admin` uploads do not appear in prod until copied or re-uploaded; see `docs/content-environments.md`.
 - **Migrate failures:** check container logs. A hang at “dynamically pushed changes to your database” means `payload_migrations` has `name=dev` / `batch=-1` (Payload `pushDevSchema`). That happens if anything connects to this DB with `NODE_ENV` not `production` (including a Docker builder). The entrypoint answers `y` so already-applied files are skipped; do not drop the Lightsail DB. Docker builder **must** set `NODE_ENV=production` so `next build` cannot push a dev schema into prod.
 - **Health checks fail, image never goes ACTIVE:** Next standalone binds to `HOSTNAME` (Lightsail sets this to the container id). Entrypoint must export `HOSTNAME=0.0.0.0` and `PORT=3000`. Confirm with `get-container-log` that migrate finished and `Ready` appears.
 - **Postgres SSL:** set `DATABASE_SSL=true` and do **not** put `sslmode=require` in `DATABASE_URI`. Modern `node-pg` treats URI `sslmode=require` like `verify-full`, which fails on Lightsail/RDS CA chains. The app enables `pool.ssl.rejectUnauthorized=false` when `DATABASE_SSL=true` or the host looks like RDS.

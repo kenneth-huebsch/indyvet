@@ -11,6 +11,7 @@ description: Use when developing or changing the IndyVet Next.js and Payload app
 2. Read the applicable plan and phase checklist in `docs/` before changing planned work.
 3. For Payload behavior, start with `.agents/skills/payload/SKILL.md` and then the relevant reference document.
 4. Inspect the existing implementation before proposing a new abstraction, collection, route, or component.
+5. Local admin copy and `media/` do not deploy with git. See `docs/content-environments.md` and `.agents/skills/indyvet-content-sync/SKILL.md`.
 
 ## Repository Boundaries
 

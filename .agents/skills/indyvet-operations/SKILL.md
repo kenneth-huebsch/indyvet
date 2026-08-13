@@ -117,4 +117,6 @@ The Dockerfile copies `patches/` before `npm ci` (postinstall `patch-package`), 
 | Media | Disk `media/` (`S3_BUCKET` unset) | S3 bucket via `S3_*` env |
 | Deploy | `npm run dev` | Push to `main` → GitHub Actions → Lightsail |
 
+Code and schema deploy. CMS documents, `media/` files, and users do **not**. See `docs/content-environments.md` and `.agents/skills/indyvet-content-sync/SKILL.md`.
+
 For production deploy, logs, DNS, rollback, and AWS inventory, use `.agents/skills/indyvet-aws/SKILL.md` and `docs/aws/README.md`.

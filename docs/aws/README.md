@@ -26,6 +26,8 @@ CLI profile for agents: `indyvet`
 - WordPress instance `WordPress-5` and static IP `StaticIp-1`
 - MX / SPF / SES DKIM records on `indyvetcare.com`
 
+Local `/admin` copy and `media/` uploads do not appear on this stack until copied or re-entered. See [content-environments.md](../content-environments.md).
+
 ## GitHub Actions configuration
 
 Workflow: `.github/workflows/deploy.yml` (push to `main`).

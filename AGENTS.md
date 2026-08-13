@@ -16,6 +16,7 @@ Use the project skills when their scope matches the work:
 - `.agents/skills/indyvet-development/SKILL.md` for Payload, Next.js, schema, TypeScript, and frontend changes.
 - `.agents/skills/indyvet-operations/SKILL.md` for starting, validating, troubleshooting, and stopping the local application stack.
 - `.agents/skills/indyvet-aws/SKILL.md` for Lightsail/ECR/S3 production deploy, `new.indyvetcare.com`, and prod ops.
+- `.agents/skills/indyvet-content-sync/SKILL.md` when classifying what local work deploys vs CMS copy/media that must be re-entered or copied to production. Human cheat sheet: `docs/content-environments.md`.
 - `.agents/skills/payload/SKILL.md` is the Payload reference index. Consult its `reference/` documents for collection, field, access-control, hook, adapter, and query details.
 
 ## Source And Schema Rules
