@@ -107,6 +107,8 @@ jobs:
                 "S3_REGION": os.environ["S3_REGION"],
                 "S3_ACCESS_KEY_ID": os.environ["S3_ACCESS_KEY_ID"],
                 "S3_SECRET_ACCESS_KEY": os.environ["S3_SECRET_ACCESS_KEY"],
+                "HOSTNAME": "0.0.0.0",
+                "PORT": "3000",
               },
             }
           }
@@ -116,9 +118,9 @@ jobs:
             "healthCheck": {
               "path": "/",
               "intervalSeconds": 30,
-              "timeoutSeconds": 10,
+              "timeoutSeconds": 15,
               "healthyThreshold": 2,
-              "unhealthyThreshold": 5,
+              "unhealthyThreshold": 10,
               "successCodes": "200-399",
             },
           }
@@ -137,29 +139,22 @@ jobs:
         run: |
           set -euo pipefail
           for i in $(seq 1 60); do
-            STATE="$(aws lightsail get-container-services \
-              --service-name "${LIGHTSAIL_SERVICE_NAME}" \
-              --query 'containerServices[0].state' \
-              --output text)"
-            echo "service state=${STATE}"
-            if [ "${STATE}" = "RUNNING" ]; then
-              CURRENT="$(aws lightsail get-container-services \
-                --service-name "${LIGHTSAIL_SERVICE_NAME}" \
-                --query 'containerServices[0].currentDeployment.state' \
-                --output text)"
-              echo "deployment state=${CURRENT}"
-              if [ "${CURRENT}" = "ACTIVE" ]; then
-                exit 0
-              fi
-            fi
-            LATEST="$(aws lightsail get-container-service-deployments \
+            LATEST_STATE="$(aws lightsail get-container-service-deployments \
               --service-name "${LIGHTSAIL_SERVICE_NAME}" \
               --query 'deployments[0].state' \
               --output text)"
-            echo "latest deployment state=${LATEST}"
-            if [ "${LATEST}" = "FAILED" ]; then
+            LATEST_IMAGE="$(aws lightsail get-container-service-deployments \
+              --service-name "${LIGHTSAIL_SERVICE_NAME}" \
+              --query 'deployments[0].containers.app.image' \
+              --output text)"
+            echo "latest deployment state=${LATEST_STATE} image=${LATEST_IMAGE}"
+            if [ "${LATEST_STATE}" = "FAILED" ]; then
               echo "Lightsail deployment failed"
               exit 1
+            fi
+            if [ "${LATEST_STATE}" = "ACTIVE" ] && [ "${LATEST_IMAGE}" = "${IMAGE_URI}" ]; then
+              echo "Lightsail deployment active with expected image"
+              exit 0
             fi
             sleep 20
           done
