@@ -58,6 +58,10 @@ aws lightsail get-relational-database --relational-database-name indyvet-db --pr
 - **Migrate failures:** check container logs for Payload migrate errors; fix-forward with a new migration in git, then redeploy. Do not destroy the Lightsail DB without explicit approval.
 - **Postgres SSL:** set `DATABASE_SSL=true` and do **not** put `sslmode=require` in `DATABASE_URI`. Modern `node-pg` treats URI `sslmode=require` like `verify-full`, which fails on Lightsail/RDS CA chains. The app enables `pool.ssl.rejectUnauthorized=false` when `DATABASE_SSL=true` or the host looks like RDS.
 
+## Admin blank screen
+
+Unauthenticated `/admin` routes (login, create-first-user) can render a white page on Next.js 16 + Payload 3.87.1. The repo applies `patch-package` patches (`patches/payload+3.87.1.patch`, `patches/@payloadcms+next+3.87.1.patch`) so first-user/login config includes admin UI settings and user fields. Do not drop `postinstall: patch-package` until Payload ships #17545.
+
 ## Safety Rails
 
 - Never change apex/`www.indyvetcare.com` DNS or the live WordPress instance (`WordPress-5`).

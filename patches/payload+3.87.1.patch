@@ -1,0 +1,28 @@
+diff --git a/node_modules/payload/dist/config/client.js b/node_modules/payload/dist/config/client.js
+index 2aa37ab..8ebf44b 100644
+--- a/node_modules/payload/dist/config/client.js
++++ b/node_modules/payload/dist/config/client.js
+@@ -30,13 +30,22 @@ export const createUnauthenticatedClientConfig = ({ clientConfig })=>{
+    */ const adminUserCollection = clientConfig.collections.find(({ slug })=>slug === clientConfig.admin.user);
+     return {
+         admin: {
++            autoLogin: clientConfig.admin.autoLogin,
++            autoRefresh: clientConfig.admin.autoRefresh,
++            avatar: clientConfig.admin.avatar,
++            custom: clientConfig.admin.custom,
++            dateFormat: clientConfig.admin.dateFormat,
++            meta: clientConfig.admin.meta,
+             routes: clientConfig.admin.routes,
++            theme: clientConfig.admin.theme,
++            toast: clientConfig.admin.toast,
+             user: clientConfig.admin.user
+         },
+         collections: [
+             {
+                 slug: adminUserCollection.slug,
+-                auth: adminUserCollection.auth
++                auth: adminUserCollection.auth,
++                fields: adminUserCollection.fields || []
+             }
+         ],
+         globals: [],

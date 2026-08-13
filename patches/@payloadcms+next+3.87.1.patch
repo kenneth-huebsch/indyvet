@@ -1,0 +1,31 @@
+diff --git a/node_modules/@payloadcms/next/dist/views/CreateFirstUser/index.client.js b/node_modules/@payloadcms/next/dist/views/CreateFirstUser/index.client.js
+index a89f3bf..fabb9bb 100644
+--- a/node_modules/@payloadcms/next/dist/views/CreateFirstUser/index.client.js
++++ b/node_modules/@payloadcms/next/dist/views/CreateFirstUser/index.client.js
+@@ -95,8 +95,8 @@ export const CreateFirstUserClient = ({
+         required: true
+       },
+       path: "password"
+-    }), /*#__PURE__*/_jsx(ConfirmPasswordField, {}), /*#__PURE__*/_jsx(RenderFields, {
+-      fields: collectionConfig.fields,
++    }), /*#__PURE__*/_jsx(ConfirmPasswordField, {    }), /*#__PURE__*/_jsx(RenderFields, {
++      fields: collectionConfig?.fields || [],
+       forceRender: true,
+       parentIndexPath: "",
+       parentPath: "",
+diff --git a/node_modules/@payloadcms/next/dist/views/Login/LoginForm/index.js b/node_modules/@payloadcms/next/dist/views/Login/LoginForm/index.js
+index a2375f3..bf1d2a1 100644
+--- a/node_modules/@payloadcms/next/dist/views/Login/LoginForm/index.js
++++ b/node_modules/@payloadcms/next/dist/views/Login/LoginForm/index.js
+@@ -40,10 +40,7 @@ export const LoginForm = t0 => {
+     const collectionConfig = getEntityConfig({
+       collectionSlug: userSlug
+     });
+-    const {
+-      auth: authOptions
+-    } = collectionConfig;
+-    loginWithUsername = authOptions.loginWithUsername;
++    loginWithUsername = collectionConfig?.auth?.loginWithUsername;
+     t4 = getLoginOptions(loginWithUsername);
+     $[0] = getEntityConfig;
+     $[1] = userSlug;

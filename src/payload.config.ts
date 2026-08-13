@@ -27,12 +27,16 @@ const dirname = path.dirname(filename)
 
 const s3Bucket = process.env.S3_BUCKET
 const databaseUri = process.env.DATABASE_URI!
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 const databaseRequiresSsl =
   process.env.DATABASE_SSL === 'true' ||
   /[?&]sslmode=require\b/i.test(databaseUri) ||
   /\.rds\.amazonaws\.com\b/i.test(databaseUri)
 
 export default buildConfig({
+  serverURL,
+  csrf: [serverURL],
+  cors: [serverURL],
   admin: {
     user: Users.slug,
     importMap: {
