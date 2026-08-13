@@ -14,7 +14,8 @@ description: Use when developing or changing the IndyVet Next.js and Payload app
 
 ## Repository Boundaries
 
-- `src/app/(payload)/` contains generated Payload admin and API routes. Never hand-edit it.
+- `src/app/(payload)/` contains generated Payload admin and API routes. Never hand-edit the route files. `admin/importMap.js` is generated; regenerate it (do not hand-patch hashes) when a plugin adds admin client components.
+- Pin `next` to `15.4.11`. Do not upgrade to Next 16: unauthenticated `/admin` renders blank (Payload #17545). Keep `eslint-config-next` on 16.x for the existing flat config.
 - `src/app/(frontend)/` contains the public application routes and layouts.
 - `src/payload/collections/` contains collection definitions.
 - `src/payload/globals/` contains site and page singletons (Header, Footer, Site Settings, Home, About, Contact, Emergency).
@@ -61,6 +62,7 @@ npx tsc --noEmit
 - Use Payload types from `@/payload-types` where application code needs document types.
 - Preserve the `postgresAdapter`, lexical editor, `sharp`, and environment-driven secrets in `src/payload.config.ts` unless the task explicitly changes them.
 - After schema changes, confirm the affected collection or global appears and saves correctly in `/admin`.
+- After adding or enabling a Payload plugin that registers admin client components (including `@payloadcms/storage-s3`), regenerate the import map with the plugin env enabled and **commit** `src/app/(payload)/admin/importMap.js`. Example: set placeholder `S3_BUCKET` / `S3_REGION` / `S3_*` keys, then `npx payload generate:importmap`. A missing `@payloadcms/storage-s3/client#S3ClientUploadHandler` entry blanks production `/admin` while `/` still works. Docker production builds must pass `S3_BUCKET` and `S3_REGION` as build-args.
 
 ## Frontend Rules
 

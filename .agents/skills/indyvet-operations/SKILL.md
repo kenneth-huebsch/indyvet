@@ -37,7 +37,7 @@ Apply pending database migrations before starting application work that needs th
 npx payload migrate
 ```
 
-If Payload warns that the database was previously updated via dev “push” and that running migrations may cause data loss, stop and confirm with the user before answering `yes`. Prefer migrations for committed schema changes; do not casually accept destructive prompts.
+If Payload warns that the database was previously updated via dev “push” and that running migrations may cause data loss, stop and confirm with the user before answering `yes`. Prefer migrations for committed schema changes; do not casually accept destructive prompts. That warning means `payload_migrations` has a `dev` / `batch=-1` row. Never point local `npm test`, `next build`, or `payload migrate` at the production `DATABASE_URI` — with `NODE_ENV` unset, Payload `pushDevSchema` writes that row and headless container migrate then hangs.
 
 Start the application:
 
@@ -80,7 +80,7 @@ Do not add `-v` unless explicit approval is given. It deletes the local PostgreS
 
 For an admin or schema-affecting change, verify the following against the running application:
 
-1. `/admin` loads with HTTP 200.
+1. `/admin` shows the login or create-first-user form (HTTP 200 plus a white body is a failure; Payload #17545 and a missing S3 import-map entry both look like this).
 2. An administrator can authenticate.
 3. The changed collection or global is visible and behaves as expected.
 4. A Media upload writes into repository-root `media/`.
@@ -101,10 +101,12 @@ docker build \
   --build-arg DATABASE_URI=postgres://vetic:vetic-dev@host.docker.internal:5432/vetic \
   --build-arg PAYLOAD_SECRET=<non-production-build-value> \
   --build-arg NEXT_PUBLIC_SERVER_URL=http://localhost:3000 \
+  --build-arg S3_BUCKET= \
+  --build-arg S3_REGION=us-east-1 \
   -t indyvet .
 ```
 
-The current Dockerfile accepts build-time variables because that is the approved Phase 0 contract. Use non-production values for local image validation and supply actual runtime variables with `docker run -e ...` or the deployment platform's secret manager.
+The Dockerfile copies `patches/` before `npm ci` (postinstall `patch-package`), sets `NODE_ENV=production` in the builder, and the entrypoint binds `HOSTNAME=0.0.0.0`. Use non-production values for local image validation. Production CI also passes `S3_BUCKET` / `S3_REGION` so the admin import map includes the S3 upload handler. Do not pass real secrets as local build-args.
 
 ## Local Vs Production
 
