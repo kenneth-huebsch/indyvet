@@ -25,6 +25,15 @@ describe('media helpers', () => {
     expect(getMediaAlt(media)).toBe('Clinic logo')
   })
 
+  it('rewrites same-origin Payload media URLs to paths for next/image', () => {
+    expect(
+      getMediaUrl({
+        ...media,
+        url: 'https://new.indyvetcare.com/api/media/file/cat-1.png',
+      }),
+    ).toBe('/api/media/file/cat-1.png')
+  })
+
   it('returns nullish fallbacks for id-only or missing media', () => {
     expect(getMediaUrl(9)).toBeNull()
     expect(getMediaUrl(null)).toBeNull()

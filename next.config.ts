@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
         pathname: '/home/**',
       },
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'new.indyvetcare.com',
+        pathname: '/api/media/file/**',
+      },
+    ],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
