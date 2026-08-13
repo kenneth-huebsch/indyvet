@@ -60,7 +60,7 @@ aws lightsail get-relational-database --relational-database-name indyvet-db --pr
 
 ## Admin blank screen
 
-Unauthenticated `/admin` routes (login, create-first-user) can render a white page on Next.js 16 + Payload 3.87.1. The repo applies `patch-package` patches (`patches/payload+3.87.1.patch`, `patches/@payloadcms+next+3.87.1.patch`) so first-user/login config includes admin UI settings and user fields. Do not drop `postinstall: patch-package` until Payload ships #17545.
+Unauthenticated `/admin` (login / create-first-user) renders a white page on Next.js 16.2.x + Payload 3.87.1 (Payload #17545): HTML 200, empty Suspense body, RSC payload present, no console errors. Pin `next` to `15.4.11` (inside Payload’s peer range). Keep `patch-package` patches (`patches/payload+3.87.1.patch`, `patches/@payloadcms+next+3.87.1.patch`) for unauthenticated client config. Docker `npm ci` must copy `patches/` before install so postinstall applies them. Do not bump Next to 16 until Payload ships a verified Next 16 admin fix.
 
 ## Safety Rails
 

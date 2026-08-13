@@ -2,7 +2,7 @@
 
 ## Project Snapshot
 
-- Stack: Next.js 16 App Router, Payload CMS 3, PostgreSQL 17, Tailwind CSS 4, shadcn/ui, TypeScript strict, npm, and Node 22.
+- Stack: Next.js 15.4.11 App Router, Payload CMS 3, PostgreSQL 17, Tailwind CSS 4, shadcn/ui, TypeScript strict, npm, and Node 22. Next is pinned to 15.4.11 (Payload-supported) because Next 16.2.x leaves unauthenticated `/admin` blank.
 - The application root is this repository. Do not introduce a nested application, monorepo, or second package manager.
 - Payload admin and API routes in `src/app/(payload)/` are generated. Do not hand-edit them.
 - The frontend route group is `src/app/(frontend)/`. Shared frontend code belongs in `src/components/` and `src/lib/`.

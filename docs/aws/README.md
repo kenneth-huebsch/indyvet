@@ -56,3 +56,5 @@ See sibling files in this directory (`indyvet-lightsail-agent-policy.json`, `ind
 
 Production Postgres requires TLS. Set runtime env `DATABASE_SSL=true` and keep `DATABASE_URI` **without** `sslmode=require` (modern node-pg treats URI `sslmode=require` like verify-full and fails on Lightsail/RDS CA chains). The app enables `pool.ssl.rejectUnauthorized=false` when `DATABASE_SSL=true`.
 
+`/admin` is blank on Next.js 16.2.x + Payload 3.87.1. Production stays on Next `15.4.11` until Payload ships a verified Next 16 admin fix.
+
