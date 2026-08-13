@@ -42,12 +42,12 @@ Anything you save in local `/admin` stays in the local Postgres volume and `medi
 
 **Edit in production admin** (`https://new.indyvetcare.com/admin`) when you want the live site to change *today* and the edit is small (a headline, hours, one photo). That is the safest path for a handful of fields or files.
 
-**Ask the agent to copy local → prod** when you have a full content pass (many documents + media) and do not want to re-type it. Say so explicitly. The agent must:
+**Ask the agent to copy local → prod** when you have a full content pass (many documents + media) and do not want to re-type it. Say so explicitly. There is no committed copy script; the agent follows `.agents/skills/indyvet-content-sync/SKILL.md` (Payload Local API, not `pg_dump`). That procedure:
 
-- Copy collections and globals, not users
-- Upload local `media/` files through Payload so they land in S3 (do not `pg_dump`, do not `aws s3 sync` without Media rows)
-- Run the import with `NODE_ENV=production` (never point a casual local `npm run dev` at the prod database)
-- Not overwrite production if unique slugs already exist unless you asked to replace
+- Copies collections and globals, not users
+- Uploads local `media/` files through Payload so they land in S3 (not a bare `aws s3 sync`)
+- Runs the import with `NODE_ENV=production` (never point a casual local `npm run dev` at the prod database)
+- Reuses existing prod slugs/filenames instead of duplicating unless you asked to replace
 
 **Do in git only:** new sections, schema fields, bugfixes. Push `main`. Then fill the new fields in whichever admin you care about (local for draft, prod for live).
 
