@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 export type ContainerSize = 'content' | 'medium'
 
-const containerVariants = cva('mx-auto w-full px-4 sm:px-6 lg:px-gutter', {
+const containerVariants = cva('mx-auto w-full px-[1.125rem] md:px-gutter', {
   variants: {
     size: {
       content: 'max-w-content',

@@ -6,35 +6,32 @@ import { HomeAbout } from './HomeAbout'
 import { HomeBottomCta } from './HomeBottomCta'
 import { HomeFeaturedPosts } from './HomeFeaturedPosts'
 import { HomeHero } from './HomeHero'
-import { HomeMarquee } from './HomeMarquee'
 import { HomeProcess } from './HomeProcess'
 import { HomeServices } from './HomeServices'
 import { HomeTeam } from './HomeTeam'
 import { HomeTestimonials } from './HomeTestimonials'
-import { homePageFixture } from './fixtures'
+import { fixtureMedia, homePageFixture } from './fixtures'
 
 describe('home sections', () => {
-  it('HomeHero renders eyebrow, headline, CTAs, collage, and paw badges', () => {
+  it('HomeHero renders eyebrow, headline, CTAs, and a single photo', () => {
     const markup = renderToStaticMarkup(<HomeHero hero={homePageFixture.hero} />)
 
     expect(markup).toContain('data-slot="home-hero"')
+    expect(markup).toContain('bg-background')
+    expect(markup).not.toContain('linear-gradient')
     expect(markup).toContain('Indy Veterinary Care')
-    expect(markup).toContain('Your reliable partner for pet')
-    expect(markup).toContain('wellness')
-    expect(markup).toContain('data-slot="home-headline-underline"')
-    expect(markup).toContain('underline-pink.webp')
+    expect(markup).toContain('Your reliable partner for pet wellness')
+    expect(markup).not.toContain('underline-pink.webp')
+    expect(markup).not.toContain('home-hero-paw')
     expect(markup).toContain('Contact us')
     expect(markup).toContain('href="/contact"')
     expect(markup).toContain('See all services')
     expect(markup).toContain('data-slot="home-hero-visual"')
-    expect(markup).toContain('grid-cols-[600fr_1076fr_600fr]')
-    expect(markup).toContain('aspect-[3/4]')
-    expect(markup.match(/data-slot="home-hero-image"/g)?.length).toBe(3)
-    expect(markup.match(/data-slot="home-hero-paw"/g)?.length).toBe(4)
-    expect(markup).toContain('animate-hero-paw')
+    expect(markup).toContain('data-slot="home-hero-image"')
+    expect(markup.match(/data-slot="home-hero-image"/g)?.length).toBe(1)
   })
 
-  it('HomeHero pads missing collage images with placeholders', () => {
+  it('HomeHero does not pad missing images with placeholders', () => {
     const markup = renderToStaticMarkup(
       <HomeHero
         hero={{
@@ -45,27 +42,11 @@ describe('home sections', () => {
     )
 
     expect(markup.match(/data-slot="home-hero-image"/g)?.length).toBe(1)
-    expect(markup.match(/data-slot="home-hero-placeholder"/g)?.length).toBe(2)
-    expect(markup).toContain('hero-placeholder-2.png')
-    expect(markup).toContain('hero-placeholder-3.png')
-    expect(markup).toContain('1076px')
-    expect(markup).toContain('600px')
+    expect(markup).not.toContain('home-hero-placeholder')
+    expect(markup).not.toContain('hero-placeholder')
   })
 
-  it('HomeMarquee renders duplicated tags for seamless loop', () => {
-    const markup = renderToStaticMarkup(
-      <HomeMarquee tags={homePageFixture.hero.marqueeTags ?? []} />,
-    )
-
-    expect(markup).toContain('data-slot="home-marquee"')
-    expect(markup).toContain('Dental care')
-    // One filled cycle (≥16 pills) is duplicated for the -50% loop.
-    expect(markup.match(/Dental care/g)?.length).toBeGreaterThanOrEqual(4)
-    expect(markup).toContain('animate-marquee')
-    expect(markup).toContain('aria-hidden')
-  })
-
-  it('HomeServices renders featured service cards with colored paw badges', () => {
+  it('HomeServices renders featured service cards with index marks', () => {
     const markup = renderToStaticMarkup(<HomeServices services={homePageFixture.services!} />)
 
     expect(markup).toContain('data-slot="home-services"')
@@ -73,13 +54,13 @@ describe('home sections', () => {
     expect(markup).toContain('Essential vaccinations')
     expect(markup).toContain('Surgical care')
     expect(markup).toContain('data-slot="home-service-card"')
-    expect(markup.match(/data-slot="home-service-paw"/g)?.length).toBe(3)
-    expect(markup).toContain('#7ca4d5')
-    expect(markup).toContain('#ff9f57')
-    expect(markup).toContain('#ffe500')
+    expect(markup).toContain('01')
+    expect(markup).toContain('02')
+    expect(markup).toContain('03')
+    expect(markup).not.toContain('home-service-paw')
   })
 
-  it('HomeProcess renders promo and three steps', () => {
+  it('HomeProcess renders promo and numbered steps', () => {
     const markup = renderToStaticMarkup(<HomeProcess process={homePageFixture.process!} />)
 
     expect(markup).toContain('data-slot="home-process"')
@@ -88,6 +69,10 @@ describe('home sections', () => {
     expect(markup).toContain('Visit your veterinarian')
     expect(markup).toContain('Ongoing support')
     expect(markup).toContain('data-slot="home-process-promo"')
+    expect(markup).toContain('data-slot="home-process-step"')
+    expect(markup.indexOf('data-slot="home-process-step"')).toBeLessThan(
+      markup.indexOf('data-slot="home-process-promo"'),
+    )
   })
 
   it('HomeFeaturedPosts renders posts without commerce UI', () => {
@@ -105,16 +90,18 @@ describe('home sections', () => {
     expect(markup.toLowerCase()).not.toContain('out of stock')
   })
 
-  it('HomeAbout renders body and marquees', () => {
-    const markup = renderToStaticMarkup(<HomeAbout about={homePageFixture.about!} />)
+  it('HomeAbout renders body and static tags', () => {
+    const markup = renderToStaticMarkup(
+      <HomeAbout about={homePageFixture.about!} photo={fixtureMedia.hero2} />,
+    )
 
     expect(markup).toContain('data-slot="home-about"')
-    expect(markup).toContain('Your pet’s health, our')
-    expect(markup).toContain('passion')
+    expect(markup).toContain('Your pet’s health, our passion')
     expect(markup).toContain('Personalized attention for every pet.')
-    expect(markup).toContain('data-slot="home-about-marquees"')
-    expect(markup.match(/data-slot="home-marquee"/g)?.length).toBe(2)
-    expect(markup).toContain('animate-marquee-reverse')
+    expect(markup).toContain('data-slot="home-about-tags"')
+    expect(markup).toContain('Wellness care')
+    expect(markup).not.toContain('home-about-marquees')
+    expect(markup).not.toContain('animate-marquee')
   })
 
   it('HomeTeam renders members with roles', () => {
@@ -127,7 +114,7 @@ describe('home sections', () => {
     expect(markup).toContain('Join our team')
   })
 
-  it('HomeTestimonials renders quote and attribution', () => {
+  it('HomeTestimonials renders quote and attribution in a static grid', () => {
     const markup = renderToStaticMarkup(
       <HomeTestimonials testimonials={homePageFixture.testimonials!} />,
     )
@@ -136,16 +123,16 @@ describe('home sections', () => {
     expect(markup).toContain('They treated Bella like family.')
     expect(markup).toContain('Mac Jonas')
     expect(markup).toContain('New York, NY')
+    expect(markup).not.toContain('animate-marquee')
   })
 
-  it('HomeBottomCta renders headline and collage regions', () => {
+  it('HomeBottomCta renders headline and a single photo panel', () => {
     const markup = renderToStaticMarkup(<HomeBottomCta bottomCta={homePageFixture.bottomCta!} />)
 
     expect(markup).toContain('data-slot="home-bottom-cta"')
-    expect(markup).toContain('Because your pets deserve the best,')
-    expect(markup).toContain('always')
-    expect(markup).toContain('data-slot="home-bottom-cta-images-left"')
-    expect(markup).toContain('data-slot="home-bottom-cta-images-right"')
+    expect(markup).toContain('Because your pets deserve the best, always')
+    expect(markup).not.toContain('home-bottom-cta-images-left')
+    expect(markup).not.toContain('home-bottom-cta-images-right')
   })
 
   it('CmsCta renders non-linking surface when url is missing', () => {

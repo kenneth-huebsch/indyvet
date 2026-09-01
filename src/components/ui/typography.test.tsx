@@ -14,7 +14,7 @@ describe('Typography', () => {
 
     expect(markup).toContain('<h1')
     expect(markup).toContain('text-5xl')
-    expect(markup).toContain('font-semibold')
+    expect(markup).toContain('font-normal')
   })
 
   it('renders link variants with an at-rest visual distinction', () => {
@@ -33,27 +33,27 @@ describe('Typography', () => {
     {
       variant: 'display' as TypographyVariant,
       tag: 'h1',
-      classes: ['text-5xl', 'font-semibold', 'leading-tight'],
+      classes: ['text-5xl', 'font-normal', 'leading-[1.05]'],
     },
     {
       variant: 'h1' as TypographyVariant,
       tag: 'h1',
-      classes: ['text-5xl', 'font-semibold'],
+      classes: ['text-5xl', 'font-normal'],
     },
     {
       variant: 'h2' as TypographyVariant,
       tag: 'h2',
-      classes: ['text-4xl', 'font-semibold', 'lg:text-5xl'],
+      classes: ['text-[2.25rem]', 'font-normal', 'lg:text-[2.625rem]'],
     },
     {
       variant: 'h3' as TypographyVariant,
       tag: 'h3',
-      classes: ['text-3xl', 'font-semibold'],
+      classes: ['text-2xl', 'font-normal'],
     },
     {
       variant: 'h4' as TypographyVariant,
       tag: 'h4',
-      classes: ['text-2xl', 'font-semibold'],
+      classes: ['text-xl', 'font-normal'],
     },
     {
       variant: 'body-large' as TypographyVariant,
@@ -78,7 +78,7 @@ describe('Typography', () => {
     {
       variant: 'label' as TypographyVariant,
       tag: 'label',
-      classes: ['text-sm', 'font-semibold'],
+      classes: ['text-[11px]', 'font-extrabold'],
     },
     {
       variant: 'link' as TypographyVariant,

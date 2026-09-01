@@ -10,7 +10,7 @@ export const HomePage: GlobalConfig = {
   admin: {
     group: 'Pages',
     description:
-      'Home 1 section content. Products are replaced by Featured Posts. Layout is fixed in code.',
+      'Homepage section content. Products are replaced by Featured Posts. Layout is fixed in code.',
   },
   access: {
     read: anyone,
@@ -36,6 +36,10 @@ export const HomePage: GlobalConfig = {
           labels: {
             singular: 'Hero image',
             plural: 'Hero images',
+          },
+          admin: {
+            description:
+              'First image is the hero photo. Second appears in the about intro. Third appears in the process/approach section.',
           },
           fields: [
             {

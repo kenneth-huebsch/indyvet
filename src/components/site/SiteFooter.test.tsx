@@ -40,16 +40,17 @@ const footer: Footer = {
 }
 
 describe('SiteFooter', () => {
-  it('renders link groups, separate hours/contact columns, pink icons, and paw mark', () => {
+  it('renders link groups, hours, contact, and copyright without Vetic chrome', () => {
     const markup = renderToStaticMarkup(<SiteFooter footer={footer} siteSettings={siteSettings} />)
 
     expect(markup).toContain('data-slot="site-footer"')
+    expect(markup).toContain('bg-sage-light')
     expect(markup).toContain('Explore')
     expect(markup).toContain('Services')
     expect(markup).toContain('href="/services"')
     expect(markup).toContain('Blog')
     expect(markup).toContain('data-slot="site-footer-hours"')
-    expect(markup).toContain('Hours of Operation')
+    expect(markup).toContain('Hours')
     expect(markup).toContain('Mon–Thu')
     expect(markup).toContain('9:00 AM – 7:00 PM')
     expect(markup).toContain('data-slot="site-footer-contact"')
@@ -58,10 +59,10 @@ describe('SiteFooter', () => {
     expect(markup).toContain('123 Clinic Street')
     expect(markup).toContain('Order Online')
     expect(markup).toContain('href="https://pharmacy.example.com"')
-    expect(markup).toContain('bg-brand-pink')
-    expect(markup).toContain('data-slot="site-footer-paw"')
-    expect(markup).toContain('/home/footer-paw.svg')
-    expect(markup).not.toContain('© 2026 Indy Veterinary Care, Inc. All rights reserved.')
-    expect(markup).not.toContain('border-t')
+    expect(markup).toContain('data-slot="site-footer-copyright"')
+    expect(markup).toContain('© 2026 Indy Veterinary Care, Inc. All rights reserved.')
+    expect(markup).not.toContain('bg-brand-pink')
+    expect(markup).not.toContain('site-footer-paw')
+    expect(markup).not.toContain('/home/footer-paw.svg')
   })
 })

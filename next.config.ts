@@ -8,6 +8,7 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  serverExternalPackages: ['@aws-sdk/client-s3', '@aws-sdk/lib-storage'],
   images: {
     qualities: [75, 90, 100],
     localPatterns: [

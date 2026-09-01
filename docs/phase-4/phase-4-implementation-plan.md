@@ -1,3 +1,5 @@
+> **Historical.** Homepage CMS wiring in this document remains useful. Matching Vetic Home 1 visually is superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md).
+
 # Phase 4 Implementation Plan
 
 ## Homepage Recreation

@@ -1,3 +1,5 @@
+> **Historical.** Shell wiring in this document remains useful. Pill-header / Vetic geometry is superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md).
+
 # Phase 3 Implementation Plan
 
 ## Frontend Foundation

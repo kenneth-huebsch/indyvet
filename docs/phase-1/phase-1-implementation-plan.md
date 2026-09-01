@@ -1,3 +1,5 @@
+> **Historical.** Visual rules in this document are superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md). Keep this checklist as a record of completed work; do not use Vetic Home 1 as the current design reference.
+
 # Phase 1 Implementation Plan
 
 ## Design System Foundation
@@ -47,18 +49,18 @@ Reference: https://vetic.webflow.io/home/home-1
 
 Follow these exactly:
 
-| Topic | Rule |
-| --- | --- |
-| Tokens | Extend existing CSS variables + `@theme inline` in `src/styles/globals.css`. No separate `design-tokens.ts` unless a value must be read from TypeScript. |
-| Components | shadcn-style primitives under `src/components/ui/` using `@/components/ui` alias |
-| Icons | Lucide only (`lucide-react`) |
-| Motion | `tw-animate-css` only — do not add Framer Motion |
-| Styling | No inline styles; no raw color values in JSX; use theme tokens / utilities |
-| React | Server Components by default; Client Components only when browser APIs or interactive state require them |
-| TypeScript | Strict; no `any` |
-| A11y | WCAG AA contrast, visible focus, semantic HTML, `prefers-reduced-motion` honored |
-| Responsiveness | Mobile / tablet / desktop via CSS utilities — no separate mobile components |
-| Verification UI | Replace `/` with a minimal component showcase only (not a marketing page) |
+| Topic           | Rule                                                                                                                                                     |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens          | Extend existing CSS variables + `@theme inline` in `src/styles/globals.css`. No separate `design-tokens.ts` unless a value must be read from TypeScript. |
+| Components      | shadcn-style primitives under `src/components/ui/` using `@/components/ui` alias                                                                         |
+| Icons           | Lucide only (`lucide-react`)                                                                                                                             |
+| Motion          | `tw-animate-css` only — do not add Framer Motion                                                                                                         |
+| Styling         | No inline styles; no raw color values in JSX; use theme tokens / utilities                                                                               |
+| React           | Server Components by default; Client Components only when browser APIs or interactive state require them                                                 |
+| TypeScript      | Strict; no `any`                                                                                                                                         |
+| A11y            | WCAG AA contrast, visible focus, semantic HTML, `prefers-reduced-motion` honored                                                                         |
+| Responsiveness  | Mobile / tablet / desktop via CSS utilities — no separate mobile components                                                                              |
+| Verification UI | Replace `/` with a minimal component showcase only (not a marketing page)                                                                                |
 
 ### Directory layout
 

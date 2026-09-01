@@ -3,21 +3,23 @@ import type { ReactElement } from 'react'
 import { CmsCta } from '@/components/home/CmsCta'
 import { HomeEyebrow } from '@/components/home/HomeEyebrow'
 import { HomeHeadline } from '@/components/home/HomeHeadline'
+import { HomePhoto } from '@/components/home/HomePhoto'
 import { ScrollReveal } from '@/components/home/ScrollReveal'
 import { Container } from '@/components/ui/container'
-import { Section } from '@/components/ui/section'
 import { Typography } from '@/components/ui/typography'
-import { cn } from '@/lib/utils'
-import type { HomePage } from '@/payload-types'
+import type { HomePage, Media } from '@/payload-types'
 
 type HomeProcessProps = {
   process: NonNullable<HomePage['process']>
+  photo?: Media | null
 }
 
-const STEP_COLORS = ['bg-brand-blue', 'bg-brand-pink', 'bg-[#ffd8a8]'] as const
+function padIndex(index: number): string {
+  return String(index + 1).padStart(2, '0')
+}
 
 export function HomeProcess(props: HomeProcessProps): ReactElement | null {
-  const { process } = props
+  const { process, photo } = props
   const steps = process.steps?.filter((step) => step.title.trim()) ?? []
   const hasPromo = Boolean(process.promo?.title?.trim() || process.promo?.description?.trim())
 
@@ -26,10 +28,10 @@ export function HomeProcess(props: HomeProcessProps): ReactElement | null {
   }
 
   return (
-    <Section data-slot="home-process" spacing="md">
-      <Container>
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-14">
-          <div className="flex flex-col">
+    <div data-slot="home-process">
+      <section className="border-t border-line bg-sage-light py-[76px]">
+        <Container>
+          <div className="grid items-center gap-10 md:grid-cols-[0.88fr_1.12fr] md:gap-[52px]">
             <ScrollReveal>
               {process.eyebrow?.trim() ? (
                 <HomeEyebrow className="mb-4">{process.eyebrow.trim()}</HomeEyebrow>
@@ -37,66 +39,66 @@ export function HomeProcess(props: HomeProcessProps): ReactElement | null {
               {process.title?.trim() ? <HomeHeadline>{process.title.trim()}</HomeHeadline> : null}
             </ScrollReveal>
 
-            {hasPromo ? (
-              <ScrollReveal className="mt-8">
-                <div
-                  data-slot="home-process-promo"
-                  className="relative overflow-hidden rounded-3xl bg-brand-blue p-8 md:p-10"
-                >
-                  {process.promo?.title?.trim() ? (
-                    <Typography as="h3" variant="h3" className="max-w-sm">
-                      {process.promo.title.trim()}
-                    </Typography>
-                  ) : null}
-                  {process.promo?.description?.trim() ? (
-                    <Typography className="mt-3 max-w-sm text-foreground/80">
-                      {process.promo.description.trim()}
-                    </Typography>
-                  ) : null}
-                  <div className="mt-6">
-                    <CmsCta link={process.promo?.cta} />
-                  </div>
-                </div>
-              </ScrollReveal>
-            ) : null}
+            <HomePhoto
+              media={photo}
+              className="h-[280px] md:h-[360px]"
+              sizes="(max-width: 768px) 100vw, 640px"
+              fallbackAlt="Our approach"
+            />
           </div>
 
           {steps.length > 0 ? (
-            <div className="flex h-full min-h-0 flex-col gap-6">
+            <div className="mt-10 grid grid-cols-1 border border-line sm:grid-cols-2 lg:grid-cols-3">
               {steps.map((step, index) => (
-                <ScrollReveal
+                <article
                   key={step.id ?? `${step.title}-${index}`}
-                  className="flex min-h-0 flex-1 flex-col"
+                  data-slot="home-process-step"
+                  className="border-line px-6 py-7 max-lg:border-b max-lg:last:border-b-0 sm:max-lg:odd:border-r lg:border-r lg:last:border-r-0"
                 >
-                  <article
-                    data-slot="home-process-step"
-                    className="flex h-full flex-1 gap-4 rounded-2xl bg-card p-5 sm:gap-5 sm:p-6"
-                  >
-                    <div
-                      className={cn(
-                        'flex size-12 shrink-0 items-center justify-center rounded-2xl text-base font-bold text-primary',
-                        STEP_COLORS[index % STEP_COLORS.length],
-                      )}
-                    >
-                      {index + 1}
-                    </div>
-                    <div className="min-w-0 self-center">
-                      <Typography as="h3" variant="h4">
-                        {step.title}
-                      </Typography>
-                      {step.description?.trim() ? (
-                        <Typography className="mt-2 text-muted-foreground">
-                          {step.description.trim()}
-                        </Typography>
-                      ) : null}
-                    </div>
-                  </article>
-                </ScrollReveal>
+                  <Typography as="p" className="font-heading text-[34px] text-[#8c9992]">
+                    {padIndex(index)}
+                  </Typography>
+                  <Typography as="h3" className="mt-2 text-sm">
+                    {step.title}
+                  </Typography>
+                  {step.description?.trim() ? (
+                    <Typography className="mt-2 text-[13px] text-[#606b65]">
+                      {step.description.trim()}
+                    </Typography>
+                  ) : null}
+                </article>
               ))}
             </div>
           ) : null}
-        </div>
-      </Container>
-    </Section>
+        </Container>
+      </section>
+
+      {hasPromo ? (
+        <section data-slot="home-process-promo" className="bg-primary text-[#f8f4eb]">
+          <Container>
+            <div className="max-w-[590px] py-[68px]">
+              <ScrollReveal>
+                {process.promo?.title?.trim() ? (
+                  <HomeHeadline className="text-[#f8f4eb]">
+                    {process.promo.title.trim()}
+                  </HomeHeadline>
+                ) : null}
+                {process.promo?.description?.trim() ? (
+                  <Typography className="mt-5 text-[#d9e0db]">
+                    {process.promo.description.trim()}
+                  </Typography>
+                ) : null}
+                <div className="mt-6">
+                  <CmsCta
+                    link={process.promo?.cta}
+                    className="border-primary-foreground bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                  />
+                </div>
+              </ScrollReveal>
+            </div>
+          </Container>
+        </section>
+      ) : null}
+    </div>
   )
 }

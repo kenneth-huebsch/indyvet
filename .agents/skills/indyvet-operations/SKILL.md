@@ -47,7 +47,7 @@ npm run dev
 
 Check the public route at `http://localhost:3000/` and the Payload admin at `http://localhost:3000/admin`.
 
-After Phase 3, `/` should render the Phase 1 showcase inside the Payload-backed site shell (header + footer). Empty globals still render safely; seeded IndyVet chrome is preferred for visual checks.
+`/` is the CMS homepage in the editorial visual system (header + footer + home sections). Empty globals still render safely; seeded IndyVet chrome is preferred for visual checks.
 
 Optional: reseed Header, Footer, and Site Settings from Indy Veterinary Care content:
 
@@ -110,12 +110,12 @@ The Dockerfile copies `patches/` before `npm ci` (postinstall `patch-package`), 
 
 ## Local Vs Production
 
-| | Local | Production |
-| --- | --- | --- |
-| URL | `http://localhost:3000` | `https://new.indyvetcare.com` |
-| Database | Compose Postgres `db` | Lightsail `indyvet-db` |
-| Media | Disk `media/` (`S3_BUCKET` unset) | S3 bucket via `S3_*` env |
-| Deploy | `npm run dev` | Push to `main` → GitHub Actions → Lightsail |
+|          | Local                             | Production                                  |
+| -------- | --------------------------------- | ------------------------------------------- |
+| URL      | `http://localhost:3000`           | `https://new.indyvetcare.com`               |
+| Database | Compose Postgres `db`             | Lightsail `indyvet-db`                      |
+| Media    | Disk `media/` (`S3_BUCKET` unset) | S3 bucket via `S3_*` env                    |
+| Deploy   | `npm run dev`                     | Push to `main` → GitHub Actions → Lightsail |
 
 Code and schema deploy. CMS documents, `media/` files, and users do **not**. See `docs/content-environments.md` and `.agents/skills/indyvet-content-sync/SKILL.md`.
 

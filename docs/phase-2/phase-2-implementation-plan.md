@@ -1,3 +1,5 @@
+> **Historical for visual design.** The content model in this document remains valid. Vetic as a _design_ reference is superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md).
+
 # Phase 2 Implementation Plan
 
 ## Payload CMS Data Model

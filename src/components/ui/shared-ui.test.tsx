@@ -11,7 +11,7 @@ describe('shared UI primitives', () => {
   it.each([
     { variant: 'primary' as const, expected: 'bg-primary' },
     { variant: 'secondary' as const, expected: 'bg-secondary' },
-    { variant: 'outline' as const, expected: 'border-border' },
+    { variant: 'outline' as const, expected: 'border-primary' },
     { variant: 'ghost' as const, expected: 'hover:bg-muted' },
     { variant: 'link' as const, expected: 'underline' },
   ])('renders the $variant Button variant', ({ variant, expected }) => {
@@ -39,7 +39,6 @@ describe('shared UI primitives', () => {
     )
 
     expect(markup).toContain('hover:bg-primary/90')
-    expect(markup).toContain('active:scale-[0.98]')
     expect(markup).toContain('id="save-action"')
     expect(markup).toContain('aria-label="Save"')
     expect(markup).toContain('custom-button')
@@ -60,7 +59,7 @@ describe('shared UI primitives', () => {
   })
 
   it('exports buttonVariants for composition with custom link components', () => {
-    expect(buttonVariants({ variant: 'outline' })).toContain('border-border')
+    expect(buttonVariants({ variant: 'outline' })).toContain('border-primary')
     expect(buttonVariants({ variant: 'primary' })).toContain('bg-primary')
   })
 

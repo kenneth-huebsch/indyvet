@@ -89,31 +89,33 @@ Shared chrome and Payload → frontend mapping already exist. Reuse them before 
 
 Locked chrome conventions:
 
-- Design reference for shell geometry: [Vetic Home 1](https://vetic.webflow.io/home/home-1) — pill header, contained dark footer, mobile collapse ≤991px. No cart, shop, or public auth chrome.
+- Design reference: `docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md` — sticky paper header, full-bleed dark footer, square uppercase buttons. No cart, shop, or public auth chrome.
 - Header nav is **flat** (`header.navItems`). Do not add mega-menu schema unless a phase explicitly requires it.
 - Header `cta` is preferred; fall back to `site-settings.booking` when Header CTA is empty.
 - NAP, social, pharmacy, and booking live on `site-settings`. Footer owns logo, link groups, and copyright only.
-- Source of truth checklist: `docs/phase-3/phase-3-implementation-plan.md`.
+- Schema/wiring history: `docs/phase-3/phase-3-implementation-plan.md`. Visual rules there are superseded.
 
-## Homepage (Phase 4)
+## Homepage (Phase 4 + visual refresh)
 
-`/` is the CMS-driven Home 1 recreation (showcase removed).
+`/` is the CMS-driven homepage in the editorial visual system.
 
-| Area       | Location                                                                                                         |
-| ---------- | ---------------------------------------------------------------------------------------------------------------- |
-| Page       | `src/app/(frontend)/page.tsx` via `getHomePage()`                                                                |
-| Sections   | `src/components/home/` — Hero, Marquee, Services, Process, Featured Posts, About, Team, Testimonials, Bottom CTA |
-| Home fetch | `src/lib/payload.ts` (`getHomePage`, depth 2)                                                                    |
-| Relations  | `src/lib/relations.ts` (`populatedDocs`)                                                                         |
-| Local seed | `scripts/seed-home-page.ts`                                                                                      |
+| Area       | Location                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------- |
+| Page       | `src/app/(frontend)/page.tsx` via `getHomePage()`                                                       |
+| Sections   | `src/components/home/` — Hero, About, Services, Process, Featured Posts, Team, Testimonials, Bottom CTA |
+| Home fetch | `src/lib/payload.ts` (`getHomePage`, depth 2)                                                           |
+| Relations  | `src/lib/relations.ts` (`populatedDocs`)                                                                |
+| Local seed | `scripts/seed-home-page.ts`                                                                             |
 
 Locked homepage conventions:
 
-- Design reference: [Vetic Home 1](https://vetic.webflow.io/home/home-1)
+- Design reference: `docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`
 - Featured Posts replaces Products (no commerce UI)
-- CSS marquees / scroll reveal only — no Framer Motion
+- Hero images: `[0]` hero photo, `[1]` about intro, `[2]` process/approach
+- `hero.marqueeTags` stay in CMS but are not rendered
+- CSS scroll reveal only — no Framer Motion
 - Empty CMS URLs render non-linking surfaces (no Phase 5 stub routes)
-- Source of truth checklist: `docs/phase-4/phase-4-implementation-plan.md`
+- Schema/wiring history: `docs/phase-4/phase-4-implementation-plan.md`. Visual rules there are superseded.
 
 Frontend mapping tests use Payload-shaped fixtures + `renderToStaticMarkup` (no DB). Keep that pattern for shell and section components unless a phase requires Local API integration.
 

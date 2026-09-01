@@ -1,5 +1,8 @@
 # Phase 1 Execution Plan
+
 ## Design System Foundation
+
+> **Historical.** Visual rules in this document are superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md). This file was already superseded as a Phase 1 checklist by [`phase-1-implementation-plan.md`](./phase-1-implementation-plan.md).
 
 > **Superseded.** Use [`phase-1-implementation-plan.md`](./phase-1-implementation-plan.md) as the Phase 1 source of truth. This file is retained for history only.
 

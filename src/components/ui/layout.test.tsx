@@ -12,8 +12,8 @@ describe('layout primitives', () => {
 
     expect(markup).toContain('max-w-content')
     expect(markup).toContain('mx-auto')
-    expect(markup).toContain('px-4')
-    expect(markup).toContain('lg:px-gutter')
+    expect(markup).toContain('px-[1.125rem]')
+    expect(markup).toContain('md:px-gutter')
   })
 
   it('supports the narrower medium container token', () => {
@@ -46,9 +46,8 @@ describe('layout primitives', () => {
   it('applies the full responsive gutter scale on Container', () => {
     const markup = renderToStaticMarkup(<Container>Content</Container>)
 
-    expect(markup).toContain('px-4')
-    expect(markup).toContain('sm:px-6')
-    expect(markup).toContain('lg:px-gutter')
+    expect(markup).toContain('px-[1.125rem]')
+    expect(markup).toContain('md:px-gutter')
   })
 
   it('uses medium section spacing by default', () => {

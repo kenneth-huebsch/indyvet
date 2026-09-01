@@ -1,36 +1,24 @@
 # Master Project Plan
 
-## Vetic Website Recreation with Payload CMS
+## Indy Veterinary Care Website with Payload CMS
 
 ## Project Objective
 
-Recreate the **Vetic Home 1** website as faithfully as possible using a modern React-based technology stack while replacing Webflow's content management capabilities with Payload CMS.
+Build the Indy Veterinary Care marketing website with Next.js and Payload CMS. The public visual language follows the client’s editorial homepage concept (cream / sage / ink, serif headlines, square buttons, hairline grids)—not a replica of a third-party template.
 
-The completed website should be visually indistinguishable from the reference implementation while allowing non-technical editors to manage text, images, navigation, testimonials, services, blog content, and other structured content through the Payload CMS admin interface.
+Non-technical editors manage text, images, navigation, testimonials, services, blog content, and other structured content through Payload. They cannot change layout or design.
 
-This is **not** intended to be a generic website builder or page builder. The site's structure, layout, styling, and user experience are entirely developer-controlled. Payload CMS exists solely to manage content.
+This is **not** a generic website builder. Structure, layout, styling, and UX stay in code. Payload exists solely to manage content.
 
 The final deliverable should feel like a handcrafted Next.js application rather than a CMS-generated website.
 
 ---
 
-# Reference Website
+# Visual source of truth
 
-Target Website:
+Living checklist: [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](phase-visual-refresh/phase-visual-refresh-implementation-plan.md)
 
-https://vetic.webflow.io/home/home-1
-
-The objective is to reproduce the website's:
-
-- Visual design
-- Layout
-- Spacing
-- Typography
-- Animations
-- Responsiveness
-- User experience
-
-Minor implementation differences are acceptable where required by the technology stack, but the user experience should remain functionally and visually equivalent.
+Phases 1–4 used [Vetic Home 1](https://vetic.webflow.io/home/home-1) as a temporary scaffold to stand up tokens, chrome, and CMS-driven homepage sections. That visual language is superseded. Keep those phase docs as historical checklists; do not use them as the current design reference.
 
 ---
 
@@ -184,7 +172,7 @@ Globals
 
 Singleton Documents
 
-- Home Page (Home 1 sections; Products replaced by Featured Posts)
+- Home Page (section groups; Products replaced by Featured Posts)
 - About Page
 - Contact Page
 - Emergency Page
@@ -231,7 +219,7 @@ Acceptance Criteria
 
 ## Phase 4 - Homepage Recreation ✅
 
-Recreate the Vetic homepage as accurately as possible.
+Recreate the Vetic homepage as accurately as possible (historical scaffold; visual language later replaced).
 
 Execution checklist: [`docs/phase-4/phase-4-implementation-plan.md`](phase-4/phase-4-implementation-plan.md)
 
@@ -247,9 +235,24 @@ Acceptance Criteria
 
 ---
 
+## Visual Refresh - Editorial clinic system
+
+Replace the Vetic scaffold look with the client homepage concept across tokens, chrome, and `/`.
+
+Execution checklist: [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](phase-visual-refresh/phase-visual-refresh-implementation-plan.md)
+
+Acceptance Criteria
+
+- Public UI matches the editorial concept (palette, type, square chrome, hairline sections).
+- Existing Payload fields still feed the homepage; no mockup-only copy is hardcoded.
+- Featured Posts and Testimonials remain, restyled.
+- Living agent skills and this master plan point at the visual-refresh checklist.
+
+---
+
 ## Phase 5 - Remaining Pages
 
-Recreate the remaining pages from the Vetic website.
+Build the remaining marketing pages in the editorial visual system, using existing globals and collections.
 
 Examples include:
 
@@ -262,8 +265,9 @@ Examples include:
 
 Acceptance Criteria
 
-- All pages visually match the reference implementation.
+- Pages share the visual refresh chrome and type/color language.
 - Content is managed through Payload where appropriate.
+- Do not recreate Vetic inner-page layouts.
 
 ---
 
@@ -349,7 +353,7 @@ Acceptance Criteria
 
 The project is complete when:
 
-- The Vetic website has been faithfully recreated.
+- The public site uses the editorial visual system and existing Payload content.
 - The website is powered by Next.js and Payload CMS.
 - All intended content is editable through Payload.
 - Editors cannot alter layout or design.

@@ -28,6 +28,7 @@ function resolveHeaderCta(header: Header, siteSettings: SiteSetting) {
 export function SiteHeader(props: SiteHeaderProps): ReactElement {
   const { header, siteSettings, className } = props
   const siteName = siteSettings.brand.siteName
+  const tagline = siteSettings.brand.tagline?.trim()
   const navItems =
     header.navItems
       ?.map((item) => resolveLink({ label: item.label, url: item.url }))
@@ -36,61 +37,71 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
   const showTextLogo = !isMedia(header.logo) || !getMediaUrl(header.logo)
 
   return (
-    <header data-slot="site-header" className={cn('relative z-40 px-5 pt-5', className)}>
-      <div className="mx-auto max-w-content">
-        <div
-          data-slot="site-header-pill"
-          className="relative flex items-center justify-between gap-4 rounded-nav bg-card py-3 pl-6 pr-3"
+    <header
+      data-slot="site-header"
+      className={cn(
+        'relative sticky top-0 z-40 border-b border-line bg-sage-light',
+        className,
+      )}
+    >
+      <div className="mx-auto flex h-[82px] max-w-content items-center justify-between gap-6 px-[1.125rem] md:h-[82px] md:px-gutter">
+        <Link
+          href="/"
+          className="inline-flex shrink-0 items-center gap-2 text-foreground no-underline hover:no-underline"
+          aria-label={siteName}
         >
-          <Link
-            href="/"
-            className="inline-flex shrink-0 items-center gap-2 text-base font-semibold tracking-tight text-foreground no-underline hover:no-underline"
-            aria-label={siteName}
-          >
-            <MediaImage
-              media={header.logo}
-              fallbackAlt={siteName}
-              className="h-8 w-auto object-contain"
-              sizes="200px"
-              quality={100}
-              priority
-            />
-            {showTextLogo ? <span>{siteName}</span> : null}
-          </Link>
+          <MediaImage
+            media={header.logo}
+            fallbackAlt={siteName}
+            className="h-8 w-auto object-contain"
+            sizes="200px"
+            quality={100}
+            priority
+          />
+          {showTextLogo ? (
+            <span className="font-heading text-[21px] tracking-[0.12em] md:text-[25px]">
+              {siteName}
+              {tagline ? (
+                <small className="mt-1 block font-sans text-[9px] font-semibold tracking-[0.19em]">
+                  {tagline}
+                </small>
+              ) : null}
+            </span>
+          ) : null}
+        </Link>
 
-          <nav className="hidden min-[992px]:block" aria-label="Primary">
-            <ul className="flex items-center gap-10">
-              {navItems.map((item) => (
-                <li key={`${item.label}-${item.href}`}>
-                  <Link
-                    href={item.href}
-                    target={item.target}
-                    rel={item.rel}
-                    className="text-base font-semibold text-foreground no-underline transition-colors hover:text-muted-foreground hover:no-underline"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <nav className="hidden min-[821px]:block" aria-label="Primary">
+          <ul className="flex items-center gap-6 text-[12px] font-bold tracking-[0.05em]">
+            {navItems.map((item) => (
+              <li key={`${item.label}-${item.href}`}>
+                <Link
+                  href={item.href}
+                  target={item.target}
+                  rel={item.rel}
+                  className="text-foreground no-underline transition-colors hover:text-muted-foreground hover:no-underline"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-          <div className="flex items-center gap-2">
-            {cta ? (
-              <Button
-                as={Link}
-                href={cta.href}
-                target={cta.target}
-                rel={cta.rel}
-                variant="primary"
-                className="hidden min-[992px]:inline-flex no-underline hover:no-underline"
-              >
-                {cta.label}
-              </Button>
-            ) : null}
+        <div className="flex items-center gap-2">
+          {cta ? (
+            <Button
+              as={Link}
+              href={cta.href}
+              target={cta.target}
+              rel={cta.rel}
+              variant="primary"
+              className="hidden no-underline hover:no-underline min-[821px]:inline-flex"
+            >
+              {cta.label}
+            </Button>
+          ) : null}
 
-            <MobileNav items={navItems} cta={cta} />
-          </div>
+          <MobileNav items={navItems} cta={cta} />
         </div>
       </div>
     </header>

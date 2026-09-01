@@ -1,6 +1,6 @@
 # IndyVet
 
-Technical foundation for the IndyVet marketing website platform. Phase 0 includes Next.js, Payload CMS, PostgreSQL, Tailwind CSS, and shadcn/ui configuration without marketing content.
+Marketing website for Indy Veterinary Care: Next.js, Payload CMS, PostgreSQL, and an editorial visual system. Local admin copy and `media/` do not deploy with git.
 
 ## Prerequisites
 
@@ -45,12 +45,12 @@ Technical foundation for the IndyVet marketing website platform. Phase 0 include
 
 Local admin and [new.indyvetcare.com](https://new.indyvetcare.com) are **separate Payload sites**. Pushing `main` deploys **code and schema** only.
 
-| You do this locally | On the live site |
-| --- | --- |
-| Code, styles, new fields + migrations | Deploys with `main` (new fields are empty until filled) |
-| Copy, pages, services, team, posts in `/admin` | Stays local until you re-enter it in prod admin or ask an agent to copy |
-| Upload images | Stays in gitignored `media/` until you re-upload in prod (S3) or ask an agent |
-| Admin users | Never copied — create accounts on prod `/admin` |
+| You do this locally                            | On the live site                                                              |
+| ---------------------------------------------- | ----------------------------------------------------------------------------- |
+| Code, styles, new fields + migrations          | Deploys with `main` (new fields are empty until filled)                       |
+| Copy, pages, services, team, posts in `/admin` | Stays local until you re-enter it in prod admin or ask an agent to copy       |
+| Upload images                                  | Stays in gitignored `media/` until you re-upload in prod (S3) or ask an agent |
+| Admin users                                    | Never copied — create accounts on prod `/admin`                               |
 
 Small live edits: use production `/admin`. Full content passes: ask an agent to copy (not `pg_dump`). Details: [docs/content-environments.md](docs/content-environments.md).
 

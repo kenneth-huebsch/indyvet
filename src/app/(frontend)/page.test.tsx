@@ -42,9 +42,8 @@ describe('Home page', () => {
     expect(markup).not.toContain('Component showcase')
 
     expect(markup).toContain('data-slot="home-hero"')
-    expect(markup).toContain('Your reliable partner for pet')
-    expect(markup).toContain('wellness')
-    expect(markup).toContain('data-slot="home-hero-marquee"')
+    expect(markup).toContain('Your reliable partner for pet wellness')
+    expect(markup).not.toContain('data-slot="home-hero-marquee"')
     expect(markup).toContain('data-slot="home-services"')
     expect(markup).toContain('data-slot="home-process"')
     expect(markup).toContain('data-slot="home-featured-posts"')
@@ -58,8 +57,7 @@ describe('Home page', () => {
     const element = await HomePage()
     const markup = renderToStaticMarkup(element)
 
-    expect(markup).toContain('Guides and tips for your')
-    expect(markup).toContain('pets')
+    expect(markup).toContain('Guides and tips from our posts')
     expect(markup).toContain('Spring wellness tips')
     expect(markup.toLowerCase()).not.toContain('products for your pets')
     expect(markup.toLowerCase()).not.toContain('buy now')

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Urbanist } from 'next/font/google'
+import { Newsreader, Source_Sans_3 } from 'next/font/google'
 import type { Metadata } from 'next'
 
 import { SiteFooter } from '@/components/site/SiteFooter'
@@ -10,10 +10,17 @@ import '@/styles/globals.css'
 
 export const dynamic = 'force-dynamic'
 
-const urbanist = Urbanist({
+const newsreader = Newsreader({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-urbanist',
+  weight: ['400', '500', '600'],
+  variable: '--font-newsreader',
+  display: 'swap',
+})
+
+const sourceSans = Source_Sans_3({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-source-sans',
   display: 'swap',
 })
 
@@ -31,8 +38,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const { header, footer, siteSettings } = await getSiteChrome()
 
   return (
-    <html lang="en" className={urbanist.variable}>
-      <body className={urbanist.className}>
+    <html lang="en" className={`${sourceSans.variable} ${newsreader.variable}`}>
+      <body className={sourceSans.className}>
         <SiteHeader header={header} siteSettings={siteSettings} />
         <main>{children}</main>
         <SiteFooter footer={footer} siteSettings={siteSettings} />

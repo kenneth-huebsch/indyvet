@@ -2,14 +2,12 @@ import type { ReactElement } from 'react'
 
 import { HomeEyebrow } from '@/components/home/HomeEyebrow'
 import { HomeHeadline } from '@/components/home/HomeHeadline'
+import { HomePhoto } from '@/components/home/HomePhoto'
 import { ScrollReveal } from '@/components/home/ScrollReveal'
-import { MediaImage } from '@/components/media/MediaImage'
 import { Container } from '@/components/ui/container'
-import { Section } from '@/components/ui/section'
 import { Typography } from '@/components/ui/typography'
 import { isMedia } from '@/lib/media'
 import { populatedDocs } from '@/lib/relations'
-import { cn } from '@/lib/utils'
 import type { HomePage, Testimonial } from '@/payload-types'
 
 type HomeTestimonialsProps = {
@@ -22,26 +20,18 @@ function TestimonialCard(props: { item: Testimonial }): ReactElement {
   return (
     <article
       data-slot="home-testimonial-card"
-      className="w-[min(100vw-3rem,28rem)] shrink-0 rounded-3xl bg-card p-6 sm:w-[30rem] sm:p-8"
+      className="border-b border-r border-line bg-background p-6 sm:p-8"
     >
-      <div className="mb-5 flex items-center gap-4">
-        <div className="relative size-14 overflow-hidden rounded-full bg-muted">
-          {isMedia(item.avatar) ? (
-            <MediaImage
-              media={item.avatar}
-              fill
-              sizes="56px"
-              className="object-cover"
-              fallbackAlt={item.authorName}
-            />
-          ) : (
-            <span className="flex size-full items-center justify-center text-lg font-semibold text-muted-foreground">
-              {item.authorName.charAt(0)}
-            </span>
-          )}
-        </div>
+      <Typography className="text-[#435149]">&ldquo;{item.quote}&rdquo;</Typography>
+      <div className="mt-5 flex items-center gap-3">
+        <HomePhoto
+          media={isMedia(item.avatar) ? item.avatar : null}
+          className="size-12 shrink-0"
+          sizes="48px"
+          fallbackAlt={item.authorName}
+        />
         <div>
-          <Typography as="p" variant="h4" className="text-base">
+          <Typography as="p" className="text-sm">
             {item.authorName}
           </Typography>
           {item.location?.trim() ? (
@@ -51,7 +41,6 @@ function TestimonialCard(props: { item: Testimonial }): ReactElement {
           ) : null}
         </div>
       </div>
-      <Typography className="text-muted-foreground">&ldquo;{item.quote}&rdquo;</Typography>
     </article>
   )
 }
@@ -64,32 +53,26 @@ export function HomeTestimonials(props: HomeTestimonialsProps): ReactElement | n
     return null
   }
 
-  const loop = items.length > 0 ? [...items, ...items] : []
-
   return (
-    <Section data-slot="home-testimonials" spacing="md" className="overflow-hidden">
+    <section data-slot="home-testimonials" className="border-t border-line bg-background py-[68px]">
       <Container>
-        <ScrollReveal className="mx-auto mb-10 max-w-2xl text-center md:mb-14">
+        <ScrollReveal className="mb-8 max-w-2xl">
           {testimonials.eyebrow?.trim() ? (
-            <HomeEyebrow className="mb-4 justify-center">{testimonials.eyebrow.trim()}</HomeEyebrow>
+            <HomeEyebrow className="mb-3">{testimonials.eyebrow.trim()}</HomeEyebrow>
           ) : null}
           {testimonials.title?.trim() ? (
             <HomeHeadline>{testimonials.title.trim()}</HomeHeadline>
           ) : null}
         </ScrollReveal>
-      </Container>
 
-      {loop.length > 0 ? (
-        <div className="overflow-hidden" aria-label="Testimonials">
-          <div
-            className={cn('flex w-max gap-5 px-4', 'animate-marquee motion-reduce:animate-none')}
-          >
-            {loop.map((item, index) => (
-              <TestimonialCard key={`${item.id}-${index}`} item={item} />
+        {items.length > 0 ? (
+          <div className="grid grid-cols-1 border-t border-l border-line sm:grid-cols-2">
+            {items.map((item) => (
+              <TestimonialCard key={item.id} item={item} />
             ))}
           </div>
-        </div>
-      ) : null}
-    </Section>
+        ) : null}
+      </Container>
+    </section>
   )
 }

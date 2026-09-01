@@ -42,8 +42,10 @@ describe('SiteHeader', () => {
     const markup = renderToStaticMarkup(<SiteHeader header={header} siteSettings={siteSettings} />)
 
     expect(markup).toContain('data-slot="site-header"')
-    expect(markup).toContain('data-slot="site-header-pill"')
-    expect(markup).toContain('rounded-nav')
+    expect(markup).toContain('sticky')
+    expect(markup).toContain('bg-sage-light')
+    expect(markup).not.toContain('data-slot="site-header-pill"')
+    expect(markup).not.toContain('rounded-nav')
     expect(markup).toContain('Services')
     expect(markup).toContain('href="/services"')
     expect(markup).toContain('About')

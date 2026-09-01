@@ -741,7 +741,7 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
- * Home 1 section content. Products are replaced by Featured Posts. Layout is fixed in code.
+ * Homepage section content. Products are replaced by Featured Posts. Layout is fixed in code.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page".
@@ -769,6 +769,9 @@ export interface HomePage {
        */
       url?: string | null;
     };
+    /**
+     * First image is the hero photo. Second appears in the about intro. Third appears in the process/approach section.
+     */
     images?:
       | {
           image: number | Media;

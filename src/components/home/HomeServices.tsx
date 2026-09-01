@@ -2,16 +2,18 @@ import type { ReactElement } from 'react'
 
 import { HomeEyebrow } from '@/components/home/HomeEyebrow'
 import { HomeHeadline } from '@/components/home/HomeHeadline'
-import { PAW_BADGE_FILLS, PawBadge } from '@/components/home/PawBall'
 import { ScrollReveal } from '@/components/home/ScrollReveal'
 import { Container } from '@/components/ui/container'
-import { Section } from '@/components/ui/section'
 import { Typography } from '@/components/ui/typography'
 import { populatedDocs } from '@/lib/relations'
 import type { HomePage, Service } from '@/payload-types'
 
 type HomeServicesProps = {
   services: NonNullable<HomePage['services']>
+}
+
+function padIndex(index: number): string {
+  return String(index + 1).padStart(2, '0')
 }
 
 export function HomeServices(props: HomeServicesProps): ReactElement | null {
@@ -23,42 +25,45 @@ export function HomeServices(props: HomeServicesProps): ReactElement | null {
   }
 
   return (
-    <Section data-slot="home-services" spacing="md">
+    <section data-slot="home-services" className="border-t border-line bg-background py-[68px]">
       <Container>
-        <div className="rounded-3xl bg-card px-5 py-10 sm:px-8 md:px-12 md:py-14">
-          <ScrollReveal className="mx-auto mb-10 max-w-2xl text-center md:mb-14">
+        <ScrollReveal className="mb-[30px] flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
             {services.eyebrow?.trim() ? (
-              <HomeEyebrow className="mb-4 justify-center">{services.eyebrow.trim()}</HomeEyebrow>
+              <HomeEyebrow className="mb-3">{services.eyebrow.trim()}</HomeEyebrow>
             ) : null}
             {services.title?.trim() ? <HomeHeadline>{services.title.trim()}</HomeHeadline> : null}
-          </ScrollReveal>
+          </div>
+        </ScrollReveal>
 
-          {items.length > 0 ? (
-            <div className="grid gap-8 md:grid-cols-3 md:gap-6">
-              {items.map((service, index) => (
-                <ScrollReveal key={service.id}>
-                  <article
-                    data-slot="home-service-card"
-                    className="relative flex h-full flex-col rounded-2xl bg-secondary px-6 pb-8 pt-14"
-                  >
-                    <PawBadge
-                      fill={PAW_BADGE_FILLS[index % PAW_BADGE_FILLS.length]}
-                      data-slot="home-service-paw"
-                      className="absolute left-1/2 top-0 size-16 -translate-x-1/2 -translate-y-1/2"
-                    />
-                    <Typography as="h3" variant="h4" className="text-center">
-                      {service.title}
-                    </Typography>
-                    <Typography className="mt-3 text-center text-muted-foreground">
-                      {service.shortDescription}
-                    </Typography>
-                  </article>
-                </ScrollReveal>
-              ))}
-            </div>
-          ) : null}
-        </div>
+        {items.length > 0 ? (
+          <div className="grid grid-cols-1 border-t border-l border-line sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((service, index) => (
+              <article
+                key={service.id}
+                data-slot="home-service-card"
+                className="min-h-[190px] border-b border-r border-foreground/20 bg-background/30 p-7"
+              >
+                <Typography
+                  as="p"
+                  className="mb-[18px] font-heading text-[25px] text-muted-foreground"
+                >
+                  {padIndex(index)}
+                </Typography>
+                <Typography
+                  as="h3"
+                  className="mb-3 text-[13px] font-normal uppercase tracking-[0.08em]"
+                >
+                  {service.title}
+                </Typography>
+                <Typography className="text-[13px] text-[#59645f]">
+                  {service.shortDescription}
+                </Typography>
+              </article>
+            ))}
+          </div>
+        ) : null}
       </Container>
-    </Section>
+    </section>
   )
 }

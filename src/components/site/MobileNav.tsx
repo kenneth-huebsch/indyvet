@@ -20,11 +20,11 @@ export function MobileNav(props: MobileNavProps): ReactElement {
   const panelId = useId()
 
   return (
-    <div className="max-[991px]:block min-[992px]:hidden" data-slot="mobile-nav">
+    <div className="max-[820px]:block min-[821px]:hidden" data-slot="mobile-nav">
       <Button
         type="button"
         variant="ghost"
-        className="h-11 w-11 shrink-0 rounded-full p-0"
+        className="h-11 w-11 shrink-0 p-0"
         aria-expanded={open}
         aria-controls={panelId}
         aria-label={open ? 'Close menu' : 'Open menu'}
@@ -37,7 +37,7 @@ export function MobileNav(props: MobileNavProps): ReactElement {
         id={panelId}
         hidden={!open}
         className={cn(
-          'absolute left-0 right-0 top-full z-50 mt-3 rounded-3xl bg-card p-4 shadow-md',
+          'absolute left-0 right-0 top-full z-50 border-b border-line bg-sage-light p-4',
           open ? 'block' : 'hidden',
         )}
       >
@@ -49,7 +49,7 @@ export function MobileNav(props: MobileNavProps): ReactElement {
                   href={item.href}
                   target={item.target}
                   rel={item.rel}
-                  className="block rounded-2xl px-4 py-3 text-base font-semibold text-foreground no-underline hover:bg-muted hover:no-underline"
+                  className="block px-4 py-3 text-[12px] font-bold tracking-[0.05em] text-foreground no-underline hover:bg-muted hover:no-underline"
                   onClick={() => setOpen(false)}
                 >
                   {item.label}

@@ -30,20 +30,22 @@ const variantElementMap: Record<TypographyVariant, ElementType> = {
   link: 'a',
 }
 
-const typographyVariants = cva('font-heading', {
+const typographyVariants = cva('', {
   variants: {
     variant: {
-      display: 'text-5xl font-semibold leading-tight tracking-tight sm:text-6xl lg:text-7xl',
-      h1: 'text-5xl font-semibold leading-tight tracking-tight',
-      h2: 'text-4xl font-semibold leading-tight tracking-tight lg:text-5xl',
-      h3: 'text-3xl font-semibold leading-tight tracking-tight',
-      h4: 'text-2xl font-semibold leading-tight tracking-tight',
-      'body-large': 'text-lg font-medium leading-relaxed',
-      body: 'text-base font-medium leading-normal',
-      small: 'text-sm font-medium leading-normal',
+      display:
+        'font-heading text-4xl font-normal leading-[1.05] tracking-[-0.02em] sm:text-5xl lg:text-[3.75rem]',
+      h1: 'font-heading text-4xl font-normal leading-[1.08] tracking-[-0.015em] sm:text-5xl',
+      h2: 'font-heading text-[2.25rem] font-normal leading-[1.08] tracking-[-0.015em] lg:text-[2.625rem]',
+      h3: 'font-heading text-2xl font-normal leading-[1.15]',
+      h4: 'font-heading text-xl font-normal leading-tight',
+      'body-large': 'text-lg font-normal leading-relaxed',
+      body: 'text-base font-normal leading-normal',
+      small: 'text-sm font-normal leading-normal',
       caption: 'text-xs text-muted-foreground',
-      label: 'text-sm font-semibold leading-normal',
-      link: 'text-base font-medium underline underline-offset-4',
+      label:
+        'text-[11px] font-extrabold uppercase leading-normal tracking-[0.18em] text-muted-foreground',
+      link: 'text-base font-normal underline underline-offset-4',
     },
   },
   defaultVariants: {
