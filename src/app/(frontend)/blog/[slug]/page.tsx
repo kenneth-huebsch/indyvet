@@ -13,9 +13,14 @@ type BlogPostRouteProps = {
 }
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const posts = await getPublishedPosts()
-
-  return posts.map((post) => ({ slug: post.slug }))
+  // Prod Docker builds connect to Lightsail Postgres before migrate-on-boot.
+  // Tolerate a schema lag so the image can build; runtime still resolves slugs.
+  try {
+    const posts = await getPublishedPosts()
+    return posts.map((post) => ({ slug: post.slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata(props: BlogPostRouteProps): Promise<Metadata> {
