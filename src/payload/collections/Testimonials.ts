@@ -28,6 +28,14 @@ export const Testimonials: CollectionConfig = {
       label: 'Author name',
     },
     {
+      name: 'reviewUrl',
+      type: 'text',
+      label: 'Review URL',
+      admin: {
+        description: 'Optional Google review (or other) link for the public “Read More” control.',
+      },
+    },
+    {
       name: 'location',
       type: 'text',
       admin: {

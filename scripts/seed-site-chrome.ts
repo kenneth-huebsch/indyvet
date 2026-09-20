@@ -57,7 +57,6 @@ async function main() {
         { label: 'Services', url: '/services' },
         { label: 'Blog', url: '/blog' },
         { label: 'Contact', url: '/contact' },
-        { label: 'Emergency', url: '/emergency' },
       ],
       cta: {
         label: 'Book Now',
@@ -83,7 +82,6 @@ async function main() {
           title: 'Visit',
           links: [
             { label: 'Contact', url: '/contact' },
-            { label: 'Emergency', url: '/emergency' },
             { label: 'FAQ', url: '/faq' },
           ],
         },

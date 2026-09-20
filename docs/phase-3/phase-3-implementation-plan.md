@@ -1,5 +1,3 @@
-> **Historical.** Shell wiring in this document remains useful. Pill-header / Vetic geometry is superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md).
-
 # Phase 3 Implementation Plan
 
 ## Frontend Foundation
@@ -10,29 +8,21 @@ This is the Phase 3 source of truth. Execute the checklist in order.
 
 ## Objective
 
-Build the shared application shell and frontend utilities so every public page can consume Payload globals and sit inside chrome aligned to [Vetic Home 1](https://vetic.webflow.io/home/home-1).
+Build the shared application shell and frontend utilities so every public page can consume Payload globals and sit inside chrome defined by [`docs/visual-system.md`](../visual-system.md).
 
 Editors still manage content only. Layout and chrome structure remain in code.
 
 ---
 
-## Design reference
-
-- Primary: https://vetic.webflow.io/home/home-1
-- Not the template marketing landing at https://vetic.webflow.io/
-
----
-
 ## Decisions locked
 
-- Keep `/` as the Phase 1 component showcase, wrapped in the new shell
-- Pill header + contained dark footer matching Home 1 geometry (Phase 1 tokens)
+- Sticky sage-light header + sage-light footer (see visual system)
 - Flat `header.navItems` only — no mega-dropdown schema
 - Header `cta` preferred; Site Settings `booking` is fallback when Header CTA is empty
 - Footer NAP comes from Site Settings `contact` (Footer global has no NAP fields)
-- No cart, shop, public auth, or “Buy Template” chrome
+- No cart, shop, public auth chrome
 - No Payload schema / migrations in this phase
-- Mobile nav collapses at ≤991px
+- Mobile nav collapses below 821px
 
 ---
 
@@ -46,15 +36,14 @@ Editors still manage content only. Layout and chrome structure remain in code.
 
 ---
 
-## Vetic Home 1 shell inventory
+## Shell inventory
 
 | Region                                       | Implementation                   |
 | -------------------------------------------- | -------------------------------- |
-| Single header (no utility bar)               | `SiteHeader`                     |
-| Contained pill navbar: logo, flat links, CTA | Header global + booking fallback |
-| Non-sticky header                            | `relative` positioning           |
-| Hamburger ≤991px                             | `MobileNav` client toggle        |
-| Contained dark rounded footer                | `SiteFooter`                     |
+| Single sticky header                         | `SiteHeader`                     |
+| Logo, flat links, CTA                        | Header global + booking fallback |
+| Hamburger below 821px                        | `MobileNav` client toggle        |
+| Full-bleed sage-light footer                 | `SiteFooter`                     |
 | Footer logo + link columns + NAP + copyright | Footer + Site Settings           |
 
 ---
@@ -85,7 +74,7 @@ Editors still manage content only. Layout and chrome structure remain in code.
 
 - [x] `(frontend)/layout.tsx` fetches chrome and renders Header / main / Footer
 - [x] Default metadata from Site Settings `defaultSeo` + `brand.siteName`
-- [x] Showcase page remains at `/`
+- [x] Homepage route at `/` uses the shared shell
 
 ### Automated tests
 
@@ -99,7 +88,7 @@ Editors still manage content only. Layout and chrome structure remain in code.
 - [x] `npm run lint`
 - [x] `npx tsc --noEmit`
 - [x] `npm run build`
-- [x] Manual: `/` shows showcase inside shell; side-by-side vs Home 1 chrome
+- [x] Manual: `/` shows content inside shell matching [`docs/visual-system.md`](../visual-system.md)
 
 ---
 
@@ -114,8 +103,8 @@ Public Local API reads of globals use the same public-read access already config
 Phase 3 is complete when:
 
 - Every frontend page shares Header + Footer fed by Payload globals
-- Shell geometry is recognizably Home 1 (pill nav, contained dark footer, NAP column, collapse ≤991px)
-- Ecommerce / auth / demo chrome is absent
+- Shell matches [`docs/visual-system.md`](../visual-system.md)
+- Ecommerce / auth chrome is absent
 - SEO defaults come from Site Settings
 - Media and rich-text helpers exist for Phase 4
 - Automated tests cover Payload-shaped data → shell markup

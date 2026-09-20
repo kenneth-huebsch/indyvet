@@ -1,5 +1,3 @@
-> **Historical for visual design.** The content model in this document remains valid. Vetic as a _design_ reference is superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md).
-
 # Phase 2 Implementation Plan
 
 ## Payload CMS Data Model
@@ -10,15 +8,14 @@ This is the Phase 2 source of truth. Execute the checklist in order.
 
 ## Objective
 
-Implement the Payload CMS collections and globals that support recreating [Vetic Home 1](https://vetic.webflow.io/home/home-1) with Indy Veterinary Care content from [indyvetcare.com](https://indyvetcare.com/).
+Implement the Payload CMS collections and globals that support the Indy Veterinary Care marketing site, with content from [indyvetcare.com](https://indyvetcare.com/).
 
-Editors manage content only. Layout, styling, and section composition remain in code (Phases 3–5).
+Editors manage content only. Layout, styling, and section composition remain in code (Phases 3–5). Visual rules: [`docs/visual-system.md`](../visual-system.md).
 
 ---
 
 ## Decisions locked
 
-- Design reference: Vetic Home 1
 - Content source: indyvetcare.com
 - Home **Products** section replaced by **Featured Posts** (relationship to Blog Posts)
 - Pharmacy / Order Online is an outbound link in Site Settings (not a Products collection)

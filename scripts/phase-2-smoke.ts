@@ -167,14 +167,10 @@ async function main() {
     data: {
       hero: { title: 'Contact smoke test' },
       faqs: [faq.id],
-    },
-  })
-
-  await payload.updateGlobal({
-    slug: 'emergency-page',
-    data: {
-      hero: { title: 'Emergency smoke test' },
-      referrals: [referral.id],
+      emergency: {
+        title: 'Emergency smoke test',
+        referrals: [referral.id],
+      },
     },
   })
 

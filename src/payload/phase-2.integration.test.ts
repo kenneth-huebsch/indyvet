@@ -269,14 +269,10 @@ describe('Phase 2 Payload Local API', () => {
       data: {
         hero: { title: `Contact ${suffix}` },
         faqs: [faq.id],
-      },
-    })
-
-    await payload.updateGlobal({
-      slug: 'emergency-page',
-      data: {
-        hero: { title: `Emergency ${suffix}` },
-        referrals: [referral.id],
+        emergency: {
+          title: `Emergency ${suffix}`,
+          referrals: [referral.id],
+        },
       },
     })
 
@@ -304,13 +300,12 @@ describe('Phase 2 Payload Local API', () => {
     const home = await payload.findGlobal({ slug: 'home-page' })
     const settings = await payload.findGlobal({ slug: 'site-settings' })
     const contact = await payload.findGlobal({ slug: 'contact-page' })
-    const emergency = await payload.findGlobal({ slug: 'emergency-page' })
 
     expect(home.featuredPosts?.posts).toHaveLength(1)
     expect(home).not.toHaveProperty('products')
     expect(settings.booking?.url).toBe('https://example.com/book')
     expect(settings.pharmacy?.url).toBe('https://indyvetcare.vetsfirstchoice.com/')
     expect(contact.faqs).toHaveLength(1)
-    expect(emergency.referrals).toHaveLength(1)
+    expect(contact.emergency?.referrals).toHaveLength(1)
   })
 })

@@ -15,11 +15,12 @@ import { TeamMembers } from './payload/collections/TeamMembers'
 import { Testimonials } from './payload/collections/Testimonials'
 import { Users } from './payload/collections/Users'
 import { AboutPage } from './payload/globals/AboutPage'
+import { BlogPage } from './payload/globals/BlogPage'
 import { ContactPage } from './payload/globals/ContactPage'
-import { EmergencyPage } from './payload/globals/EmergencyPage'
 import { Footer } from './payload/globals/Footer'
 import { Header } from './payload/globals/Header'
 import { HomePage } from './payload/globals/HomePage'
+import { ServicesPage } from './payload/globals/ServicesPage'
 import { SiteSettings } from './payload/globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -43,17 +44,17 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [
-    Users,
-    Media,
-    Services,
-    TeamMembers,
-    Testimonials,
-    Posts,
-    FAQs,
-    EmergencyReferrals,
+  collections: [Users, Media, Services, TeamMembers, Testimonials, Posts, FAQs, EmergencyReferrals],
+  globals: [
+    SiteSettings,
+    Header,
+    Footer,
+    HomePage,
+    AboutPage,
+    ContactPage,
+    ServicesPage,
+    BlogPage,
   ],
-  globals: [SiteSettings, Header, Footer, HomePage, AboutPage, ContactPage, EmergencyPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET!,
   typescript: {

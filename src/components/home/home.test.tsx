@@ -19,8 +19,10 @@ describe('home sections', () => {
     expect(markup).toContain('data-slot="home-hero"')
     expect(markup).toContain('bg-background')
     expect(markup).not.toContain('linear-gradient')
-    expect(markup).toContain('Indy Veterinary Care')
-    expect(markup).toContain('Your reliable partner for pet wellness')
+    expect(markup).toContain('Independent veterinary care in Philadelphia')
+    expect(markup).toContain('Thoughtful veterinary care.')
+    expect(markup).toContain('For pets. For people.')
+    expect(markup).toContain('Modern, compassionate veterinary medicine')
     expect(markup).not.toContain('underline-pink.webp')
     expect(markup).not.toContain('home-hero-paw')
     expect(markup).toContain('Contact us')
@@ -50,13 +52,16 @@ describe('home sections', () => {
     const markup = renderToStaticMarkup(<HomeServices services={homePageFixture.services!} />)
 
     expect(markup).toContain('data-slot="home-services"')
-    expect(markup).toContain('Preventative care')
-    expect(markup).toContain('Essential vaccinations')
-    expect(markup).toContain('Surgical care')
+    expect(markup).toContain('Examinations')
+    expect(markup).toContain('Surgery')
+    expect(markup).toContain('Anesthesia')
     expect(markup).toContain('data-slot="home-service-card"')
     expect(markup).toContain('01')
     expect(markup).toContain('02')
     expect(markup).toContain('03')
+    expect(markup).toContain('href="/services#examinations"')
+    expect(markup).toContain('href="/services#surgery"')
+    expect(markup).toContain('href="/services#anesthesia"')
     expect(markup).not.toContain('home-service-paw')
   })
 
@@ -84,6 +89,8 @@ describe('home sections', () => {
     expect(markup).toContain('Spring wellness tips')
     expect(markup).toContain('Dental care basics')
     expect(markup).toContain('View all')
+    expect(markup).toContain('href="/blog/spring-wellness-tips"')
+    expect(markup).toContain('href="/blog/dental-care-basics"')
     expect(markup.toLowerCase()).not.toContain('usd')
     expect(markup.toLowerCase()).not.toContain('buy now')
     expect(markup.toLowerCase()).not.toContain('add to cart')
@@ -108,21 +115,24 @@ describe('home sections', () => {
     const markup = renderToStaticMarkup(<HomeTeam team={homePageFixture.team!} />)
 
     expect(markup).toContain('data-slot="home-team"')
-    expect(markup).toContain('Dr. Smith')
-    expect(markup).toContain('Veterinarian')
-    expect(markup).toContain('Dr. Jones')
+    expect(markup).toContain('Dr. Sara Organist')
+    expect(markup).toContain('Founder / Veterinarian')
+    expect(markup).toContain('Dr. Eric Matkowski')
     expect(markup).toContain('Join our team')
   })
 
-  it('HomeTestimonials renders quote and attribution in a static grid', () => {
+  it('HomeTestimonials renders quote, author, and Read More link', () => {
     const markup = renderToStaticMarkup(
       <HomeTestimonials testimonials={homePageFixture.testimonials!} />,
     )
 
     expect(markup).toContain('data-slot="home-testimonials"')
-    expect(markup).toContain('They treated Bella like family.')
-    expect(markup).toContain('Mac Jonas')
-    expect(markup).toContain('New York, NY')
+    expect(markup).toContain('Best vet experience')
+    expect(markup).toContain('Sophia Julia')
+    expect(markup).toContain('Mark Nardone')
+    expect(markup).toContain('Read More')
+    expect(markup).toContain('href="https://maps.app.goo.gl/JAWYSNtJGWbEHbie6"')
+    expect(markup).toContain('href="https://maps.app.goo.gl/2hsDRHJySwaw1MvF7"')
     expect(markup).not.toContain('animate-marquee')
   })
 

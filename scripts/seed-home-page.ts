@@ -6,7 +6,11 @@
  *
  * Media uploads are optional — if Media documents already exist, the first few are reused.
  * Otherwise sections render with letter/placeholder fallbacks until you upload images in /admin.
+ * The bottom CTA prefers `scripts/assets/home-bottom-cta-dog.jpg` when present.
  */
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -73,30 +77,56 @@ async function main() {
   })
   const mediaIds = media.docs.map((doc) => doc.id)
 
+  const bottomCtaAsset = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    'assets',
+    'home-bottom-cta-dog.jpg',
+  )
+  const existingBottomCta = await payload.find({
+    collection: 'media',
+    where: { filename: { equals: 'home-bottom-cta-dog.jpg' } },
+    limit: 1,
+    depth: 0,
+  })
+  let bottomCtaImageId = existingBottomCta.docs[0]?.id
+  if (!bottomCtaImageId) {
+    try {
+      const uploaded = await payload.create({
+        collection: 'media',
+        data: { alt: 'Happy dog lying on a beach at sunset' },
+        filePath: bottomCtaAsset,
+      })
+      bottomCtaImageId = uploaded.id
+      console.log('Uploaded home-bottom-cta-dog.jpg')
+    } catch (error) {
+      console.warn('Could not upload home-bottom-cta-dog.jpg:', error)
+    }
+  }
+
   const serviceDefs = [
     {
-      slug: 'preventative-care',
-      title: 'Preventative care',
+      slug: 'examinations',
+      title: 'Examinations',
       shortDescription:
-        'Our preventative care services ensure your pet stays healthy and happy. Regular check-ups and vaccinations are key to preventing illness.',
+        'For wellness and illness, every pet we see gets a thorough physical exam from nose to tail.',
+      featured: true,
+      sortOrder: 4,
+    },
+    {
+      slug: 'surgery',
+      title: 'Surgery',
+      shortDescription:
+        'The experienced veterinary team at Indy Veterinary Care offers a variety of surgical procedures from routine to complex.',
+      featured: true,
+      sortOrder: 8,
+    },
+    {
+      slug: 'anesthesia',
+      title: 'Anesthesia',
+      shortDescription:
+        'When your pet requires anesthesia for surgical or dental procedures, we provide the safest possible care with constant monitoring.',
       featured: true,
       sortOrder: 1,
-    },
-    {
-      slug: 'essential-vaccinations',
-      title: 'Essential vaccinations',
-      shortDescription:
-        'Vaccinations are crucial for your pet’s health and well-being. Our expert veterinarians provide comprehensive vaccination services.',
-      featured: true,
-      sortOrder: 2,
-    },
-    {
-      slug: 'surgical-care',
-      title: 'Surgical care',
-      shortDescription:
-        'Our surgical services are designed to ensure your pet receives the highest level of care, from routine procedures to complex surgeries.',
-      featured: true,
-      sortOrder: 3,
     },
   ] as const
 
@@ -144,28 +174,73 @@ async function main() {
     )
   }
 
-  const existingTestimonials = await payload.find({
+  const testimonialDefs = [
+    {
+      authorName: 'Sophia Julia',
+      quote: 'Best vet experience I’ve had with my cat Violet!',
+      reviewUrl: 'https://maps.app.goo.gl/JAWYSNtJGWbEHbie6',
+      sortOrder: 1,
+    },
+    {
+      authorName: 'Mark Nardone',
+      quote: 'Super friendly and compassionate doctors, nurses, and staff.',
+      reviewUrl: 'https://maps.app.goo.gl/2hsDRHJySwaw1MvF7',
+      sortOrder: 2,
+    },
+  ] as const
+
+  const testimonials = []
+  for (const def of testimonialDefs) {
+    const existing = await payload.find({
+      collection: 'testimonials',
+      where: { authorName: { equals: def.authorName } },
+      limit: 1,
+      depth: 0,
+    })
+
+    if (existing.docs[0]) {
+      testimonials.push(
+        await payload.update({
+          collection: 'testimonials',
+          id: existing.docs[0].id,
+          data: {
+            quote: def.quote,
+            reviewUrl: def.reviewUrl,
+            sortOrder: def.sortOrder,
+            location: null,
+            avatar: null,
+          },
+        }),
+      )
+    } else {
+      testimonials.push(
+        await payload.create({
+          collection: 'testimonials',
+          data: {
+            quote: def.quote,
+            authorName: def.authorName,
+            reviewUrl: def.reviewUrl,
+            sortOrder: def.sortOrder,
+          },
+        }),
+      )
+    }
+  }
+
+  // Soft-clean other seeded testimonials so only the two featured ones remain on home
+  const otherTestimonials = await payload.find({
     collection: 'testimonials',
-    where: { authorName: { equals: 'Mac Jonas' } },
-    limit: 3,
+    where: {
+      authorName: {
+        not_in: testimonialDefs.map((def) => def.authorName),
+      },
+    },
+    limit: 50,
     depth: 0,
   })
-
-  const testimonials = [...existingTestimonials.docs]
-  while (testimonials.length < 3) {
-    testimonials.push(
-      await payload.create({
-        collection: 'testimonials',
-        data: {
-          quote:
-            'Dr. Smith and the team are incredible! They treated Bella like family and made her surgery process so smooth. We couldn’t have asked for better care!',
-          authorName: 'Mac Jonas',
-          location: 'New York, NY',
-          avatar: mediaIds[0] ?? undefined,
-          sortOrder: testimonials.length + 1,
-        },
-      }),
-    )
+  for (const doc of otherTestimonials.docs) {
+    await payload.delete({ collection: 'testimonials', id: doc.id })
+    console.log('Deleted placeholder testimonial:', doc.authorName)
   }
 
   const postDefs = [
@@ -206,16 +281,18 @@ async function main() {
   }
 
   const heroImages = mediaIds.slice(0, 3).map((id) => ({ image: id }))
-  const ctaImages = mediaIds.slice(0, 4).map((id) => ({ image: id }))
+  const ctaImages = bottomCtaImageId
+    ? [{ image: bottomCtaImageId }]
+    : mediaIds.slice(0, 4).map((id) => ({ image: id }))
 
   await payload.updateGlobal({
     slug: 'home-page',
     data: {
       hero: {
-        eyebrow: 'Indy Veterinary Care',
-        headline: 'Your reliable partner for pet wellness',
+        eyebrow: 'Independent veterinary care in Philadelphia',
+        headline: 'Thoughtful veterinary care.\nFor pets. For people.',
         description:
-          'At our clinic, we prioritize the health and happiness of your beloved pets. Our expert veterinarians are dedicated to providing compassionate care.',
+          'Modern, compassionate veterinary medicine in a welcoming neighborhood practice.',
         primaryCta: { label: 'Contact us', url: '/contact' },
         secondaryCta: { label: 'See all services', url: '/services' },
         images: heroImages.length ? heroImages : undefined,

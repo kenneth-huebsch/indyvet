@@ -8,7 +8,7 @@
 - The frontend route group is `src/app/(frontend)/`. Shared frontend code belongs in `src/components/` and `src/lib/`.
 - Site chrome (header/footer/nav) lives in `src/components/site/` and is fed by Payload globals via `src/lib/payload.ts` (`getSiteChrome`). Media, SEO, link, and rich-text helpers live under `src/lib/` and `src/components/media/` / `src/components/rich-text/`.
 - Payload configuration is in `src/payload.config.ts`. Collections, blocks, and globals belong under `src/payload/`.
-- Public visual source of truth: `docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md` (editorial clinic concept). Do not match Vetic Home 1.
+- Public visual source of truth: `docs/visual-system.md` (editorial clinic system derived from `/`).
 - Do not commit accidental regenerations of `src/payload-types.ts` or `src/app/(payload)/admin/importMap.js` unless intentional schema/config/plugin work caused them. Enabling S3 (or any admin client plugin) requires regenerating and committing the import map.
 
 ## Project Skills

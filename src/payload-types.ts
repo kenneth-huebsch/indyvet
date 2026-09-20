@@ -106,7 +106,8 @@ export interface Config {
     'home-page': HomePage;
     'about-page': AboutPage;
     'contact-page': ContactPage;
-    'emergency-page': EmergencyPage;
+    'services-page': ServicesPage;
+    'blog-page': BlogPage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
@@ -115,7 +116,8 @@ export interface Config {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
-    'emergency-page': EmergencyPageSelect<false> | EmergencyPageSelect<true>;
+    'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
+    'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -279,6 +281,10 @@ export interface Testimonial {
   quote: string;
   authorName: string;
   /**
+   * Optional Google review (or other) link for the public “Read More” control.
+   */
+  reviewUrl?: string | null;
+  /**
    * Optional city or neighborhood.
    */
   location?: string | null;
@@ -301,6 +307,15 @@ export interface Post {
   slug: string;
   excerpt?: string | null;
   featuredImage?: (number | null) | Media;
+  /**
+   * Display labels only (no public category archives).
+   */
+  categories?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   publishedAt?: string | null;
   content: {
     root: {
@@ -316,6 +331,11 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
+  };
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
   };
   updatedAt: string;
   createdAt: string;
@@ -539,6 +559,7 @@ export interface TeamMembersSelect<T extends boolean = true> {
 export interface TestimonialsSelect<T extends boolean = true> {
   quote?: T;
   authorName?: T;
+  reviewUrl?: T;
   location?: T;
   avatar?: T;
   sortOrder?: T;
@@ -555,8 +576,21 @@ export interface PostsSelect<T extends boolean = true> {
   slug?: T;
   excerpt?: T;
   featuredImage?: T;
+  categories?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
   publishedAt?: T;
   content?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -935,6 +969,7 @@ export interface AboutPage {
       };
       [k: string]: unknown;
     } | null;
+    image?: (number | null) | Media;
   };
   namesake?: {
     title?: string | null;
@@ -971,6 +1006,13 @@ export interface AboutPage {
      */
     url?: string | null;
   };
+  /**
+   * Ink band at the bottom of /about. Uses the Page CTA button.
+   */
+  promo?: {
+    title?: string | null;
+    description?: string | null;
+  };
   seo?: {
     title?: string | null;
     description?: string | null;
@@ -980,7 +1022,7 @@ export interface AboutPage {
   createdAt?: string | null;
 }
 /**
- * Contact copy and form labels only. Submission / email delivery is wired in a later phase.
+ * Contact copy, form labels, and emergency referrals. Submission / email delivery is wired in a later phase. NAP/hours come from Site Settings.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-page".
@@ -1019,6 +1061,32 @@ export interface ContactPage {
    * Google Maps embed URL or similar.
    */
   mapEmbedUrl?: string | null;
+  /**
+   * After-hours band on /contact (#emergency). Referrals live on Emergency Referrals.
+   */
+  emergency?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    intro?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    referrals?: (number | EmergencyReferral)[] | null;
+  };
+  /**
+   * Optional. Not rendered on the public page when empty.
+   */
   faqs?: (number | Faq)[] | null;
   seo?: {
     title?: string | null;
@@ -1029,32 +1097,67 @@ export interface ContactPage {
   createdAt?: string | null;
 }
 /**
+ * Hero, CTA, and SEO for the public /services index. Service bodies live on the Services collection.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "emergency-page".
+ * via the `definition` "services-page".
  */
-export interface EmergencyPage {
+export interface ServicesPage {
   id: number;
   hero: {
     eyebrow?: string | null;
     title: string;
     description?: string | null;
   };
-  intro?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  referrals?: (number | EmergencyReferral)[] | null;
+  cta?: {
+    label?: string | null;
+    /**
+     * Internal path (e.g. /contact) or full external URL.
+     */
+    url?: string | null;
+  };
+  /**
+   * Ink band at the bottom of /services. Uses the Page CTA button.
+   */
+  promo?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero, CTA, and SEO for the public /blog index. Post bodies live on Blog Posts.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page".
+ */
+export interface BlogPage {
+  id: number;
+  hero: {
+    eyebrow?: string | null;
+    title: string;
+    description?: string | null;
+  };
+  cta?: {
+    label?: string | null;
+    /**
+     * Internal path (e.g. /contact) or full external URL.
+     */
+    url?: string | null;
+  };
+  /**
+   * Ink band at the bottom of /blog. Uses the Page CTA button.
+   */
+  promo?: {
+    title?: string | null;
+    description?: string | null;
+  };
   seo?: {
     title?: string | null;
     description?: string | null;
@@ -1332,6 +1435,7 @@ export interface AboutPageSelect<T extends boolean = true> {
         eyebrow?: T;
         title?: T;
         body?: T;
+        image?: T;
       };
   namesake?:
     | T
@@ -1358,6 +1462,12 @@ export interface AboutPageSelect<T extends boolean = true> {
     | {
         label?: T;
         url?: T;
+      };
+  promo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   seo?:
     | T
@@ -1394,6 +1504,14 @@ export interface ContactPageSelect<T extends boolean = true> {
         successMessage?: T;
       };
   mapEmbedUrl?: T;
+  emergency?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        intro?: T;
+        referrals?: T;
+      };
   faqs?: T;
   seo?:
     | T
@@ -1408,9 +1526,9 @@ export interface ContactPageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "emergency-page_select".
+ * via the `definition` "services-page_select".
  */
-export interface EmergencyPageSelect<T extends boolean = true> {
+export interface ServicesPageSelect<T extends boolean = true> {
   hero?:
     | T
     | {
@@ -1418,8 +1536,53 @@ export interface EmergencyPageSelect<T extends boolean = true> {
         title?: T;
         description?: T;
       };
-  intro?: T;
-  referrals?: T;
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  promo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-page_select".
+ */
+export interface BlogPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+      };
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  promo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
   seo?:
     | T
     | {

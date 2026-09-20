@@ -42,7 +42,8 @@ describe('Home page', () => {
     expect(markup).not.toContain('Component showcase')
 
     expect(markup).toContain('data-slot="home-hero"')
-    expect(markup).toContain('Your reliable partner for pet wellness')
+    expect(markup).toContain('Thoughtful veterinary care.')
+    expect(markup).toContain('For pets. For people.')
     expect(markup).not.toContain('data-slot="home-hero-marquee"')
     expect(markup).toContain('data-slot="home-services"')
     expect(markup).toContain('data-slot="home-process"')

@@ -16,9 +16,9 @@ The final deliverable should feel like a handcrafted Next.js application rather 
 
 # Visual source of truth
 
-Living checklist: [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](phase-visual-refresh/phase-visual-refresh-implementation-plan.md)
+Authoritative reference: [`docs/visual-system.md`](visual-system.md)
 
-Phases 1–4 used [Vetic Home 1](https://vetic.webflow.io/home/home-1) as a temporary scaffold to stand up tokens, chrome, and CMS-driven homepage sections. That visual language is superseded. Keep those phase docs as historical checklists; do not use them as the current design reference.
+Public UI follows the editorial clinic system documented there (cream / sage / ink, serif headlines, square buttons, hairline grids).
 
 ---
 
@@ -123,9 +123,7 @@ Acceptance Criteria
 
 ## Phase 1 - Design System ✅
 
-Establish the visual foundation for the website.
-
-Execution checklist: [`docs/phase-1/phase-1-implementation-plan.md`](phase-1/phase-1-implementation-plan.md)
+Establish the visual foundation for the website. Current rules live in [`docs/visual-system.md`](visual-system.md).
 
 Deliverables
 
@@ -144,7 +142,6 @@ Acceptance Criteria
 - No duplicated styling.
 - No hardcoded design inconsistencies.
 - Components are reusable throughout the project.
-- `/` is a component showcase only (no marketing page).
 
 ---
 
@@ -219,55 +216,42 @@ Acceptance Criteria
 
 ## Phase 4 - Homepage Recreation ✅
 
-Recreate the Vetic homepage as accurately as possible (historical scaffold; visual language later replaced).
+Build the CMS-driven homepage in the editorial visual system.
 
-Execution checklist: [`docs/phase-4/phase-4-implementation-plan.md`](phase-4/phase-4-implementation-plan.md)
+Execution checklist: [`docs/phase-4/phase-4-implementation-plan.md`](phase-4/phase-4-implementation-plan.md)  
+Visual rules: [`docs/visual-system.md`](visual-system.md)
 
 Implement every homepage section using React components connected to Payload-managed content.
 
 Acceptance Criteria
 
-- Homepage closely matches the reference website.
-- Responsive behavior matches the reference.
-- Animations feel equivalent.
+- Homepage matches [`docs/visual-system.md`](visual-system.md).
+- Responsive behavior is solid on mobile and desktop.
+- Motion is CSS/`ScrollReveal` only.
 - All editable content comes from Payload.
 - Automated tests cover homepage section rendering from Home Page global + related collections.
 
 ---
 
-## Visual Refresh - Editorial clinic system
-
-Replace the Vetic scaffold look with the client homepage concept across tokens, chrome, and `/`.
-
-Execution checklist: [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](phase-visual-refresh/phase-visual-refresh-implementation-plan.md)
-
-Acceptance Criteria
-
-- Public UI matches the editorial concept (palette, type, square chrome, hairline sections).
-- Existing Payload fields still feed the homepage; no mockup-only copy is hardcoded.
-- Featured Posts and Testimonials remain, restyled.
-- Living agent skills and this master plan point at the visual-refresh checklist.
-
----
-
 ## Phase 5 - Remaining Pages
 
-Build the remaining marketing pages in the editorial visual system, using existing globals and collections.
+Build the remaining marketing pages in the editorial visual system, using existing globals and collections. Follow [`docs/visual-system.md`](visual-system.md) so inner pages stay continuous with `/`.
 
-Examples include:
+- **Services** (`/services`) — done: `services-page` global + accordion of full service bodies; seed via `scripts/seed-services-page.ts`
+- **About** (`/about`) — done: `about-page` global + mission / namesake / stacked team bios; seed via `scripts/seed-about-page.ts`
+- **Blog** (`/blog`, `/blog/[slug]`) — done: `blog-page` global + Posts SEO/categories; import via `scripts/seed-blog.ts`
+- **Contact** (`/contact`) — done: contact form + NAP/hours + emergency referrals (`#emergency`); seed via `scripts/seed-contact-page.ts`
 
-- About
-- Services
-- Team
-- Blog
-- Contact
+Examples still outstanding:
+
+- Team *(merged into About)*
+- Emergency *(merged into Contact)*
 - Legal pages
 
 Acceptance Criteria
 
-- Pages share the visual refresh chrome and type/color language.
+- Pages share the visual-system chrome, type, color, button, and hairline-grid language.
 - Content is managed through Payload where appropriate.
-- Do not recreate Vetic inner-page layouts.
 
 ---
 

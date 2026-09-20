@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { ReactElement } from 'react'
 
 import { CmsCta } from '@/components/home/CmsCta'
@@ -53,22 +54,27 @@ export function HomeFeaturedPosts(props: HomeFeaturedPostsProps): ReactElement |
                 data-slot="home-featured-post-card"
                 className="flex h-full flex-col border-b border-r border-line"
               >
-                <HomePhoto
-                  media={isMedia(post.featuredImage) ? post.featuredImage : null}
-                  className="aspect-[4/3]"
-                  sizes="(max-width: 1024px) 50vw, 360px"
-                  fallbackAlt={post.title}
-                />
-                <div className="flex flex-1 flex-col p-6">
-                  <Typography as="h3" className="text-sm uppercase tracking-[0.08em]">
-                    {post.title}
-                  </Typography>
-                  {post.excerpt?.trim() ? (
-                    <Typography className="mt-2 text-[13px] text-[#59645f]">
-                      {post.excerpt.trim()}
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <HomePhoto
+                    media={isMedia(post.featuredImage) ? post.featuredImage : null}
+                    className="aspect-[4/3]"
+                    sizes="(max-width: 1024px) 50vw, 360px"
+                    fallbackAlt={post.title}
+                  />
+                  <div className="flex flex-1 flex-col p-6">
+                    <Typography as="h3" className="text-sm uppercase tracking-[0.08em]">
+                      {post.title}
                     </Typography>
-                  ) : null}
-                </div>
+                    {post.excerpt?.trim() ? (
+                      <Typography className="mt-2 text-[13px] text-[#59645f]">
+                        {post.excerpt.trim()}
+                      </Typography>
+                    ) : null}
+                  </div>
+                </Link>
               </article>
             ))}
           </div>

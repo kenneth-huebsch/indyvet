@@ -19,7 +19,7 @@ description: Use when developing or changing the IndyVet Next.js and Payload app
 - Pin `next` to `15.4.11`. Do not upgrade to Next 16: unauthenticated `/admin` renders blank (Payload #17545). Keep `eslint-config-next` on 16.x for the existing flat config.
 - `src/app/(frontend)/` contains the public application routes and layouts.
 - `src/payload/collections/` contains collection definitions.
-- `src/payload/globals/` contains site and page singletons (Header, Footer, Site Settings, Home, About, Contact, Emergency).
+- `src/payload/globals/` contains site and page singletons (Header, Footer, Site Settings, Home, About, Contact, Services, Blog).
 - `src/payload/fields/` contains reusable field helpers (`link`, `seo`). Prefer these over duplicating group shapes.
 - `src/payload/access.ts` contains shared access helpers (`anyone`, `authenticated`, `authenticatedOrPublished`).
 - `src/payload/blocks/` is reserved until a feature explicitly needs blocks. Preserve `.gitkeep` when empty.
@@ -34,7 +34,7 @@ Collections own reusable entities. Globals own section chrome and relationships.
 | Kind        | Slugs                                                                                                |
 | ----------- | ---------------------------------------------------------------------------------------------------- |
 | Collections | `media`, `users`, `services`, `team-members`, `testimonials`, `posts`, `faqs`, `emergency-referrals` |
-| Globals     | `site-settings`, `header`, `footer`, `home-page`, `about-page`, `contact-page`, `emergency-page`     |
+| Globals     | `site-settings`, `header`, `footer`, `home-page`, `about-page`, `contact-page`, `services-page`, `blog-page` |
 
 Locked product decisions:
 
@@ -89,13 +89,13 @@ Shared chrome and Payload → frontend mapping already exist. Reuse them before 
 
 Locked chrome conventions:
 
-- Design reference: `docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md` — sticky paper header, full-bleed dark footer, square uppercase buttons. No cart, shop, or public auth chrome.
+- Design reference: `docs/visual-system.md` — sticky sage-light header/footer, square uppercase buttons, hairline grids. No cart, shop, or public auth chrome.
 - Header nav is **flat** (`header.navItems`). Do not add mega-menu schema unless a phase explicitly requires it.
 - Header `cta` is preferred; fall back to `site-settings.booking` when Header CTA is empty.
 - NAP, social, pharmacy, and booking live on `site-settings`. Footer owns logo, link groups, and copyright only.
 - Schema/wiring history: `docs/phase-3/phase-3-implementation-plan.md`. Visual rules there are superseded.
 
-## Homepage (Phase 4 + visual refresh)
+## Homepage
 
 `/` is the CMS-driven homepage in the editorial visual system.
 
@@ -109,13 +109,88 @@ Locked chrome conventions:
 
 Locked homepage conventions:
 
-- Design reference: `docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`
+- Design reference: `docs/visual-system.md`
 - Featured Posts replaces Products (no commerce UI)
 - Hero images: `[0]` hero photo, `[1]` about intro, `[2]` process/approach
 - `hero.marqueeTags` stay in CMS but are not rendered
 - CSS scroll reveal only — no Framer Motion
 - Empty CMS URLs render non-linking surfaces (no Phase 5 stub routes)
 - Schema/wiring history: `docs/phase-4/phase-4-implementation-plan.md`. Visual rules there are superseded.
+
+## Services page
+
+`/services` is the CMS-driven services index with full service bodies in accordion disclosure.
+
+| Area       | Location                                                                                      |
+| ---------- | --------------------------------------------------------------------------------------------- |
+| Page       | `src/app/(frontend)/services/page.tsx` via `getServicesPage()` + `getPublishedServices()`     |
+| Sections   | `src/components/services/` — Hero, JumpNav, AccordionList, BottomCta                          |
+| Page fetch | `src/lib/payload.ts` (`getServicesPage`, `getPublishedServices`)                              |
+| Local seed | `scripts/seed-services-page.ts`                                                               |
+
+Locked services conventions:
+
+- Design reference: `docs/visual-system.md` — paper hero, native `<details>` accordion with service images, ink CTA band
+- Full body copy lives on the `services` collection; page global owns hero / CTA / promo / SEO only
+- No `/services/[slug]` detail routes; homepage featured cards link to `/services#slug`
+- Empty CMS URLs render non-linking surfaces
+
+## About page
+
+`/about` combines About Us intro (mission + namesake) with full team bios.
+
+| Area       | Location                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------- |
+| Page       | `src/app/(frontend)/about/page.tsx` via `getAboutPage()`                                  |
+| Sections   | `src/components/about/` — Hero, Mission, Namesake, Team, BottomCta                        |
+| Page fetch | `src/lib/payload.ts` (`getAboutPage`, depth 2)                                            |
+| Local seed | `scripts/seed-about-page.ts`                                                              |
+
+Locked about conventions:
+
+- Design reference: `docs/visual-system.md` — paper hero, cream mission split, sage-light namesake, stacked team bios
+- Team bios live on `team-members`; page global owns hero / mission / namesake / team header / CTA / SEO
+- No separate `/about/our-team` route; testimonials group is unused on the public page for now
+- Empty CMS URLs render non-linking surfaces
+
+## Blog
+
+`/blog` is the CMS-driven post index; `/blog/[slug]` is the post detail.
+
+| Area       | Location                                                                                         |
+| ---------- | ------------------------------------------------------------------------------------------------ |
+| Index      | `src/app/(frontend)/blog/page.tsx` via `getBlogPage()` + `getPublishedPosts()`                   |
+| Detail     | `src/app/(frontend)/blog/[slug]/page.tsx` via `getPostBySlug()`                                  |
+| Sections   | `src/components/blog/` — Hero, PostGrid, PostArticle, BottomCta                                  |
+| Page fetch | `src/lib/payload.ts` (`getBlogPage`, `getPublishedPosts`, `getPostBySlug`)                       |
+| Local seed | `scripts/seed-blog.ts` (WordPress REST import)                                                   |
+
+Locked blog conventions:
+
+- Design reference: `docs/visual-system.md` — paper hero, cream hairline post grid, longform detail in medium measure
+- Index shows **15** posts per page (`getPublishedPostsPage`); navigate with `/blog?page=N` prev/next controls
+- Categories are display labels only (no `/blog/category/...` archives)
+- Homepage Featured Posts cards link to `/blog/[slug]`; `viewAll` points at `/blog`
+- Keep WordPress slugs for future root→`/blog` redirects
+
+## Contact page
+
+`/contact` combines clinic contact (form + NAP/hours) with after-hours emergency referrals.
+
+| Area       | Location                                                                                         |
+| ---------- | ------------------------------------------------------------------------------------------------ |
+| Page       | `src/app/(frontend)/contact/page.tsx` via `getContactPage()` + `getSiteChrome()`                 |
+| Sections   | `src/components/contact/` — Hero, FormPanel, Map, Emergency                                      |
+| Page fetch | `src/lib/payload.ts` (`getContactPage`, depth 2)                                                 |
+| Local seed | `scripts/seed-contact-page.ts`                                                                   |
+
+Locked contact conventions:
+
+- Design reference: `docs/visual-system.md` — paper hero, cream form + NAP sidebar, optional map, sage-light emergency band
+- NAP/hours come from `site-settings.contact` (not duplicated on the page global)
+- Form is UI-only (labels + client success state); email delivery is a later phase
+- Emergency referrals live on `contact-page.emergency` → `emergency-referrals` (section on `/contact#emergency`)
+- No separate `/emergency` public route; no `emergency-page` global; Emergency is not a top-level nav item
 
 Frontend mapping tests use Payload-shaped fixtures + `renderToStaticMarkup` (no DB). Keep that pattern for shell and section components unless a phase requires Local API integration.
 

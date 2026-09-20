@@ -32,6 +32,11 @@ export const AboutPage: GlobalConfig = {
         { name: 'eyebrow', type: 'text' },
         { name: 'title', type: 'text' },
         { name: 'body', type: 'richText' },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
       ],
     },
     {
@@ -72,6 +77,18 @@ export const AboutPage: GlobalConfig = {
       ],
     },
     linkField({ name: 'cta', label: 'Page CTA', required: false }),
+    {
+      name: 'promo',
+      type: 'group',
+      label: 'Bottom promo',
+      admin: {
+        description: 'Ink band at the bottom of /about. Uses the Page CTA button.',
+      },
+      fields: [
+        { name: 'title', type: 'text' },
+        { name: 'description', type: 'textarea' },
+      ],
+    },
     seoField(),
   ],
 }

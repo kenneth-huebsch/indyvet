@@ -2,11 +2,9 @@ import type { ReactElement } from 'react'
 
 import { HomeEyebrow } from '@/components/home/HomeEyebrow'
 import { HomeHeadline } from '@/components/home/HomeHeadline'
-import { HomePhoto } from '@/components/home/HomePhoto'
 import { ScrollReveal } from '@/components/home/ScrollReveal'
 import { Container } from '@/components/ui/container'
 import { Typography } from '@/components/ui/typography'
-import { isMedia } from '@/lib/media'
 import { populatedDocs } from '@/lib/relations'
 import type { HomePage, Testimonial } from '@/payload-types'
 
@@ -16,31 +14,29 @@ type HomeTestimonialsProps = {
 
 function TestimonialCard(props: { item: Testimonial }): ReactElement {
   const { item } = props
+  const reviewUrl = item.reviewUrl?.trim()
 
   return (
     <article
       data-slot="home-testimonial-card"
-      className="border-b border-r border-line bg-background p-6 sm:p-8"
+      className="flex h-full flex-col border-b border-r border-line bg-background p-6 sm:p-8"
     >
-      <Typography className="text-[#435149]">&ldquo;{item.quote}&rdquo;</Typography>
-      <div className="mt-5 flex items-center gap-3">
-        <HomePhoto
-          media={isMedia(item.avatar) ? item.avatar : null}
-          className="size-12 shrink-0"
-          sizes="48px"
-          fallbackAlt={item.authorName}
-        />
-        <div>
-          <Typography as="p" className="text-sm">
-            {item.authorName}
-          </Typography>
-          {item.location?.trim() ? (
-            <Typography variant="small" className="text-muted-foreground">
-              {item.location.trim()}
-            </Typography>
-          ) : null}
-        </div>
-      </div>
+      <Typography className="text-lg leading-relaxed text-[#435149] sm:text-xl">
+        &ldquo;{item.quote}&rdquo;
+      </Typography>
+      <Typography as="p" className="mt-5 text-sm">
+        {item.authorName}
+      </Typography>
+      {reviewUrl ? (
+        <a
+          href={reviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex text-[11px] font-extrabold uppercase tracking-[0.08em] text-foreground underline underline-offset-4 hover:no-underline"
+        >
+          Read More
+        </a>
+      ) : null}
     </article>
   )
 }

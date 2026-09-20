@@ -1,5 +1,3 @@
-> **Historical.** Homepage CMS wiring in this document remains useful. Matching Vetic Home 1 visually is superseded by [`docs/phase-visual-refresh/phase-visual-refresh-implementation-plan.md`](../phase-visual-refresh/phase-visual-refresh-implementation-plan.md).
-
 # Phase 4 Implementation Plan
 
 ## Homepage Recreation
@@ -10,23 +8,16 @@ This is the Phase 4 source of truth. Execute the checklist in order.
 
 ## Objective
 
-Replace the Phase 1 showcase at `/` with a faithful recreation of [Vetic Home 1](https://vetic.webflow.io/home/home-1), fed by the existing `home-page` global and related collections.
+Replace the component showcase at `/` with a CMS-driven homepage fed by the existing `home-page` global and related collections, styled per [`docs/visual-system.md`](../visual-system.md).
 
 Editors still manage content only. Layout, styling, and section composition remain in code.
-
----
-
-## Design reference
-
-- Primary: https://vetic.webflow.io/home/home-1
-- Not the template marketing landing at https://vetic.webflow.io/
 
 ---
 
 ## Decisions locked
 
 - Replace `/` with the CMS homepage; no `/design-system` showcase route
-- CSS-equivalent motion only (`tw-animate-css`, CSS marquees, light Intersection Observer) — no Framer Motion
+- CSS-equivalent motion only (`ScrollReveal`, light Intersection Observer) — no Framer Motion
 - One-off seed script for representative local content / visual QA
 - Honor CMS link URLs via `resolveLink`; empty URLs render non-linking surfaces (no Phase 5 stub routes)
 - Featured Posts replaces Products (no price, cart, or buy UI)
@@ -46,19 +37,18 @@ Editors still manage content only. Layout, styling, and section composition rema
 
 ## Section inventory
 
-| Order | Region           | CMS group          | Component           |
-| ----- | ---------------- | ------------------ | ------------------- |
-| 1     | Hero + collage   | `hero`             | `HomeHero`          |
-| 2     | Tag marquee      | `hero.marqueeTags` | `HomeMarquee`       |
-| 3     | Services         | `services`         | `HomeServices`      |
-| 4     | Process          | `process`          | `HomeProcess`       |
-| 5     | Featured Posts   | `featuredPosts`    | `HomeFeaturedPosts` |
-| 6     | About + marquees | `about`            | `HomeAbout`         |
-| 7     | Team             | `team`             | `HomeTeam`          |
-| 8     | Testimonials     | `testimonials`     | `HomeTestimonials`  |
-| 9     | Bottom CTA       | `bottomCta`        | `HomeBottomCta`     |
+| Order | Region          | CMS group          | Component           |
+| ----- | --------------- | ------------------ | ------------------- |
+| 1     | Hero            | `hero`             | `HomeHero`          |
+| 2     | About           | `about`            | `HomeAbout`         |
+| 3     | Services        | `services`         | `HomeServices`      |
+| 4     | Process         | `process`          | `HomeProcess`       |
+| 5     | Featured Posts  | `featuredPosts`    | `HomeFeaturedPosts` |
+| 6     | Team            | `team`             | `HomeTeam`          |
+| 7     | Testimonials    | `testimonials`     | `HomeTestimonials`  |
+| 8     | Bottom CTA      | `bottomCta`        | `HomeBottomCta`     |
 
-Chrome remains Phase 3 `SiteHeader` / `SiteFooter`.
+`hero.marqueeTags` may exist in CMS but are not rendered. Chrome remains Phase 3 `SiteHeader` / `SiteFooter`.
 
 ---
 
@@ -76,14 +66,13 @@ Chrome remains Phase 3 `SiteHeader` / `SiteFooter`.
 
 ### Components
 
-- [x] `src/components/home/` section components + shared marquee / CTA / scroll-reveal helpers
-- [x] CSS marquee keyframes + reduced-motion safe behavior
+- [x] `src/components/home/` section components + shared CTA / scroll-reveal helpers
 
 ### Route
 
-- [x] `(frontend)/page.tsx` composes CMS sections (showcase removed)
+- [x] `(frontend)/page.tsx` composes CMS sections
 - [x] `generateMetadata` from `home-page.seo` + site defaults
-- [x] Showcase assertions removed from `page.test.tsx`
+- [x] Page tests use CMS fixtures
 
 ### Seed
 
@@ -107,7 +96,7 @@ npx cross-env NODE_OPTIONS=--no-deprecation tsx -r dotenv/config scripts/seed-ho
 - [x] `npx tsc --noEmit`
 - [x] `npx prettier --check .` (Phase 4 touched files)
 - [x] `npm run build`
-- [x] Manual: seed → `/` side-by-side vs Home 1 (desktop + ≤991px)
+- [x] Manual: seed → `/` matches [`docs/visual-system.md`](../visual-system.md) (desktop + mobile)
 
 ---
 
@@ -115,9 +104,9 @@ npx cross-env NODE_OPTIONS=--no-deprecation tsx -r dotenv/config scripts/seed-ho
 
 Phase 4 is complete when:
 
-- `/` matches Home 1 structure, spacing language, and responsive behavior closely enough for side-by-side review
+- `/` matches [`docs/visual-system.md`](../visual-system.md)
 - All editable homepage copy/images/relationships come from Payload
-- Motion feels equivalent under CSS constraints; reduced-motion safe
+- Motion is CSS/`ScrollReveal` only; reduced-motion safe
 - Automated section + page tests pass; required verification commands pass
 - Seed script documented and usable for local visual QA
 - No Phase 5 routes, Framer Motion, or Products UI

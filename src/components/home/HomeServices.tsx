@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { ReactElement } from 'react'
 
 import { HomeEyebrow } from '@/components/home/HomeEyebrow'
@@ -38,29 +39,46 @@ export function HomeServices(props: HomeServicesProps): ReactElement | null {
 
         {items.length > 0 ? (
           <div className="grid grid-cols-1 border-t border-l border-line sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((service, index) => (
-              <article
-                key={service.id}
-                data-slot="home-service-card"
-                className="min-h-[190px] border-b border-r border-foreground/20 bg-background/30 p-7"
-              >
-                <Typography
-                  as="p"
-                  className="mb-[18px] font-heading text-[25px] text-muted-foreground"
-                >
-                  {padIndex(index)}
-                </Typography>
+            {items.map((service, index) => {
+              const slug = service.slug?.trim()
+              const href = slug ? `/services#${slug}` : null
+              const title = (
                 <Typography
                   as="h3"
                   className="mb-3 text-[13px] font-normal uppercase tracking-[0.08em]"
                 >
                   {service.title}
                 </Typography>
-                <Typography className="text-[13px] text-[#59645f]">
-                  {service.shortDescription}
-                </Typography>
-              </article>
-            ))}
+              )
+
+              return (
+                <article
+                  key={service.id}
+                  data-slot="home-service-card"
+                  className="min-h-[190px] border-b border-r border-foreground/20 bg-background/30 p-7"
+                >
+                  <Typography
+                    as="p"
+                    className="mb-[18px] font-heading text-[25px] text-muted-foreground"
+                  >
+                    {padIndex(index)}
+                  </Typography>
+                  {href ? (
+                    <Link
+                      href={href}
+                      className="text-foreground no-underline hover:text-muted-foreground hover:no-underline"
+                    >
+                      {title}
+                    </Link>
+                  ) : (
+                    title
+                  )}
+                  <Typography className="text-[13px] text-[#59645f]">
+                    {service.shortDescription}
+                  </Typography>
+                </article>
+              )
+            })}
           </div>
         ) : null}
       </Container>

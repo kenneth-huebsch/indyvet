@@ -9,7 +9,7 @@ export const ContactPage: GlobalConfig = {
   admin: {
     group: 'Pages',
     description:
-      'Contact copy and form labels only. Submission / email delivery is wired in a later phase.',
+      'Contact copy, form labels, and emergency referrals. Submission / email delivery is wired in a later phase. NAP/hours come from Site Settings.',
   },
   access: {
     read: anyone,
@@ -76,11 +76,34 @@ export const ContactPage: GlobalConfig = {
       },
     },
     {
+      name: 'emergency',
+      type: 'group',
+      label: 'Emergency section',
+      admin: {
+        description: 'After-hours band on /contact (#emergency). Referrals live on Emergency Referrals.',
+      },
+      fields: [
+        { name: 'eyebrow', type: 'text' },
+        { name: 'title', type: 'text' },
+        { name: 'intro', type: 'richText', label: 'Intro' },
+        {
+          name: 'referrals',
+          type: 'relationship',
+          relationTo: 'emergency-referrals',
+          hasMany: true,
+          label: 'Emergency referrals',
+        },
+      ],
+    },
+    {
       name: 'faqs',
       type: 'relationship',
       relationTo: 'faqs',
       hasMany: true,
       label: 'FAQs',
+      admin: {
+        description: 'Optional. Not rendered on the public page when empty.',
+      },
     },
     seoField(),
   ],

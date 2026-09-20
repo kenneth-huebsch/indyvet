@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
 import { authenticated, authenticatedOrPublished } from '../access'
+import { seoField } from '../fields/seo'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -44,6 +45,24 @@ export const Posts: CollectionConfig = {
       relationTo: 'media',
     },
     {
+      name: 'categories',
+      type: 'array',
+      labels: {
+        singular: 'Category',
+        plural: 'Categories',
+      },
+      admin: {
+        description: 'Display labels only (no public category archives).',
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'publishedAt',
       type: 'date',
       admin: {
@@ -58,5 +77,6 @@ export const Posts: CollectionConfig = {
       type: 'richText',
       required: true,
     },
+    seoField(),
   ],
 }

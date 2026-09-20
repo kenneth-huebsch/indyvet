@@ -12,11 +12,12 @@ import { Users } from './collections/Users'
 import { linkField } from './fields/link'
 import { seoField } from './fields/seo'
 import { AboutPage } from './globals/AboutPage'
+import { BlogPage } from './globals/BlogPage'
 import { ContactPage } from './globals/ContactPage'
-import { EmergencyPage } from './globals/EmergencyPage'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { HomePage } from './globals/HomePage'
+import { ServicesPage } from './globals/ServicesPage'
 import { SiteSettings } from './globals/SiteSettings'
 
 function fieldName(field: Field): string | undefined {
@@ -62,7 +63,8 @@ describe('payload content model definitions', () => {
       HomePage.slug,
       AboutPage.slug,
       ContactPage.slug,
-      EmergencyPage.slug,
+      ServicesPage.slug,
+      BlogPage.slug,
     ]
 
     expect(collectionSlugs).toEqual([
@@ -83,8 +85,16 @@ describe('payload content model definitions', () => {
       'home-page',
       'about-page',
       'contact-page',
-      'emergency-page',
+      'services-page',
+      'blog-page',
     ])
+    expect(globalSlugs).not.toContain('emergency-page')
+  })
+
+  it('adds SEO and category labels on posts', () => {
+    const fieldNames = Posts.fields.map((field) => ('name' in field ? field.name : undefined))
+
+    expect(fieldNames).toEqual(expect.arrayContaining(['seo', 'categories', 'content']))
   })
 
   it('models Featured Posts on home-page instead of Products', () => {

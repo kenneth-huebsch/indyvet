@@ -35,7 +35,9 @@ export function HomeHero(props: HomeHeroProps): ReactElement | null {
               <HomeEyebrow className="mb-4">{hero.eyebrow.trim()}</HomeEyebrow>
             ) : null}
 
-            <HomeHeadline as="h1">{hero.headline.trim()}</HomeHeadline>
+            <HomeHeadline as="h1" className="whitespace-pre-line">
+              {hero.headline.trim()}
+            </HomeHeadline>
 
             {hero.description?.trim() ? (
               <Typography className="mt-6 max-w-[560px] text-lg text-[#415149]">

@@ -40,7 +40,7 @@ const footer: Footer = {
 }
 
 describe('SiteFooter', () => {
-  it('renders link groups, hours, contact, and copyright without Vetic chrome', () => {
+  it('renders link groups, hours, contact, and copyright', () => {
     const markup = renderToStaticMarkup(<SiteFooter footer={footer} siteSettings={siteSettings} />)
 
     expect(markup).toContain('data-slot="site-footer"')

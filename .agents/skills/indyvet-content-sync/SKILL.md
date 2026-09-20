@@ -46,7 +46,7 @@ Run **two processes**. One Payload instance per process; do not dump and import 
 
 Collections (published only, `draft: false`, `depth: 0`): `services`, `team-members`, `posts`, `testimonials`, `faqs`, `emergency-referrals`.
 
-Globals: `site-settings`, `header`, `footer`, `home-page`, `about-page`, `contact-page`, `emergency-page`.
+Globals: `site-settings`, `header`, `footer`, `home-page`, `about-page`, `contact-page`, `services-page`, `blog-page`.
 
 Skip `users`. Strip `id`, `createdAt`, `updatedAt`, `deletedAt`, and media file metadata (`url`, `filename`, `sizes`, …) from payloads. Default `_status` to `published`. Use `overrideAccess: true`.
 
