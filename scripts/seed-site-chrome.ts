@@ -34,7 +34,8 @@ async function main() {
       booking: {
         label: 'Book Now',
         url: '/contact',
-        embedScriptUrl: 'https://vettersoftware.com/view/dist/online-book.js',
+        embedScriptUrl:
+          '38zLsWay+jHNk6LX11Tm2v3c1W85nxFbtLJfaQDuwE07yrFA/1j+ym7Hx5jCwzDMgjlxuS68eNemnwSXKYohonhrMUrosnrC/TeILqIDUqo=',
       },
       pharmacy: {
         label: 'Order Online',

@@ -8,7 +8,6 @@ import { HomeFeaturedPosts } from './HomeFeaturedPosts'
 import { HomeHero } from './HomeHero'
 import { HomeProcess } from './HomeProcess'
 import { HomeServices } from './HomeServices'
-import { HomeTeam } from './HomeTeam'
 import { HomeTestimonials } from './HomeTestimonials'
 import { fixtureMedia, homePageFixture } from './fixtures'
 
@@ -111,22 +110,13 @@ describe('home sections', () => {
     expect(markup).not.toContain('animate-marquee')
   })
 
-  it('HomeTeam renders members with roles', () => {
-    const markup = renderToStaticMarkup(<HomeTeam team={homePageFixture.team!} />)
-
-    expect(markup).toContain('data-slot="home-team"')
-    expect(markup).toContain('Dr. Sara Organist')
-    expect(markup).toContain('Founder / Veterinarian')
-    expect(markup).toContain('Dr. Eric Matkowski')
-    expect(markup).toContain('Join our team')
-  })
-
   it('HomeTestimonials renders quote, author, and Read More link', () => {
     const markup = renderToStaticMarkup(
       <HomeTestimonials testimonials={homePageFixture.testimonials!} />,
     )
 
     expect(markup).toContain('data-slot="home-testimonials"')
+    expect(markup).toMatch(/data-slot="home-testimonials"[^>]*bg-cream/)
     expect(markup).toContain('Best vet experience')
     expect(markup).toContain('Sophia Julia')
     expect(markup).toContain('Mark Nardone')
@@ -140,6 +130,8 @@ describe('home sections', () => {
     const markup = renderToStaticMarkup(<HomeBottomCta bottomCta={homePageFixture.bottomCta!} />)
 
     expect(markup).toContain('data-slot="home-bottom-cta"')
+    expect(markup).toMatch(/data-slot="home-bottom-cta"[^>]*bg-background/)
+    expect(markup).not.toContain('bg-sage-light')
     expect(markup).toContain('Because your pets deserve the best, always')
     expect(markup).not.toContain('home-bottom-cta-images-left')
     expect(markup).not.toContain('home-bottom-cta-images-right')

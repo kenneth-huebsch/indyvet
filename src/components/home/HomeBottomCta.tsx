@@ -22,7 +22,7 @@ export function HomeBottomCta(props: HomeBottomCtaProps): ReactElement | null {
   }
 
   return (
-    <section data-slot="home-bottom-cta" className="grid min-h-[330px] border-t border-line bg-sage-light md:grid-cols-2">
+    <section data-slot="home-bottom-cta" className="grid min-h-[330px] border-t border-line bg-background md:grid-cols-2">
       {image ? (
         <HomePhoto
           media={image}
@@ -31,10 +31,10 @@ export function HomeBottomCta(props: HomeBottomCtaProps): ReactElement | null {
           fallbackAlt="Bottom call to action"
         />
       ) : (
-        <div className="min-h-[240px] bg-sage-light md:min-h-[330px]" aria-hidden />
+        <div className="min-h-[240px] bg-background md:min-h-[330px]" aria-hidden />
       )}
 
-      <div className="flex items-center bg-sage-light">
+      <div className="flex items-center bg-background">
         <ScrollReveal className="px-6 py-10 md:px-[54px] md:py-[54px]">
           {bottomCta.headline?.trim() ? (
             <HomeHeadline as="h2">{bottomCta.headline.trim()}</HomeHeadline>

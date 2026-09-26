@@ -4,14 +4,16 @@ import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useId, useState, type ReactElement } from 'react'
 
+import { VetterBookingButton } from '@/components/site/VetterBooking'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
+import type { HeaderBookingCta } from '@/lib/booking'
 import type { ResolvedLink } from '@/lib/links'
 import { cn } from '@/lib/utils'
 
 type MobileNavProps = {
   items: ResolvedLink[]
-  cta: ResolvedLink | null
+  cta: HeaderBookingCta | null
 }
 
 export function MobileNav(props: MobileNavProps): ReactElement {
@@ -59,18 +61,25 @@ export function MobileNav(props: MobileNavProps): ReactElement {
           </ul>
         </nav>
 
-        {cta ? (
+        {cta?.mode === 'link' ? (
           <Button
             as={Link}
-            href={cta.href}
-            target={cta.target}
-            rel={cta.rel}
+            href={cta.link.href}
+            target={cta.link.target}
+            rel={cta.link.rel}
             variant="primary"
             className="mt-3 w-full no-underline hover:no-underline"
             onClick={() => setOpen(false)}
           >
-            {cta.label}
+            {cta.link.label}
           </Button>
+        ) : null}
+        {cta?.mode === 'vetter' ? (
+          <VetterBookingButton
+            label={cta.label}
+            className="mt-3 w-full no-underline hover:no-underline"
+            onOpen={() => setOpen(false)}
+          />
         ) : null}
       </div>
     </div>

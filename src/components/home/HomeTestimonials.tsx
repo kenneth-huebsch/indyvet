@@ -50,7 +50,7 @@ export function HomeTestimonials(props: HomeTestimonialsProps): ReactElement | n
   }
 
   return (
-    <section data-slot="home-testimonials" className="border-t border-line bg-background py-[68px]">
+    <section data-slot="home-testimonials" className="border-t border-line bg-cream py-[68px]">
       <Container>
         <ScrollReveal className="mb-8 max-w-2xl">
           {testimonials.eyebrow?.trim() ? (

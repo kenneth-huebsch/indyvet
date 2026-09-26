@@ -3,7 +3,9 @@ import type { ReactElement } from 'react'
 
 import { MediaImage } from '@/components/media/MediaImage'
 import { MobileNav } from '@/components/site/MobileNav'
+import { VetterBookingButton, VetterBookingHost } from '@/components/site/VetterBooking'
 import { Button } from '@/components/ui/button'
+import { resolveHeaderBookingCta } from '@/lib/booking'
 import { resolveLink } from '@/lib/links'
 import { getMediaUrl, isMedia } from '@/lib/media'
 import { cn } from '@/lib/utils'
@@ -15,16 +17,6 @@ type SiteHeaderProps = {
   className?: string
 }
 
-function resolveHeaderCta(header: Header, siteSettings: SiteSetting) {
-  return (
-    resolveLink(header.cta) ??
-    resolveLink({
-      label: siteSettings.booking?.label,
-      url: siteSettings.booking?.url,
-    })
-  )
-}
-
 export function SiteHeader(props: SiteHeaderProps): ReactElement {
   const { header, siteSettings, className } = props
   const siteName = siteSettings.brand.siteName
@@ -33,16 +25,13 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
     header.navItems
       ?.map((item) => resolveLink({ label: item.label, url: item.url }))
       .filter((item): item is NonNullable<typeof item> => item !== null) ?? []
-  const cta = resolveHeaderCta(header, siteSettings)
+  const cta = resolveHeaderBookingCta(header, siteSettings)
   const showTextLogo = !isMedia(header.logo) || !getMediaUrl(header.logo)
 
   return (
     <header
       data-slot="site-header"
-      className={cn(
-        'relative sticky top-0 z-40 border-b border-line bg-sage-light',
-        className,
-      )}
+      className={cn('relative sticky top-0 z-40 border-b border-line bg-sage-light', className)}
     >
       <div className="mx-auto flex h-[82px] max-w-content items-center justify-between gap-6 px-[1.125rem] md:h-[82px] md:px-gutter">
         <Link
@@ -53,8 +42,8 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
           <MediaImage
             media={header.logo}
             fallbackAlt={siteName}
-            className="h-8 w-auto object-contain"
-            sizes="200px"
+            className="h-auto max-h-[74px] w-auto max-w-[min(18rem,calc(100vw-7.5rem))] object-contain"
+            sizes="280px"
             quality={100}
             priority
           />
@@ -88,22 +77,31 @@ export function SiteHeader(props: SiteHeaderProps): ReactElement {
         </nav>
 
         <div className="flex items-center gap-2">
-          {cta ? (
+          {cta?.mode === 'link' ? (
             <Button
               as={Link}
-              href={cta.href}
-              target={cta.target}
-              rel={cta.rel}
+              href={cta.link.href}
+              target={cta.link.target}
+              rel={cta.link.rel}
               variant="primary"
               className="hidden no-underline hover:no-underline min-[821px]:inline-flex"
             >
-              {cta.label}
+              {cta.link.label}
             </Button>
+          ) : null}
+          {cta?.mode === 'vetter' ? (
+            <VetterBookingButton
+              label={cta.label}
+              className="hidden no-underline hover:no-underline min-[821px]:inline-flex"
+            />
           ) : null}
 
           <MobileNav items={navItems} cta={cta} />
         </div>
       </div>
+      {cta?.mode === 'vetter' ? (
+        <VetterBookingHost scriptSrc={cta.embed.scriptSrc} identifier={cta.embed.identifier} />
+      ) : null}
     </header>
   )
 }

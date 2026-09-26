@@ -7,7 +7,6 @@ import { HomeFeaturedPosts } from '@/components/home/HomeFeaturedPosts'
 import { HomeHero } from '@/components/home/HomeHero'
 import { HomeProcess } from '@/components/home/HomeProcess'
 import { HomeServices } from '@/components/home/HomeServices'
-import { HomeTeam } from '@/components/home/HomeTeam'
 import { HomeTestimonials } from '@/components/home/HomeTestimonials'
 import { getHomePage, getSiteChrome } from '@/lib/payload'
 import { isMedia } from '@/lib/media'
@@ -39,7 +38,6 @@ export default async function HomePage(): Promise<ReactElement> {
       {home.services ? <HomeServices services={home.services} /> : null}
       {home.process ? <HomeProcess process={home.process} photo={heroImageAt(home, 2)} /> : null}
       {home.featuredPosts ? <HomeFeaturedPosts featuredPosts={home.featuredPosts} /> : null}
-      {home.team ? <HomeTeam team={home.team} /> : null}
       {home.testimonials ? <HomeTestimonials testimonials={home.testimonials} /> : null}
       {home.bottomCta ? <HomeBottomCta bottomCta={home.bottomCta} /> : null}
     </div>

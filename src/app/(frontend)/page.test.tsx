@@ -49,8 +49,11 @@ describe('Home page', () => {
     expect(markup).toContain('data-slot="home-process"')
     expect(markup).toContain('data-slot="home-featured-posts"')
     expect(markup).toContain('data-slot="home-about"')
-    expect(markup).toContain('data-slot="home-team"')
+    expect(markup).not.toContain('data-slot="home-team"')
+    expect(markup).not.toContain('Our amazing team')
+    expect(markup).toMatch(/data-slot="home-testimonials"[^>]*bg-cream/)
     expect(markup).toContain('data-slot="home-testimonials"')
+    expect(markup).toMatch(/data-slot="home-bottom-cta"[^>]*bg-background/)
     expect(markup).toContain('data-slot="home-bottom-cta"')
   })
 

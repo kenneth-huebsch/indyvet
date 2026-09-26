@@ -117,9 +117,10 @@ export const SiteSettings: GlobalConfig = {
         {
           name: 'embedScriptUrl',
           type: 'text',
-          label: 'Embed script URL',
+          label: 'Vetter identifier',
           admin: {
-            description: 'Optional Vetter (or similar) script URL for Phase 3 wiring.',
+            description:
+              'Public identifier attribute from the Vetter embed snippet. You can also paste the full snippet, or a script URL that includes an identifier query parameter. When set, header Book Now opens the Vetter booking widget.',
           },
         },
       ],

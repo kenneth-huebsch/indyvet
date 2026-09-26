@@ -702,7 +702,7 @@ export interface SiteSetting {
      */
     url?: string | null;
     /**
-     * Optional Vetter (or similar) script URL for Phase 3 wiring.
+     * Public identifier attribute from the Vetter embed snippet. You can also paste the full snippet, or a script URL that includes an identifier query parameter. When set, header Book Now opens the Vetter booking widget.
      */
     embedScriptUrl?: string | null;
   };

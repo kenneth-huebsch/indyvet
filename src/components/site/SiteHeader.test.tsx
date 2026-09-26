@@ -53,6 +53,7 @@ describe('SiteHeader', () => {
     expect(markup).toContain('Schedule Visit')
     expect(markup).toContain('href="/contact"')
     expect(markup).toContain('alt="IndyVet logo"')
+    expect(markup).toContain('max-h-[74px]')
   })
 
   it('falls back to Site Settings booking CTA when Header CTA is empty', () => {
@@ -65,6 +66,31 @@ describe('SiteHeader', () => {
 
     expect(markup).toContain('Book Now')
     expect(markup).toContain('href="https://booking.example.com"')
+    expect(markup).not.toContain('id="vetter-btn"')
+  })
+
+  it('keeps the editorial Book Now button and mounts a hidden Vetter host', () => {
+    const markup = renderToStaticMarkup(
+      <SiteHeader
+        header={{ ...header, cta: { label: 'Book Now', url: '/contact' } }}
+        siteSettings={{
+          ...siteSettings,
+          booking: {
+            ...siteSettings.booking,
+            embedScriptUrl: 'clinic+token/id=',
+          },
+        }}
+      />,
+    )
+
+    expect(markup).toContain('Book Now')
+    expect(markup).toContain('id="vetter-btn"')
+    expect(markup).toContain('uppercase')
+    expect(markup).toContain('bg-primary')
+    expect(markup).not.toContain('href="https://booking.example.com"')
+    expect(markup).not.toMatch(/<a[^>]*>Book Now<\/a>/)
+    expect(markup).toContain('>Book Now<')
+    expect(markup).toContain('max-h-[74px]')
   })
 
   it('does not render cart or sign-in chrome', () => {
